@@ -84,7 +84,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 			}
 
 		} else if(node.type === 'checkbox') {
-			node.checked = !!value;
+			node.checked = value === 'false' ? false : !!value;
 
 		} else if(node.type === 'radio') {
 			var radioGroupName = node.getAttribute('name');
