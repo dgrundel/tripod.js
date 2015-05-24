@@ -8,7 +8,19 @@
 		<link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
 		<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 		<style>
-			input, select, label { font-size: 1.3em; }
+			blockquote,
+			blockquote input,
+			blockquote label,
+			blockquote select {
+				font-size: 1.4em;
+			}
+			blockquote {
+				background-color: #444;
+				color: #F2F2F2;
+				text-shadow: none;
+				border: 1px solid #676767;
+				padding: 15px 30px;
+			}
 		</style>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -54,19 +66,19 @@
 
 					<p data-bound-to="demoOne">This paragraph is bound to the input box below. Try changing it!</p>
 
-					<p><input type="text" data-bound-to="demoOne"></p>
+					<blockquote><input type="text" data-bound-to="demoOne"></blockquote>
 
 					<p>These radio buttons are also bound to the same input. Try typing 'car', 'bike', or 'truck' into the input box. (All lowercase to match the values!)</p>
 
-					<p>
+					<blockquote>
 						<label><input type="radio" name="demoRadio" value="car" data-bound-to="demoOne"> Car</label><br>
 						<label><input type="radio" name="demoRadio" value="bike" data-bound-to="demoOne"> Bike</label><br>
 						<label><input type="radio" name="demoRadio" value="truck" data-bound-to="demoOne"> Truck</label>
-					</p>
+					</blockquote>
 
 					<p>And wouldn't you know, this select box is all bound up, too. Try it out.</p>
 
-					<p>
+					<blockquote>
 						<select data-bound-to="demoOne">
 							<option value=""></option>
 							<option value="car">Car</option>
@@ -74,15 +86,15 @@
 							<option value="truck">Truck</option>
 							<option value="motorcycle">Motorcycle</option>
 						</select>
-					</p>
+					</blockquote>
 
 					<p>Checkboxes work, as well, but a little differently as you might expect. If your value is truthy, they'll be checked.</p>
 
 					<p>Try clearing out the text field to uncheck the box!</p>
 
-					<p>
+					<blockquote>
 						<label><input type="checkbox" data-bound-to="demoOne"> Check it out, yo</label>
-					</p>
+					</blockquote>
 
 					<h2>...and for my final trick</h2>
 
