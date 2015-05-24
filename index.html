@@ -7,6 +7,9 @@
 		<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
 		<link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
 		<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+		<style>
+			input, select, label { font-size: 1.3em; }
+		</style>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -55,19 +58,15 @@
 
 					<p>These radio buttons are also bound to the same input. Try typing 'car', 'bike', or 'truck' into the input box. (All lowercase to match the values!)</p>
 
-					<div>
-						<label><input type="radio" name="demoRadio" value="car" data-bound-to="demoOne"> Car</label>
-					</div>
-					<div>
-						<label><input type="radio" name="demoRadio" value="bike" data-bound-to="demoOne"> Bike</label>
-					</div>
-					<div>
+					<p>
+						<label><input type="radio" name="demoRadio" value="car" data-bound-to="demoOne"> Car</label><br>
+						<label><input type="radio" name="demoRadio" value="bike" data-bound-to="demoOne"> Bike</label><br>
 						<label><input type="radio" name="demoRadio" value="truck" data-bound-to="demoOne"> Truck</label>
-					</div>
+					</p>
 
-					<p>And wouldn't you know, this select box is all bound up, too.</p>
+					<p>And wouldn't you know, this select box is all bound up, too. Try it out.</p>
 
-					<div>
+					<p>
 						<select data-bound-to="demoOne">
 							<option value=""></option>
 							<option value="car">Car</option>
@@ -75,15 +74,15 @@
 							<option value="truck">Truck</option>
 							<option value="motorcycle">Motorcycle</option>
 						</select>
-					</div>
+					</p>
 
-					<p>Checkboxes work, too. But a little differently, as you might expect. If your value is truthy, they'll be checked.</p>
+					<p>Checkboxes work, as well, but a little differently as you might expect. If your value is truthy, they'll be checked.</p>
 
 					<p>Try clearing out the text field to uncheck the box!</p>
 
-					<div>
-						<label><input type="checkbox" data-bound-to="demoOne"></label>
-					</div>
+					<p>
+						<label><input type="checkbox" data-bound-to="demoOne"> Check it out, yo</label>
+					</p>
 
 					<h2>...and for my final trick</h2>
 
