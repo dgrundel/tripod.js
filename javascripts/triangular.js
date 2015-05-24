@@ -130,7 +130,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 	*/
 	
 	var inputEventHandler = function(event) {
-		var node = event.target || event.toElement;
+		var node = event.target || event.srcElement;
 		if('value' in node) {
 			var attr = getNodeBinding(node);
 			if(attr) {
@@ -163,8 +163,8 @@ var Triangular = function(initialAttrs, namespace, persist) {
 				window.addEventListener('storage', storageEventHandler);
 			}
 		} else if (document.body.attachEvent)  { //IE8 and below
-			document.body.attachEvent('keyup', inputEventHandler);
-			document.body.attachEvent('change', inputEventHandler);
+			document.body.attachEvent('onkeyup', inputEventHandler);
+			document.body.attachEvent('onchange', inputEventHandler);
 		}
 	};
 	readyTimerId = setInterval(initEventHandlers, 100);
