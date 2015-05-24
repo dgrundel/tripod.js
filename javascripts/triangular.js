@@ -110,7 +110,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 
 	function getPersistentValue(attr) {
 		var persistentValue;
-		if(window.localStorage) {
+		if(window.localStorage && window.JSON) {
 			persistentValue = localStorage.getItem(getNamespacedAttrName(attr));
 			if(persistentValue) {
 				persistentValue = JSON.parse(persistentValue);
@@ -120,7 +120,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 	}
 
 	function setPersistentValue(attr, value) {
-		if(window.localStorage) {
+		if(window.localStorage && window.JSON) {
 			localStorage.setItem(getNamespacedAttrName(attr), JSON.stringify(value));
 		}
 	}
@@ -159,7 +159,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 		if (document.body.addEventListener) { //Real browsers and IE9+
 			document.body.addEventListener('input', inputEventHandler);
 			document.body.addEventListener('change', inputEventHandler);
-			if(persistent && window.localStorage) {
+			if(persistent && window.localStorage && window.JSON) {
 				window.addEventListener('storage', storageEventHandler);
 			}
 		} else if (document.body.attachEvent)  { //IE8 and below
