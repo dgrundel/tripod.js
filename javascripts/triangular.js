@@ -164,7 +164,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 			}
 		} else if (document.body.attachEvent)  { //IE8 and below
 			document.body.attachEvent('onkeyup', inputEventHandler);
-			document.body.attachEvent('onchange', inputEventHandler);
+			document.body.attachEvent('onclick', inputEventHandler);
 		}
 	};
 	readyTimerId = setInterval(initEventHandlers, 100);
