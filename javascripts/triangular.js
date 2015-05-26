@@ -73,7 +73,10 @@ var Triangular = function(initialAttrs, namespace, persist) {
 			}
 			return node.checked;
 		}
-		return node.value || node.textContent || node.innerText;
+		if('value' in node) {
+			return node.value;
+		}
+		return ('textContent' in node) ? node.textContent : node.innerText;
 	}
 
 	function setNodeValue(node, value) {
