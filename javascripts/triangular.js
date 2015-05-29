@@ -2,7 +2,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 	var attrs = initialAttrs || {};
 	var bindAttribute = 'data-bound-to';
 	var bindNamespace = namespace;
-	var persistent = persist === true;
+	var persistent = persist === true && window.localStorage && window.JSON;
 
 	/*
 		utility methods and such
@@ -112,20 +112,12 @@ var Triangular = function(initialAttrs, namespace, persist) {
 	}
 
 	function getPersistentValue(attr) {
-		var persistentValue;
-		if(window.localStorage && window.JSON) {
-			persistentValue = localStorage.getItem(getNamespacedAttrName(attr));
-			if(persistentValue) {
-				persistentValue = JSON.parse(persistentValue);
-			}
-		}
-		return persistentValue;
+		var persistentValue = localStorage.getItem(getNamespacedAttrName(attr));
+		return persistentValue ? JSON.parse(persistentValue) : null;
 	}
 
 	function setPersistentValue(attr, value) {
-		if(window.localStorage && window.JSON) {
-			localStorage.setItem(getNamespacedAttrName(attr), JSON.stringify(value));
-		}
+		localStorage.setItem(getNamespacedAttrName(attr), JSON.stringify(value));
 	}
 
 	/*
@@ -162,7 +154,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 		if (document.body.addEventListener) { //Real browsers and IE9+
 			document.body.addEventListener('input', inputEventHandler);
 			document.body.addEventListener('change', inputEventHandler);
-			if(persistent && window.localStorage && window.JSON) {
+			if(persistent) {
 				window.addEventListener('storage', storageEventHandler);
 			}
 		} else if (document.body.attachEvent)  { //IE8 and below
