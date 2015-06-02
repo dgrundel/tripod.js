@@ -1,8 +1,10 @@
 var Triangular = function(initialAttrs, namespace, persist) {
 	var attrs = initialAttrs || {};
-	var bindAttribute = 'data-bound-to';
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
+	
+	var bindAttribute = 'data-bound-to';
+	var bindModifierAttribute = 'data-bound-as';
 
 	/*
 		utility methods and such
@@ -53,6 +55,10 @@ var Triangular = function(initialAttrs, namespace, persist) {
 		var boundTo = node.getAttribute(bindAttribute);
 		return boundTo ? findAttrForBindingString(boundTo) : false;
 	}
+
+	function getNodeBindingModifier(node) {
+		return (node.getAttribute(bindModifierAttribute) || '').toLowerCase();
+	}
 	
 	function getNodeValue(node) {
 		if(node.nodeName.toLowerCase() === 'select') {
@@ -77,6 +83,22 @@ var Triangular = function(initialAttrs, namespace, persist) {
 			return node.value;
 		}
 		return ('textContent' in node) ? node.textContent : node.innerText;
+	}
+
+	function updateNode(node, value) {
+		var nodeBindingModifier = getNodeBindingModifier(node);
+
+		switch(nodeBindingModifier) {
+			case 'show':
+				node.style.display = value ? '' : 'none';
+				break;
+			case 'hide':
+				node.style.display = value ? 'none' : '';
+				break;
+			case 'value':
+			default:
+				setNodeValue(node, value);
+		}
 	}
 
 	function setNodeValue(node, value) {
@@ -214,7 +236,12 @@ var Triangular = function(initialAttrs, namespace, persist) {
 
 			var nodes = getNodes(attr);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
+				if(getNodeBindingModifier(nodes[n]) !== 'value') {
+					continue;
+				}
+
 				value = getNodeValue(nodes[n]);
+
 				if(isNotBlank(value)) {
 					break;
 				}
@@ -245,7 +272,7 @@ var Triangular = function(initialAttrs, namespace, persist) {
 		} else if(attr && typeof attr === 'string') {
 			var nodes = getNodes(attr);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
-				setNodeValue(nodes[n], attrs[attr]);
+				updateNode(nodes[n], attrs[attr]);
 			}
 			
 		} else {
