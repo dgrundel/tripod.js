@@ -1,4 +1,4 @@
-var Triangular = function(initialAttrs, namespace, persist) {
+var Tripod = function(initialAttrs, namespace, persist) {
 	var attrs = initialAttrs || {};
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
