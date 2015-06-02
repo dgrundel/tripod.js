@@ -57,7 +57,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function getNodeBindingModifier(node) {
-		return (node.getAttribute(bindModifierAttribute) || '').toLowerCase();
+		return (node.getAttribute(bindModifierAttribute) || 'value').toLowerCase();
 	}
 	
 	function getNodeValue(node) {
@@ -150,7 +150,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		var node = event.target || event.srcElement;
 		if('value' in node) {
 			var attr = getNodeBinding(node);
-			if(attr) {
+			if(attr && getNodeBindingModifier(node) === 'value') {
 				var val = getNodeValue(node);
 				set(attr, val);
 			}
