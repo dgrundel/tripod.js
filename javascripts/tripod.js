@@ -1,4 +1,4 @@
-var Triangular = function(initialAttrs, namespace, persist) {
+var Tripod = function(initialAttrs, namespace, persist) {
 	var attrs = initialAttrs || {};
 	var bindAttribute = 'data-bound-to';
 	var bindNamespace = namespace;
