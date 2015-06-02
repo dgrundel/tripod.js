@@ -189,6 +189,71 @@ and any edits to the instance (using instance.set()) are automatically pushed to
 
 ___
 
+### Using Binding Modifiers to Show and Hide DOM Elements
+
+
+So far all of this data binding goodness has dealt with getting values and pushing 
+them around to various places (the DOM, JS, Local Storage.)
+One common DOM manipulation task is to show or hide portions of a page based on some value.
+
+Consider this markup:
+
+```
+<label>
+	<input type="checkbox" data-bound-to="vehicle.hasAirBags">
+	My vehicle has air bags.
+</label>
+
+<div>
+	How many air bags does your vehicle have?
+	<input type="number" data-bound-to="vehicle.numberOfAirBags">
+</div>
+```
+
+It doesn't really make sense to ask the user how many air bags they have if they don't check the box, right?
+A better user experience would be to hide the second question if the first checkbox is unchecked.
+You can use binding modifiers to achieve this.
+
+All you need to do is bind the container element to the checkbox and use the *data-bound-as* attribute.
+
+So, our new markup looks like this:
+
+```
+<label>
+	<input type="checkbox" data-bound-to="vehicle.hasAirBags">
+	My vehicle has air bags.
+</label>
+
+<div data-bound-to="vehicle.hasAirBags" data-bound-as="show">
+	How many air bags does your vehicle have?
+	<input type="number" data-bound-to="vehicle.numberOfAirBags">
+</div>
+```
+
+*data-bound-as* is the _binding modifier_. *show* is the particular modifier we're using in this case.
+
+-
+#### data-bound-as="show"
+
+The *show* binding modifier will show an element if the attribute it is bound to is _truthy_.
+Otherwise, the element will be hidden.
+
+-
+#### data-bound-as="hide"
+
+The *hide* binding modifier is the opposite of *show*.
+It will hide (display:none) an element if the attribute it is bound to is _truthy_.
+Otherwise, the element will be shown.
+
+-
+#### data-bound-as="value"
+
+*value* is the default behavior you've seen above.
+If the *data-bound-as* attribute is missing, blank, or unrecognized value is used.
+
+
+___
+
 ### Go Big or Go Home: instance.getAll(), instance.loadAll(), instance.pushAll()
 
 
