@@ -451,22 +451,19 @@ Tripod.bindingModifierFunctions.currency = function(node, value, bindingModifier
 };
 
 Tripod.bindingModifierFunctions.template = function(node, value, bindingModifiers) {
-	if(bindingModifiers.length === 2) {
-		var html = '';
-		var template = document.getElementById(bindingModifiers[1]);
-		var templateHtml = template ? template.innerHTML : '';
-		if(templateHtml) {
-			if(!Tripod.util.isArray(value)) {
-				value = [value];
-			}
-			for(var ii = 0, vl = value.length; ii < vl; ii++) {
-				html += Tripod.util.processTemplate(templateHtml, value[ii]);
-			}
-			node.innerHTML = html;
-		}
+	var templateAttributeName = 'data-original-template';
+	var generatedHtml = '';
+	var templateHtml = node.getAttribute(templateAttributeName) || node.innerHTML;
 
-	} else {
-		throw 'template requires a parameter.'
+	if(templateHtml) {
+		if(!Tripod.util.isArray(value)) {
+			value = [value];
+		}
+		for(var ii = 0, vl = value.length; ii < vl; ii++) {
+			generatedHtml += Tripod.util.processTemplate(templateHtml, value[ii]);
+		}
+		node.innerHTML = generatedHtml;
+		node.setAttribute(templateAttributeName, templateHtml)
 	}
 };
 
