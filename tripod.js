@@ -4,116 +4,22 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	var attrs = initialAttrs || {};
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
-	
 	var savedState = null;
 
 	var bindAttribute = 'data-bound-to';
 	var bindModifierAttribute = 'data-bound-as';
 
-	var nodeBindingModifierFunctions = {
-		'show': function(node, value) {
-			node.style.display = value ? 'block' : 'none';
-		},
-		'showIfEqualTo': function(node, value, nodeBindingModifiers) {
-			if(nodeBindingModifiers.length === 2) {
-				node.style.display = (value + '') === nodeBindingModifiers[1] ? 'block' : 'none';
-			}
-		},
-		'hide': function(node, value) {
-			node.style.display = value ? 'none' : 'block';
-		},
-		'hideIfEqualTo': function(node, value, nodeBindingModifiers) {
-			if(nodeBindingModifiers.length === 2) {
-				node.style.display = (value + '') === nodeBindingModifiers[1] ? 'none' : 'block';
-			}
-		},
-		'enable': function(node, value) {
-			node.disabled = !value;
-		},
-		'disable': function(node, value) {
-			node.disabled = !!value;
-		},
-		'toggleClass': function(node, value, nodeBindingModifiers) {
-			if(nodeBindingModifiers.length === 2) {
-				toggleClass(node, nodeBindingModifiers[1], value);
-			}
-		},
-		'currency': function(node, value, nodeBindingModifiers) {
-			var currencySymbol = nodeBindingModifiers.length === 2 ? nodeBindingModifiers[1] : '$';
-			var valueAsNumber = Number(value.replace(/[^0-9.]/g, '')).toFixed(2);
-			var valueAsCurrency = currencySymbol + valueAsNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,');
-			return valueAsCurrency;
-		},
-		'value': function(node, value) {
-			return value;
-		}
-	};
-
 	/*
-		utility methods and such
+		instance-specific utility methods
 	*/
-
-	function isArray(obj) {
-		return Object.prototype.toString.call(obj) === '[object Array]';
-	}
-
-	function isNotBlank(value) {
-		return value || value === false;
-	}
-
-	//http://blog.stevenlevithan.com/archives/faster-trim-javascript
-	function trim(str) {
-		var ws = /\s/;
-		var i = str.length;
-		str = str.replace(/^\s\s*/, '');
-		while (ws.test(str.charAt(--i)));
-		return str.slice(0, i + 1);
-	}
-
-	function cloneObject(obj) {
-		var newObject = {};
-		for(var attr in obj) {
-			if(attr && obj.hasOwnProperty(attr)) {
-				newObject[attr] = obj[attr];
-			}
-		}
-		return newObject;
-	}
-
-	function toggleClass(node, className, value) {
-		var appliedClasses = node.className.match(/\S+/g) || [];
-		var hasClass = appliedClasses.indexOf(className) >= 0;
-
-		if(value && !hasClass) {
-			appliedClasses.push(className);
-		} else if(hasClass) {
-			appliedClasses.splice(index, 1);
-		}
-
-		node.className = appliedClasses.join(' ');
-	}
 
 	function getNamespacedAttrName(attr) {
 		return bindNamespace ? (bindNamespace + '.' + attr) : attr;
 	}
 
-	function getNodes(attr, parentNode) {
-		parentNode = parentNode || document.body;
+	function getNodesForAttr(attr, parentNode) {
 		var namespacedAttrName = getNamespacedAttrName(attr);
-		if(document.querySelectorAll) {
-			var selector = '[' + bindAttribute + '="' + namespacedAttrName + '"]';
-			return parentNode.querySelectorAll(selector);
-
-		} else { // yay polyfills! (IE7 only)
-			var nodes = [];
-			var allNodes = parentNode.getElementsByTagName('*');
-			for(var i = 0, al = allNodes.length; i < al; i++) {
-				if (allNodes[i].getAttribute(bindAttribute) === namespacedAttrName) {
-					nodes.push(allNodes[i]);
-				}
-			}
-			return nodes;
-		}
+		return Tripod.util.getNodesByAttributeValue(bindAttribute, namespacedAttrName, parentNode);
 	}
 
 	function findAttrForBindingString(boundTo) {
@@ -133,81 +39,21 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function getNodeBindingModifiers(node) {
-		var nodeBindingModifiers = (node.getAttribute(bindModifierAttribute) || 'value').split('|');
-		for(var ii = 0, mc = nodeBindingModifiers.length; ii < mc; ii++) {
-			nodeBindingModifiers[ii] = trim(nodeBindingModifiers[ii]);
-		}
-		return nodeBindingModifiers;
+		var bindingModifierString = node.getAttribute(bindModifierAttribute) || 'value';
+		return Tripod.util.arrayMap( bindingModifierString.split('|'), Tripod.util.trim );
 	}
 	
-	function getNodeValue(node) {
-		if(node.nodeName.toLowerCase() === 'select') {
-			return node.options[node.selectedIndex].value;
-		}
-		if(node.type === 'checkbox') {
-			return node.checked;
-		}
-		if(node.type === 'radio') {
-			var radioGroupName = node.getAttribute('name');
-			if(radioGroupName) {
-				var radioButtons = document.getElementsByName(radioGroupName);
-				for(var i = 0, rl = radioButtons.length; i < rl; i++) {
-					if(radioButtons[i].checked) {
-						return radioButtons[i].value;
-					}
-				}
-			}
-			return node.checked;
-		}
-		if('value' in node) {
-			return node.value;
-		}
-		return ('textContent' in node) ? node.textContent : node.innerText;
-	}
-
 	function updateNode(node, value) {
-		var nodeBindingModifiers = getNodeBindingModifiers(node);
-		var modifierFunction = nodeBindingModifierFunctions[ nodeBindingModifiers[0] ];
+		var bindingModifiers = getNodeBindingModifiers(node);
+		var modifierFunction = Tripod.bindingModifierFunctions[ bindingModifiers[0] ];
 		var modifierResult = value;
 		
 		if(typeof modifierFunction === 'function') {
-			modifierResult = modifierFunction(node, value, nodeBindingModifiers);
+			modifierResult = modifierFunction(node, value, bindingModifiers);
 		}
 
 		if(typeof modifierResult !== 'undefined') {
-			setNodeValue(node, modifierResult);
-		}
-	}
-
-	function setNodeValue(node, value) {
-		if(node.nodeName.toLowerCase() === 'select') {
-			var options = node.options;
-			for (var ii = 0, ol = options.length; ii < ol; ii++) {
-				options[ii].selected = (options[ii].value == value);
-			}
-
-		} else if(node.type === 'checkbox') {
-			node.checked = value === 'false' ? false : !!value;
-
-		} else if(node.type === 'radio') {
-			var radioGroupName = node.getAttribute('name');
-			if(radioGroupName) {
-				var radioButtons = document.getElementsByName(radioGroupName);
-				for(var iii = 0, rl = radioButtons.length; iii < rl; iii++) {
-					radioButtons[iii].checked = (radioButtons[iii].value == value);
-				}
-			} else {
-				node.checked = !!value;
-			}
-
-		} else if('value' in node) {
-			node.value = value;
-
-		} else if('textContent' in node) {
-			node.textContent = value;
-
-		} else {
-			node.innerText = value;
+			Tripod.util.setNodeValue(node, modifierResult);
 		}
 	}
 
@@ -229,7 +75,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		if('value' in node) {
 			var attr = getNodeBinding(node);
 			if(attr && getNodeBindingModifiers(node)[0] === 'value') {
-				var val = getNodeValue(node);
+				var val = Tripod.util.getNodeValue(node);
 				set(attr, val);
 			}
 		}
@@ -296,7 +142,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 	
 	function load(attr, parentNode) {
-		if(isArray(attr)) { //if passed array, assume it is an array of attrs
+		if(Tripod.util.isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
 				load(attr[a]);
 			}
@@ -306,27 +152,25 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 			if(persistent && !parentNode) {
 				value = getPersistentValue(attr);
-
-				if(isNotBlank(value)) {
+				if(Tripod.util.isNotBlank(value)) {
 					attrs[attr] = value;
 					return value;
 				}
 			}
 
-			var nodes = getNodes(attr, parentNode);
+			var nodes = getNodesForAttr(attr, parentNode);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
 				if(getNodeBindingModifiers(nodes[n])[0] !== 'value') {
 					continue;
 				}
 
-				value = getNodeValue(nodes[n]);
-
-				if(isNotBlank(value)) {
+				value = Tripod.util.getNodeValue(nodes[n]);
+				if(Tripod.util.isNotBlank(value)) {
 					break;
 				}
 			}
 
-			if(isNotBlank(value)) {
+			if(Tripod.util.isNotBlank(value)) {
 				attrs[attr] = value;
 				return value;
 			}
@@ -343,13 +187,13 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 	
 	function push(attr) {
-		if(isArray(attr)) { //if passed array, assume it is an array of attrs
+		if(Tripod.util.isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
 				push(attr[a]);
 			}
 
 		} else if(attr && typeof attr === 'string') {
-			var nodes = getNodes(attr);
+			var nodes = getNodesForAttr(attr);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
 				updateNode(nodes[n], attrs[attr]);
 			}
@@ -378,7 +222,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function saveState() {
-		savedState = cloneObject(attrs);
+		savedState = Tripod.util.cloneObject(attrs);
 		return savedState;
 	}
 
@@ -406,4 +250,188 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		saveState: saveState,
 		revert: revert
 	};
+};
+
+/*
+	utility methods and such
+*/
+
+Tripod.util = {};
+
+Tripod.util.isArray = function(obj) {
+	return Object.prototype.toString.call(obj) === '[object Array]';
+};
+
+Tripod.util.isNotBlank = function(value) {
+	return value || value === false;
+};
+
+Tripod.util.arrayMap = function(arr, callback) {
+	var len = arr.length;
+	while(len--) {
+		arr[len] = callback(arr[len]);
+	}
+	return arr;
+}
+
+Tripod.util.trim = function(str) {
+	var ws = /\s/;
+	var i = str.length;
+	str = str.replace(/^\s\s*/, '');
+	while (ws.test(str.charAt(--i)));
+	return str.slice(0, i + 1);
+}
+
+Tripod.util.cloneObject = function(obj) {
+	var newObject = {};
+	for(var attr in obj) {
+		if(attr && obj.hasOwnProperty(attr)) {
+			newObject[attr] = obj[attr];
+		}
+	}
+	return newObject;
+};
+
+Tripod.util.toggleClass = function(node, className, value) {
+	var appliedClasses = node.className.match(/\S+/g) || [];
+	var hasClass = appliedClasses.indexOf(className) >= 0;
+
+	if(value && !hasClass) {
+		appliedClasses.push(className);
+	} else if(hasClass) {
+		appliedClasses.splice(index, 1);
+	}
+
+	node.className = appliedClasses.join(' ');
+};
+
+Tripod.util.formatAsCurrency = function(value, currencySymbol) {
+	currencySymbol = currencySymbol || '$';
+	var valueAsNumber = Number(value.replace(/[^0-9.]/g, '')).toFixed(2);
+	return currencySymbol + valueAsNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,');
+};
+
+Tripod.util.getNodeValue = function(node) {
+	if(node.nodeName.toLowerCase() === 'select') {
+		return node.options[node.selectedIndex].value;
+	}
+	if(node.type === 'checkbox') {
+		return node.checked;
+	}
+	if(node.type === 'radio') {
+		var radioGroupName = node.getAttribute('name');
+		if(radioGroupName) {
+			var radioButtons = document.getElementsByName(radioGroupName);
+			for(var i = 0, rl = radioButtons.length; i < rl; i++) {
+				if(radioButtons[i].checked) {
+					return radioButtons[i].value;
+				}
+			}
+		}
+		return node.checked;
+	}
+	if('value' in node) {
+		return node.value;
+	}
+	return ('textContent' in node) ? node.textContent : node.innerText;
+};
+
+Tripod.util.setNodeValue = function(node, value) {
+	if(node.nodeName.toLowerCase() === 'select') {
+		var options = node.options;
+		for (var ii = 0, ol = options.length; ii < ol; ii++) {
+			options[ii].selected = (options[ii].value == value);
+		}
+
+	} else if(node.type === 'checkbox') {
+		node.checked = value === 'false' ? false : !!value;
+
+	} else if(node.type === 'radio') {
+		var radioGroupName = node.getAttribute('name');
+		if(radioGroupName) {
+			var radioButtons = document.getElementsByName(radioGroupName);
+			for(var iii = 0, rl = radioButtons.length; iii < rl; iii++) {
+				radioButtons[iii].checked = (radioButtons[iii].value == value);
+			}
+		} else {
+			node.checked = !!value;
+		}
+
+	} else if('value' in node) {
+		node.value = value;
+
+	} else if('textContent' in node) {
+		node.textContent = value;
+
+	} else {
+		node.innerText = value;
+	}
+};
+
+Tripod.util.getNodesByAttributeValue = function(attributeName, attributeValue, parentNode) {
+	parentNode = parentNode || document.body;
+
+	if(document.querySelectorAll) {
+		var selector = '[' + attributeName + '="' + attributeValue + '"]';
+		return parentNode.querySelectorAll(selector);
+
+	} else { // yay polyfills! (IE7 only)
+		var nodes = [];
+		var allNodes = parentNode.getElementsByTagName('*');
+		for(var i = 0, al = allNodes.length; i < al; i++) {
+			if (allNodes[i].getAttribute(attributeName) === attributeValue) {
+				nodes.push(allNodes[i]);
+			}
+		}
+		return nodes;
+	}
+};
+
+/*
+	node binding modifier functions
+*/
+
+Tripod.bindingModifierFunctions = {};
+
+Tripod.bindingModifierFunctions.show = function(node, value) {
+	node.style.display = value ? 'block' : 'none';
+};
+
+Tripod.bindingModifierFunctions.showIfEqualTo = function(node, value, bindingModifiers) {
+	if(bindingModifiers.length === 2) {
+		node.style.display = (value + '') === bindingModifiers[1] ? 'block' : 'none';
+	}
+};
+
+Tripod.bindingModifierFunctions.hide = function(node, value) {
+	node.style.display = value ? 'none' : 'block';
+};
+
+Tripod.bindingModifierFunctions.hideIfEqualTo = function(node, value, bindingModifiers) {
+	if(bindingModifiers.length === 2) {
+		node.style.display = (value + '') === bindingModifiers[1] ? 'none' : 'block';
+	}
+};
+
+Tripod.bindingModifierFunctions.enable = function(node, value) {
+	node.disabled = !value;
+};
+
+Tripod.bindingModifierFunctions.disable = function(node, value) {
+	node.disabled = !!value;
+};
+
+Tripod.bindingModifierFunctions.toggleClass = function(node, value, bindingModifiers) {
+	if(bindingModifiers.length === 2) {
+		Tripod.util.toggleClass(node, bindingModifiers[1], value);
+	}
+};
+
+Tripod.bindingModifierFunctions.currency = function(node, value, bindingModifiers) {
+	var currencySymbol = bindingModifiers.length === 2 ? bindingModifiers[1] : '$';
+	return Tripod.util.formatAsCurrency(value, currencySymbol);
+};
+
+Tripod.bindingModifierFunctions.value = function(node, value) {
+	return value;
 };
