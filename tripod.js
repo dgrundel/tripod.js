@@ -387,6 +387,17 @@ Tripod.util.getNodesByAttributeValue = function(attributeName, attributeValue, p
 	}
 };
 
+Tripod.util.processTemplate = function(templateString, data){
+	if(typeof data === 'object') {
+		for(var prop in data) {
+			if(data.hasOwnProperty(prop)) {
+				templateString = templateString.replace(new RegExp('{' +  prop + '}','g'), data[prop]);
+			}
+		}
+	}
+	return templateString;
+};
+
 /*
 	node binding modifier functions
 */
@@ -400,6 +411,8 @@ Tripod.bindingModifierFunctions.show = function(node, value) {
 Tripod.bindingModifierFunctions.showIfEqualTo = function(node, value, bindingModifiers) {
 	if(bindingModifiers.length === 2) {
 		node.style.display = (value + '') === bindingModifiers[1] ? 'block' : 'none';
+	} else {
+		throw 'showIfEqualTo requires a parameter.'
 	}
 };
 
@@ -410,6 +423,8 @@ Tripod.bindingModifierFunctions.hide = function(node, value) {
 Tripod.bindingModifierFunctions.hideIfEqualTo = function(node, value, bindingModifiers) {
 	if(bindingModifiers.length === 2) {
 		node.style.display = (value + '') === bindingModifiers[1] ? 'none' : 'block';
+	} else {
+		throw 'hideIfEqualTo requires a parameter.'
 	}
 };
 
@@ -424,12 +439,35 @@ Tripod.bindingModifierFunctions.disable = function(node, value) {
 Tripod.bindingModifierFunctions.toggleClass = function(node, value, bindingModifiers) {
 	if(bindingModifiers.length === 2) {
 		Tripod.util.toggleClass(node, bindingModifiers[1], value);
+		
+	} else {
+		throw 'toggleClass requires a parameter.'
 	}
 };
 
 Tripod.bindingModifierFunctions.currency = function(node, value, bindingModifiers) {
 	var currencySymbol = bindingModifiers.length === 2 ? bindingModifiers[1] : '$';
 	return Tripod.util.formatAsCurrency(value, currencySymbol);
+};
+
+Tripod.bindingModifierFunctions.template = function(node, value, bindingModifiers) {
+	if(bindingModifiers.length === 2) {
+		var html = '';
+		var template = document.getElementById(bindingModifiers[1]);
+		var templateHtml = template ? template.innerHTML : '';
+		if(templateHtml) {
+			if(!Tripod.util.isArray(value)) {
+				value = [value];
+			}
+			for(var ii = 0, vl = value.length; ii < vl; ii++) {
+				html += Tripod.util.processTemplate(templateHtml, value[ii]);
+			}
+			node.innerHTML = html;
+		}
+
+	} else {
+		throw 'template requires a parameter.'
+	}
 };
 
 Tripod.bindingModifierFunctions.value = function(node, value) {
