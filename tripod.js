@@ -1,10 +1,53 @@
 var Tripod = function(initialAttrs, namespace, persist) {
+	'use strict';
+
 	var attrs = initialAttrs || {};
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
 	
+	var savedState = null;
+
 	var bindAttribute = 'data-bound-to';
 	var bindModifierAttribute = 'data-bound-as';
+
+	var nodeBindingModifierFunctions = {
+		'show': function(node, value) {
+			node.style.display = value ? 'block' : 'none';
+		},
+		'showIfEqualTo': function(node, value, nodeBindingModifiers) {
+			if(nodeBindingModifiers.length === 2) {
+				node.style.display = (value + '') === nodeBindingModifiers[1] ? 'block' : 'none';
+			}
+		},
+		'hide': function(node, value) {
+			node.style.display = value ? 'none' : 'block';
+		},
+		'hideIfEqualTo': function(node, value, nodeBindingModifiers) {
+			if(nodeBindingModifiers.length === 2) {
+				node.style.display = (value + '') === nodeBindingModifiers[1] ? 'none' : 'block';
+			}
+		},
+		'enable': function(node, value) {
+			node.disabled = !value;
+		},
+		'disable': function(node, value) {
+			node.disabled = !!value;
+		},
+		'toggleClass': function(node, value, nodeBindingModifiers) {
+			if(nodeBindingModifiers.length === 2) {
+				toggleClass(node, nodeBindingModifiers[1], value);
+			}
+		},
+		'currency': function(node, value, nodeBindingModifiers) {
+			var currencySymbol = nodeBindingModifiers.length === 2 ? nodeBindingModifiers[1] : '$';
+			var valueAsNumber = Number(value.replace(/[^0-9.]/g, '')).toFixed(2);
+			var valueAsCurrency = currencySymbol + valueAsNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,');
+			return valueAsCurrency;
+		},
+		'value': function(node, value) {
+			return value;
+		}
+	};
 
 	/*
 		utility methods and such
@@ -18,19 +61,52 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		return value || value === false;
 	}
 
+	//http://blog.stevenlevithan.com/archives/faster-trim-javascript
+	function trim(str) {
+		var ws = /\s/;
+		var i = str.length;
+		str = str.replace(/^\s\s*/, '');
+		while (ws.test(str.charAt(--i)));
+		return str.slice(0, i + 1);
+	}
+
+	function cloneObject(obj) {
+		var newObject = {};
+		for(var attr in obj) {
+			if(attr && obj.hasOwnProperty(attr)) {
+				newObject[attr] = obj[attr];
+			}
+		}
+		return newObject;
+	}
+
+	function toggleClass(node, className, value) {
+		var appliedClasses = node.className.match(/\S+/g) || [];
+		var hasClass = appliedClasses.indexOf(className) >= 0;
+
+		if(value && !hasClass) {
+			appliedClasses.push(className);
+		} else if(hasClass) {
+			appliedClasses.splice(index, 1);
+		}
+
+		node.className = appliedClasses.join(' ');
+	}
+
 	function getNamespacedAttrName(attr) {
 		return bindNamespace ? (bindNamespace + '.' + attr) : attr;
 	}
 
-	function getNodes(attr) {
+	function getNodes(attr, parentNode) {
+		parentNode = parentNode || document.body;
 		var namespacedAttrName = getNamespacedAttrName(attr);
 		if(document.querySelectorAll) {
 			var selector = '[' + bindAttribute + '="' + namespacedAttrName + '"]';
-			return document.querySelectorAll(selector);
+			return parentNode.querySelectorAll(selector);
 
 		} else { // yay polyfills! (IE7 only)
 			var nodes = [];
-			var allNodes = document.getElementsByTagName('*');
+			var allNodes = parentNode.getElementsByTagName('*');
 			for(var i = 0, al = allNodes.length; i < al; i++) {
 				if (allNodes[i].getAttribute(bindAttribute) === namespacedAttrName) {
 					nodes.push(allNodes[i]);
@@ -56,8 +132,12 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		return boundTo ? findAttrForBindingString(boundTo) : false;
 	}
 
-	function getNodeBindingModifier(node) {
-		return (node.getAttribute(bindModifierAttribute) || 'value').toLowerCase();
+	function getNodeBindingModifiers(node) {
+		var nodeBindingModifiers = (node.getAttribute(bindModifierAttribute) || 'value').split('|');
+		for(var ii = 0, mc = nodeBindingModifiers.length; ii < mc; ii++) {
+			nodeBindingModifiers[ii] = trim(nodeBindingModifiers[ii]);
+		}
+		return nodeBindingModifiers;
 	}
 	
 	function getNodeValue(node) {
@@ -86,26 +166,24 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function updateNode(node, value) {
-		var nodeBindingModifier = getNodeBindingModifier(node);
+		var nodeBindingModifiers = getNodeBindingModifiers(node);
+		var modifierFunction = nodeBindingModifierFunctions[ nodeBindingModifiers[0] ];
+		var modifierResult = value;
+		
+		if(typeof modifierFunction === 'function') {
+			modifierResult = modifierFunction(node, value, nodeBindingModifiers);
+		}
 
-		switch(nodeBindingModifier) {
-			case 'show':
-				node.style.display = value ? '' : 'none';
-				break;
-			case 'hide':
-				node.style.display = value ? 'none' : '';
-				break;
-			case 'value':
-			default:
-				setNodeValue(node, value);
+		if(typeof modifierResult !== 'undefined') {
+			setNodeValue(node, modifierResult);
 		}
 	}
 
 	function setNodeValue(node, value) {
 		if(node.nodeName.toLowerCase() === 'select') {
 			var options = node.options;
-			for (var i = 0, ol = options.length; i < ol; i++) {
-				options[i].selected = (options[i].value == value);
+			for (var ii = 0, ol = options.length; ii < ol; ii++) {
+				options[ii].selected = (options[ii].value == value);
 			}
 
 		} else if(node.type === 'checkbox') {
@@ -115,8 +193,8 @@ var Tripod = function(initialAttrs, namespace, persist) {
 			var radioGroupName = node.getAttribute('name');
 			if(radioGroupName) {
 				var radioButtons = document.getElementsByName(radioGroupName);
-				for(var i = 0, rl = radioButtons.length; i < rl; i++) {
-					radioButtons[i].checked = (radioButtons[i].value == value);
+				for(var iii = 0, rl = radioButtons.length; iii < rl; iii++) {
+					radioButtons[iii].checked = (radioButtons[iii].value == value);
 				}
 			} else {
 				node.checked = !!value;
@@ -150,7 +228,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		var node = event.target || event.srcElement;
 		if('value' in node) {
 			var attr = getNodeBinding(node);
-			if(attr && getNodeBindingModifier(node) === 'value') {
+			if(attr && getNodeBindingModifiers(node)[0] === 'value') {
 				var val = getNodeValue(node);
 				set(attr, val);
 			}
@@ -217,7 +295,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 	
-	function load(attr) {
+	function load(attr, parentNode) {
 		if(isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
 				load(attr[a]);
@@ -225,18 +303,19 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 		} else if(attr && typeof attr === 'string') { //if we have a non-array argument, assume it is a single string attr
 			var value;
-			if(persistent) {
+
+			if(persistent && !parentNode) {
 				value = getPersistentValue(attr);
+
+				if(isNotBlank(value)) {
+					attrs[attr] = value;
+					return value;
+				}
 			}
 
-			if(isNotBlank(value)) {
-				attrs[attr] = value;
-				return value;
-			}
-
-			var nodes = getNodes(attr);
+			var nodes = getNodes(attr, parentNode);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
-				if(getNodeBindingModifier(nodes[n]) !== 'value') {
+				if(getNodeBindingModifiers(nodes[n])[0] !== 'value') {
 					continue;
 				}
 
@@ -257,9 +336,9 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 
-	function loadAll() {
+	function loadAll(parentNode) {
 		for(var attr in attrs) {
-			load(attr);
+			load(attr, parentNode);
 		}
 	}
 	
@@ -288,6 +367,32 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 
+	function sync(attr, parentNode) {
+		load(attr, parentNode);
+		push(attr);
+	}
+
+	function syncAll(parentNode) {
+		loadAll(parentNode);
+		pushAll();
+	}
+
+	function saveState() {
+		savedState = cloneObject(attrs);
+		return savedState;
+	}
+
+	function revert() {
+		if(savedState) {
+			for(var attr in savedState) {
+				if(attr && savedState.hasOwnProperty(attr) && savedState[attr] !== attrs[attr]) {
+					set(attr, savedState[attr]);
+				}
+			}
+		}
+		return getAll();
+	}
+
 	return {
 		get: get,
 		getAll: getAll,
@@ -295,6 +400,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		load: load,
 		loadAll: loadAll,
 		push: push,
-		pushAll: pushAll
+		pushAll: pushAll,
+		sync: sync,
+		syncAll: syncAll,
+		saveState: saveState,
+		revert: revert
 	};
 };
