@@ -170,10 +170,9 @@ var Tripod = function(initialAttrs, namespace, persist) {
 				}
 			}
 
-			if(Tripod.util.isNotBlank(value)) {
-				attrs[attr] = value;
-				return value;
-			}
+			value = value || '';
+			attrs[attr] = value;
+			return value;
 		
 		} else {
 			throw 'attribute(s) must be an array or non-empty string.';
