@@ -6,9 +6,6 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	var persistent = persist === true && window.localStorage && window.JSON;
 	var savedState = null;
 
-	var bindAttribute = 'data-bound-to';
-	var bindModifierAttribute = 'data-bound-as';
-
 	/*
 		instance-specific utility methods
 	*/
@@ -19,7 +16,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 	function getNodesForAttr(attr, parentNode) {
 		var namespacedAttrName = getNamespacedAttrName(attr);
-		return Tripod.util.getNodesByAttributeValue(bindAttribute, namespacedAttrName, parentNode);
+		return Tripod.util.getNodesByAttributeValue(Tripod.config.bindAttribute, namespacedAttrName, parentNode);
 	}
 
 	function findAttrForBindingString(boundTo) {
@@ -34,12 +31,12 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function getNodeBinding(node) {
-		var boundTo = node.getAttribute(bindAttribute);
+		var boundTo = node.getAttribute(Tripod.config.bindAttribute);
 		return boundTo ? findAttrForBindingString(boundTo) : false;
 	}
 
 	function getNodeBindingModifiers(node) {
-		var bindingModifierString = node.getAttribute(bindModifierAttribute) || 'value';
+		var bindingModifierString = node.getAttribute(Tripod.config.bindModifierAttribute) || 'value';
 		return Tripod.util.arrayMap( bindingModifierString.split('|'), Tripod.util.trim );
 	}
 	
@@ -249,6 +246,15 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		saveState: saveState,
 		revert: revert
 	};
+};
+
+/*
+	configurables
+*/
+
+Tripod.config = {
+	bindAttribute: 'data-bound-to',
+	bindModifierAttribute: 'data-bound-as'
 };
 
 /*
