@@ -1,5 +1,5 @@
 # tripod.js
-Two-way databinding is sooo 2014.
+Two-way databinding is sooo 2009.
 
 http://dgrundel.github.io/tripod.js/
 
