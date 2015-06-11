@@ -74,7 +74,7 @@ h4 a, h4 a:hover {
 
 .navigation li a {
 	display: inline-block;
-	margin: 0 2ex;
+	margin: 0 1.2ex;
 	padding: .8em;
 	text-decoration: none;
 	color: inherit;
