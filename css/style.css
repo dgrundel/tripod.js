@@ -1,0 +1,60 @@
+*, label, span {
+	font-family: 'Roboto Slab', serif; 
+	font-weight: 300;
+	color: #444;
+}
+
+body { 
+	background-color: #f7f7f7;
+	font-size: 1.8em;
+}
+strong, strong *,
+th, th * { font-weight: 400; }
+h2 { font-size: 3.6rem; }
+h3 { font-size: 2.9rem; }
+p { margin-bottom: 1.8rem; }
+
+.hero {
+	padding: 4em 0;
+	background-color: #F5D87C;
+	margin: 2em 0 0;
+}
+.center { text-align: center; }
+
+.navigation { 
+	text-align: center;
+	margin: 0 0 2em;
+	padding: .8em;
+	border-bottom: 1px solid #E4E4E4;
+}
+.navigation li { display: inline; list-style-type: none; }
+.navigation li a {
+	display: inline-block;
+	margin: 0 2ex;
+	text-decoration: none;
+	color: inherit;
+}
+.navigation li a:hover { text-decoration: underline; }
+
+.highlights { padding-bottom: 4em; }
+
+.section { margin-top: 12ex; }
+
+.code {
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 1ex;
+	font-size: .7em;
+	background-color: #444;
+	color: #FFD477;
+}
+
+.demo {
+	border-top: 1px solid #E4E4E4;
+	margin: 1em 0;
+	padding: 1.5em 0;
+}
+
+.demo label { display: inline; padding-right: 1ex; }
+
+.demo .red { background-color: #f00; color: #fff; }

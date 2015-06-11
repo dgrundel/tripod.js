@@ -1,131 +1,386 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="chrome=1">
-		<link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-		<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-		<style>
-			blockquote,
-			blockquote input,
-			blockquote label,
-			blockquote select {
-				font-size: 1.1em;
-			}
-			blockquote {
-				background-color: #444;
-				color: #F2F2F2;
-				text-shadow: none;
-				border: 1px solid #676767;
-				padding: 15px 30px;
-			}
-		</style>
-		<!--[if lt IE 9]>
-		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
-		<title>Tripod.js by dgrundel</title>
-	</head>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Tripod.js</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<body>
-		<div id="container">
-			<div class="inner">
+	<link href="//fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+	<link rel="stylesheet" href="css/style.css">
 
-				<header>
+	<script src="js/tripod.js"></script>
+</head>
+<body>
+
+	<div class="hero">
+		<div class="container">
+			<div class="row">
+				<div class="twelve columns center">
 					<h1>Tripod.js</h1>
-					<h2>Two-way databinding is sooo 2014.</h2>
-				</header>
+					<p>Two-way data-binding is sooo 2009.</p>
+				</div>
+			</div>
+		</div>
+	</div>
 
-				<section id="downloads" class="clearfix">
-					<a href="https://github.com/dgrundel/tripod.js/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-					<a href="https://github.com/dgrundel/tripod.js/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-					<a href="https://github.com/dgrundel/tripod.js" id="view-on-github" class="button"><span>View on GitHub</span></a>
-				</section>
+	<ul class="navigation">
+		<li><a href="#demos">Demos</a></li>
+		<li><a href="https://github.com/dgrundel/tripod.js#tripodjs">Documentation</a></li>
+		<li><a href="https://github.com/dgrundel/tripod.js/zipball/master">Download .zip</a></li>
+		<li><a href="https://github.com/dgrundel/tripod.js/tarball/master">Download .tar.gz</a></li>
+		<li><a href="https://github.com/dgrundel/tripod.js">Github</a></li>
+	</ul>
+
+	<div class="container">
+		<div class="row highlights">
+			<div class="three columns">
+				<h3>What's that you say? Three-way data binding?</h3>
+				<p>Data seamlessly synced between your JavaScript, the DOM, and LocalStorage.</p>
+			</div>
+			<div class="three columns">
+				<h3>Oh yeah, that means it syncs across browser tabs.</h3>
+				<p>Whaaaaat!? <em>I know, right?</em></p>
+			</div>
+			<div class="three columns">
+				<h3>Even works on Grandpa's browser.</h3>
+				<p>Tripod.js works in <strong>IE7+</strong>. Of course, the real browsers are supported, too.</p>
+			</div>
+			<div class="three columns">
+				<h3>Dependencies?</h3>
+				<p>Nope.</p>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="section container">
+		<div class="row">
+			<div class="twelve columns">
+				<a name="demos"></a>
+				<h2>A Simple Demo</h2>
+				<p>Here's a simple demo showing off data binding between a form element, a second DOM node (in this case a paragraph) and LocalStorage.</p>
+				<p>For extra credit, open this page up in a new tab and flip between the tabs as you change your selection in the select element.
+					The page remembers your favorite pizza topping and syncs it across tabs.</p>
+				<p>Does your best friend know your favorite pizza topping?
+					Tripod <em>loves</em> you.</p>
+			</div>
+		</div>
+		<div class="row demo">
+			<div class="five columns">
+				<h3>The Demo</h3>
+				<p>What's your favorite pizza topping?</p>
+				<p>
+					<select data-bound-to="pizza.pizzaTopping">
+						<option>Cheese</option>
+						<option>Pepperoni</option>
+						<option>Anchovies</option>
+						<option>Gummy Bears</option>
+					</select>
+				</p>
+				<p>Great! We'll put extra <strong data-bound-to="pizza.pizzaTopping"></strong> on your pizza!</p>
+
+				<script>
+					var pizza = new Tripod({}, 'pizza', true);
+					pizza.sync('pizzaTopping');
+				</script>
+			</div>
+			<div class="seven columns">
+				<h3>The Code</h3>
+<pre class="code">
+&lt;p&gt;
+  &lt;select data-bound-to="pizza.pizzaTopping"&gt;
+    &lt;option&gt;Cheese&lt;/option&gt;
+    &lt;option&gt;Pepperoni&lt;/option&gt;
+    &lt;option&gt;Anchovies&lt;/option&gt;
+    &lt;option&gt;Gummy Bears&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/p&gt;
+&lt;p&gt;Great! We'll put extra 
+  &lt;strong data-bound-to="pizza.pizzaTopping"&gt;&lt;/strong&gt;
+  on your pizza!&lt;/p&gt;
+
+&lt;script&gt;
+  var pizza = new Tripod({}, 'pizza', true);
+  pizza.sync('pizzaTopping');
+&lt;/script&gt;
+</pre>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="section container">
+		<div class="row">
+			<div class="twelve columns">
+				<h2>A Demo with Lots of Inputs</h2>
+				<p>Tripod works with pretty much any type of DOM node you can think of, including all of your favorite input elements.</p>
+			</div>
+		</div>
+		<div class="row demo">
+			<div class="five columns">
+				<h3>The Demo</h3>
+
+				<p>
+					<label>
+						<input type="checkbox" data-bound-to="crazy.check">
+						Check it out, yo.
+					</label>
+				</p>
+
+				<p>If I told you the checkbox above was checked,
+					that would be a <strong data-bound-to="crazy.check"></strong>
+					statement.</p>
 
 				<hr>
 
-				<section id="main_content">
-					<h2>
-						<a id="whats-that-you-say-three-way-data-binding" class="anchor" href="#whats-that-you-say-three-way-data-binding" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-						What's that you say? <em>Three-way</em> data binding?
-					</h2>
+				<p>Pick a number and I'll use my magic JavaScript powers to guess it.</p>
 
-					<p>Data seamlessly synced between your JavaScript, the DOM, and LocalStorage.</p>
+				<p>
+					<label><input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="one" checked> 1</label>
+					<label><input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="two"> 2</label>
+					<label><input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="three"> 3</label>
+					<label><input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="four"> 4</label>
+					<label><input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="five"> 5</label>
+				</p>
 
-					<p>Oh yeah, that means <em>it syncs across browser tabs. Whaaaaat!?</em></p>
+				<p>Hmm. You're a tough read. Was it 7? Just kidding. It was <strong data-bound-to="crazy.radio"></strong>.</p>
 
-					<h2>
-						<a id="even-works-on-grandpas-old-ie7" class="anchor" href="#even-works-on-grandpas-old-ie7" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-						Even works on Grandpa's browser.
-					</h2>
+				<hr>
 
-					<p>Tripod.js works in IE7+. Of course, the <em>real</em> browsers are supported, too.</p>
+				<p>All right, you've been a good sport. What's your name?</p>
 
-					<h2>
-						<a id="no-deps" class="anchor" href="#no-deps" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-						Dependencies?
-					</h2>
+				<p><input type="text" data-bound-to="crazy.yourName"></p>
 
-					<p>Nope.</p>
-
-					<h2>
-						<a id="demo-time" class="anchor" href="#demo-time" aria-hidden="true"><span class="octicon octicon-link"></span></a>
-						Demo Time!
-					</h2>
-
-					<p data-bound-to="demoOne">This paragraph is bound to the input box below. Try changing it!</p>
-
-					<blockquote><input type="text" data-bound-to="demoOne"></blockquote>
-
-					<p>These radio buttons are also bound to the same input. Try typing 'car', 'bike', or 'truck' into the input box. (All lowercase to match the values!)</p>
-
-					<blockquote>
-						<label><input type="radio" name="demoRadio" value="car" data-bound-to="demoOne"> Car</label><br>
-						<label><input type="radio" name="demoRadio" value="bike" data-bound-to="demoOne"> Bike</label><br>
-						<label><input type="radio" name="demoRadio" value="truck" data-bound-to="demoOne"> Truck</label>
-					</blockquote>
-
-					<p>And wouldn't you know, this select box is all bound up, too. Try it out.</p>
-
-					<blockquote>
-						<select data-bound-to="demoOne">
-							<option value=""></option>
-							<option value="car">Car</option>
-							<option value="bike">Bike</option>
-							<option value="truck">Truck</option>
-							<option value="motorcycle">Motorcycle</option>
-						</select>
-					</blockquote>
-
-					<p>Checkboxes work, as well, but a little differently as you might expect. If your value is truthy, they'll be checked. If your value is falsey <em>or the string <strong>"false"</strong></em>, it will be unchecked.</p>
-
-					<p>Try clearing out the text field to uncheck the box!</p>
-
-					<blockquote>
-						<label><input type="checkbox" data-bound-to="demoOne"> Check it out, yo</label>
-					</blockquote>
-
-					<h2>...and for my final trick</h2>
-
-					<p>Now that you've played with these a bit, open up a new tab to this page. <a href="http://dgrundel.github.io/tripod.js/" target="_blank">Here, I'll help.</a></p>
-
-				</section>
-
-				<footer>
-					Tripod.js is maintained by <a href="https://github.com/dgrundel">dgrundel</a><br>
-					This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-				</footer>
-
+				<p data-bound-to="crazy.yourName" data-bound-as="show">
+					Nice to meet you, <strong data-bound-to="crazy.yourName"></strong>!
+				</p>
 				
+				<script>
+					var crazy = new Tripod({}, 'crazy');
+					crazy.sync(['check', 'radio', 'yourName']);
+				</script>
+			</div>
+
+			<div class="seven columns">
+				<h3>The Code</h3>
+<pre class="code">
+&lt;p&gt;
+  &lt;label&gt;
+    &lt;input type="checkbox" data-bound-to="crazy.check"&gt;
+    Check it out, yo.
+  &lt;/label&gt;
+&lt;/p&gt;
+
+&lt;p&gt;If I told you the checkbox above was checked,
+  that would be a &lt;strong data-bound-to="crazy.check"&gt;&lt;/strong&gt;
+  statement.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;Pick a number and I'll use my magic JavaScript powers to guess it.&lt;/p&gt;
+
+&lt;p&gt;
+  &lt;label&gt;&lt;input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="one" checked&gt; 1&lt;/label&gt;
+  &lt;label&gt;&lt;input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="two"&gt; 2&lt;/label&gt;
+  &lt;label&gt;&lt;input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="three"&gt; 3&lt;/label&gt;
+  &lt;label&gt;&lt;input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="four"&gt; 4&lt;/label&gt;
+  &lt;label&gt;&lt;input type="radio" name="crazyRadio" data-bound-to="crazy.radio" value="five"&gt; 5&lt;/label&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Hmm. You're a tough read. Was it 7? Just kidding. It was &lt;strong data-bound-to="crazy.radio"&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;All right, you've been a good sport. What's your name?&lt;/p&gt;
+
+&lt;p&gt;&lt;input type="text" data-bound-to="crazy.yourName"&gt;&lt;/p&gt;
+
+&lt;p data-bound-to="crazy.yourName" data-bound-as="show"&gt;
+  Nice to meet you, &lt;strong data-bound-to="crazy.yourName"&gt;&lt;/strong&gt;!
+&lt;/p&gt;
+
+&lt;script&gt;
+  var crazy = new Tripod({}, 'crazy');
+  crazy.sync(['check', 'radio', 'yourName']);
+&lt;/script&gt;
+</pre>
 			</div>
 		</div>
+	</div>
 
-		<script src="javascripts/tripod.js"></script>
-		<script>
-			var demo = new Tripod({}, '', true);
-			demo.load('demoOne');
-			demo.pushAll();
-		</script>
-	</body>
+
+	<div class="section container">
+		<div class="row">
+			<div class="twelve columns">
+				<a name="demos"></a>
+				<h2>Introducing Binding Modifiers! (Yes, Another Demo)</h2>
+				<p>Did you catch that little trick I pulled at the end of the last demo? It uses <strong>binding modifiers</strong>.</p>
+				<p>Binding modifiers take your data bindings and tweak the way they behave.</p>
+				<p>There are a bunch of binding modifiers. To see them all, your best bet is to check the source code.
+					Have a look at the <strong>Tripod.bindingModifierFunctions</strong> object.</p>
+			</div>
+		</div>
+		<div class="row demo">
+			<div class="five columns">
+				<h3>The Demo</h3>
+				
+				<p>
+					<label>
+						<input type="checkbox" data-bound-to="mods.check">
+						Check it out, yo.
+					</label>
+				</p>
+
+				<p>The checkbox above is 
+					<strong data-bound-to="mods.check" data-bound-as="show">checked.</strong>
+					<strong data-bound-to="mods.check" data-bound-as="hide"><em>not</em> checked.</strong>
+				</p>
+
+				<p>
+					<label data-bound-to="mods.red" data-bound-as="toggleClass | red">
+						<input type="checkbox" data-bound-to="mods.red">
+						Make it red.
+					</label>
+				</p>
+
+				<p>
+					Show me the money. (Enter a number)
+					<input type="text" data-bound-to="mods.currency">
+				</p>
+
+				<p data-bound-to="mods.currency" data-bound-as="show">
+					<span data-bound-to="mods.currency" data-bound-as="currency"></span>
+				</p>
+
+				<script>
+					var mods = new Tripod({}, 'mods');
+					mods.sync(['check', 'red', 'currency']);
+				</script>
+			</div>
+			<div class="seven columns">
+				<h3>The Code</h3>
+<pre class="code">
+&lt;p&gt;
+  &lt;label&gt;
+    &lt;input type="checkbox" data-bound-to="mods.check"&gt;
+    Check it out, yo.
+  &lt;/label&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The checkbox above is 
+  &lt;strong data-bound-to="mods.check" data-bound-as="show"&gt;checked.&lt;/strong&gt;
+  &lt;strong data-bound-to="mods.check" data-bound-as="hide"&gt;&lt;em&gt;not&lt;/em&gt; checked.&lt;/strong&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+  &lt;label data-bound-to="mods.red" data-bound-as="toggleClass | red"&gt;
+    &lt;input type="checkbox" data-bound-to="mods.red"&gt;
+    Make it red.
+  &lt;/label&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+  Show me the money. (Enter a number)
+  &lt;input type="text" data-bound-to="mods.currency"&gt;
+&lt;/p&gt;
+
+&lt;p data-bound-to="mods.currency" data-bound-as="show"&gt;
+  &lt;span data-bound-to="mods.currency" data-bound-as="currency"&gt;&lt;/span&gt;
+&lt;/p&gt;
+
+&lt;script&gt;
+  var mods = new Tripod({}, 'mods');
+  mods.sync(['check', 'red', 'currency']);
+&lt;/script&gt;
+</pre>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="section container">
+		<div class="row">
+			<div class="twelve columns">
+				<a name="demos"></a>
+				<h2>Templating with Binding Modifiers</h2>
+				<p>The <strong>template</strong> binding modifier allows you to use a template to
+					generate html for an object or array of objects.</p>
+				<p>Note that the template is the <em>contents</em> of the bound element, exclusive of
+					the element itself. Check the demo code for clarification.</p>
+			</div>
+		</div>
+		<div class="row demo">
+			<div class="five columns">
+				<h3>The Demo</h3>
+				
+				<table>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Department</th>
+							<th>Salary</th>
+						</tr>
+					</thead>
+					<tbody data-bound-to="templating.salaryTable" data-bound-as="template">
+						<tr>
+							<td>{name}</td>
+							<td>{dept}</td>
+							<td>{salary}</td>
+						</tr>				
+					</tbody>
+				</table>
+
+				<script>
+					var data = {
+						salaryTable: [
+							{ name: 'Bob', dept: 'Human Resources', salary: '$56,000'},
+							{ name: 'Jane', dept: 'Engineering', salary: '$118,000'},
+							{ name: 'Sue', dept: 'Management', salary: '$231,500'}
+						]
+					};
+
+					var templating = new Tripod(data, 'templating');
+					templating.push('salaryTable');
+				</script>
+			</div>
+			<div class="seven columns">
+				<h3>The Code</h3>
+<pre class="code">
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Department&lt;/th&gt;
+      &lt;th&gt;Salary&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody data-bound-to="templating.salaryTable" data-bound-as="template"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;{name}&lt;/td&gt;
+      &lt;td&gt;{dept}&lt;/td&gt;
+      &lt;td&gt;{salary}&lt;/td&gt;
+    &lt;/tr&gt;       
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script&gt;
+  var data = {
+    salaryTable: [
+      { name: 'Bob', dept: 'Human Resources', salary: '$56,000'},
+      { name: 'Jane', dept: 'Engineering', salary: '$118,000'},
+      { name: 'Sue', dept: 'Management', salary: '$231,500'}
+    ]
+  };
+
+  var templating = new Tripod(data, 'templating');
+  templating.push('salaryTable');
+&lt;/script&gt;
+</pre>
+			</div>
+		</div>
+	</div>
+
+</body>
 </html>
