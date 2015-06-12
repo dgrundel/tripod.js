@@ -101,6 +101,7 @@
 			<p>So far we've just looked at Javascript. If we just lived in the land of Javascript milk and honey,
 	we wouldn't need all this fancy data binding goodness. Let's talk about getting your data into and out of the DOM.</p>
 
+
 <h3>First Things First: Data Attributes</h3>
 
 <p>Tripod needs you to tell it which DOM nodes (inputs, checkboxes, paragraphs, etc) to pay attention to.
@@ -111,7 +112,17 @@
 
 <p>The examples you see here are namespaced with <code>vehicle</code>. You'll get a quick rundown of namespaces in the next section.</p>
 
-<h3>Pulling Data from the DOM Using <code>instance.load()</code></h3>
+
+<blockquote>
+	<h4>A Quick Note About <code>load()</code>, <code>push()</code>, and <code>sync()</code></h4>
+
+	<p><em>You really only need to use the methods below once, if at all.</em> They are designed to perform an initial sync of data
+		between the DOM and your Javascript. Once you have data in both places, any edits to the page will automatically show up
+		in your Javascript, and any edits to the instance (using <code>set()</code>) are automatically pushed to the DOM.</p>
+</blockquote>
+
+
+<h3>Pulling Data from the DOM Using <code>load()</code></h3>
 
 <p>In many cases, the data you want is already hanging out in the DOM, but you don't have it available to
 	your Javascript yet. For example, when data is loaded into the page on the server side.</p>
@@ -124,16 +135,18 @@
 
 <pre><code>firstCar.load('fuel');</code></pre>
 
-<p><code>instance.load()</code> works like <code>instance.set()</code> in that the attribute doesn't have to exist
+<p><code>load()</code> works like <code>set()</code> in that the attribute doesn't have to exist
 	before you call it. It will be created for you.</p>
 
-<h3><code>instance.load()</code> and LocalStorage</h3>
+
+<h3><code>load()</code> and LocalStorage</h3>
 
 <p>If you passed <code>true</code> as the third argument in the constructor, your Tripod instance will be backed by LocalStorage.</p>
 
-<blockquote>When your instance is backed by LocalStorage, <code>instance.load()</code> will first check LocalStorage for a value before looking in the DOM.</blockquote>
+<blockquote>When your instance is backed by LocalStorage, <code>load()</code> will first check LocalStorage for a value before looking in the DOM.</blockquote>
 
-<h3>Putting Data into the DOM Using <code>instance.push()</code></h3>
+
+<h3>Putting Data into the DOM Using <code>push()</code></h3>
 
 <p>Now consider the opposite example. You have your fancy HTML form ready to go, but your data is late to the party.
 	Maybe your data is being brought in via an AJAX call.</p>
@@ -144,7 +157,7 @@
 &lt;input data-bound-to="vehicle.model"&gt;
 &lt;input data-bound-to="vehicle.year"&gt;</code></pre>
 
-<p><code>instance.push()</code> to the rescue!</p>
+<p><code>push()</code> to the rescue!</p>
 
 <pre><code>firstCar.push('make');
 firstCar.push('model');
@@ -154,14 +167,46 @@ firstCar.push('year');</code></pre>
 
 <pre><code>firstCar.push(['make', 'model', 'year']);</code></pre>
 
-<blockquote><em>Protip:</em> <code>instance.load()</code> and <code>instance.push()</code> also accept an array of attributes.</blockquote>
+<blockquote><em>Protip:</em> <code>load()</code> and <code>push()</code> also accept an array of attributes.</blockquote>
 
-<h3>A Final Note About <code>instance.load()</code> and <code>instance.push()</code></h3>
 
-<p><em>You really only need to use these methods once, if at all.</em> They are designed to perform an initial sync of data
-	between the DOM and your Javascript. Once you have data in both places, any edits to the page will automatically show up
-	in your Javascript, and any edits to the instance (using <code>instance.set()</code>) are automatically pushed to the DOM.</p>
+<h3>The one-two punch: <code>sync()</code></h3>
 
+<p>The <code>sync()</code> method performs a <code>load()</code>, then a <code>push()</code>.</p>
+
+<p>Just like <code>load()</code> and <code>push()</code>, <code>sync()</code> can take an array or a string argument.</p>
+
+
+<h3>Using <code>load()</code> on a Specific Portion of the DOM</h3>
+
+<p>You can limit the scope of the DOM nodes that <code>load()</code> traverses (and the <code>load()</code> call that <code>sync()</code> performs under the hood.)</p>
+
+<p>For example, assume you have many DOM nodes bound to the attribute you're <code>load()</code>ing,
+	but from they are out of sync and you have a specific set of nodes you want to get your data from.
+	You can pass a DOM node as a second parameter to <code>load()</code> and <code>sync()</code>
+	to only search that node for values.</p>
+
+<p>For example:</p>
+
+<pre><code>&lt;div id="one"&gt;
+	&lt;input type="text" data-bound-to="confusion" value="1"&gt;
+&lt;/div&gt;
+&lt;div id="two"&gt;
+	&lt;input type="text" data-bound-to="confusion" value="2"&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+	var t = new Tripod();
+
+	t.load('confusion');
+	t.get('confusion'); // returns '1';
+	
+	t.load('confusion', document.getElementById('two'));
+	t.get('confusion'); // returns '2';
+&lt;/script&gt;</code></pre>
+
+<blockquote><code>load()</code> expects the second argument to be a DOM node that <em>contains</em> 
+	the bound elements you want, not a bound element itself.</blockquote>
 	
 		</div>
 	</div>

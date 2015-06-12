@@ -98,20 +98,20 @@
 		<div class="eight columns">
 			<h2>saveState and revert</h2>
 
-			<p><code>instance.saveState()</code> and <code>instance.revert()</code> allow you to take a snapshot of the 
+			<p><code>saveState()</code> and <code>revert()</code> allow you to take a snapshot of the 
 	state of your object and revert it back to the way it was when you last called <code>saveState()</code>.</p>
 
 <p>The use case that brought this about was pretty simple. What happens if you open up a form in a dialog box, 
 	the user makes some changes, then clicks the <em>Cancel</em> button? The user expects the changes they made
 	to be canceled, too. (Reverted, actually.)</p>
 
-<h3><code>instance.saveState()</code></h3>
+<h3><code>saveState()</code></h3>
 
 <p>Simply put, the <code>saveState()</code> method makes copy of all the data stored in your Tripod instance and stores it internally.</p>
 
 <p><code>saveState()</code> also returns the copy it made if you'd like to inspect it.</p>
 
-<h3><code>instance.revert()</code></h3>
+<h3><code>revert()</code></h3>
 
 <p>The <code>revert()</code> method uses the copy created by <code>saveState()</code> to return the Tripod object's data to its previous state.</p>
 

@@ -98,25 +98,25 @@
 		<div class="eight columns">
 			<h2>getAll, loadAll, pushAll, syncAll</h2>
 
-			<p>These methods do pretty much what you'd expect.</p>
+			<p>These methods do pretty much what you'd expect (assuming you're familiar with <a href="/tripod.js/documentation/data-binding-and-the-dom.html">their single-attribute counterparts</a>.)</p>
 
-<h3><code>instance.getAll()</code></h3>
+<h3><code>getAll()</code></h3>
 
-<p>Returns a Javascript object containing all attributes and their values.</p>
+<p>Returns a Javascript object containing all attributes in your instance and their values.</p>
 
-<h3><code>instance.loadAll()</code></h3>
+<h3><code>loadAll()</code></h3>
 
-<p>Grabs all <em>known</em> attributes from the DOM.</p>
+<p>Grabs values for all <em>known</em> attributes from the DOM and stores the values in your instance.</p>
 
-<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
+<blockquote><em>Known</em> attributes means that you must have used <code>set()</code>, <code>load()</code>, or included the attribute in the call to the constructor.</blockquote>
 
-<h3><code>instance.pushAll()</code></h3>
+<h3><code>pushAll()</code></h3>
 
-<p>Pushes all <em>known</em> attributes out to the DOM.</p>
+<p>Pushes all <em>known</em> attribute values out to the DOM.</p>
 
-<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
+<blockquote><em>Known</em> attributes means that you must have used <code>set()</code>, <code>load()</code>, or included the attribute in the call to the constructor.</blockquote>
 
-<h3><code>instance.syncAll()</code></h3>
+<h3><code>syncAll()</code></h3>
 
 <p>Performs a <code>loadAll()</code>, then a <code>pushAll()</code>.</p>
 	
