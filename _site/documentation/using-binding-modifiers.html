@@ -117,13 +117,13 @@
 <p>Consider this markup:</p>
 
 <pre><code>&lt;label&gt;
-&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
-My vehicle has air bags.
+	&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+	My vehicle has air bags.
 &lt;/label&gt;
 
 &lt;div&gt;
-How many air bags does your vehicle have?
-&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+	How many air bags does your vehicle have?
+	&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
 &lt;/div&gt;</code></pre>
 
 <p>It doesn't really make sense to ask the user how many air bags they have if they don't check
@@ -135,13 +135,13 @@ How many air bags does your vehicle have?
 <p>So, our new markup looks like this:</p>
 
 <pre><code>&lt;label&gt;
-&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
-My vehicle has air bags.
+	&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+	My vehicle has air bags.
 &lt;/label&gt;
 
 &lt;div <span class="highlight">data-bound-to="vehicle.hasAirBags" data-bound-as="show"</span>&gt;
-How many air bags does your vehicle have?
-&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+	How many air bags does your vehicle have?
+	&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
 &lt;/div&gt;</code></pre>
 
 <p><code>data-bound-as</code> is the <em>binding modifier attribute</em>. <code>show</code> is the name of the modifier function we're using in this case.</p>
