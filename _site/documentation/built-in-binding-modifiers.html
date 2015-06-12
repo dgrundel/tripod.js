@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>
+		
+			Built-In Binding Modifiers |
+		
+		Tripod.js
+		Documentation
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="//fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/tripod.js/css/normalize.css">
+	<link rel="stylesheet" href="/tripod.js/css/skeleton.css">
+	<link rel="stylesheet" href="/tripod.js/css/style.css">
+
+	<script src="/tripod.js/js/tripod.js"></script>
+</head>
+<body>
+	<a name="top"></a>
+
+	<div class="hero  short ">
+	<div class="container">
+		<div class="row">
+			<div class="twelve columns center">
+				<h1>Tripod.js</h1>
+				<p>Two-way data-binding is sooo 2009.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<ul class="navigation">
+	<li ><a href="/tripod.js/index.html">Home</a></li>
+	<li><a href="/tripod.js/index.html#demos">Demos</a></li>
+	<li  class="current" ><a href="/tripod.js/documentation">Documentation</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/zipball/master">Download .zip</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/tarball/master">Download .tar.gz</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js">Github</a></li>
+</ul>
+
+	<div id="pageContent">
+		<div class="container">
+	<div class="row">
+		<div class="four columns">
+			<h4>All Documentation</h4>
+			<ul class="side navigation">
+				
+					<li >
+						<a href="/tripod.js/documentation/">Quick Start</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/the-instance.html">The Tripod Instance</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/getting-and-storing-data-in-the-instance.html">Getting and Storing Data in the Instance</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/data-binding-and-the-dom.html">Data binding and the DOM</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/namespaces.html">Namespaces</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/using-binding-modifiers.html">Using Binding Modifiers</a>
+					</li>
+				
+					<li  class="current" >
+						<a href="/tripod.js/documentation/built-in-binding-modifiers.html">Built-In Binding Modifiers</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/adding-your-own-binding-modifiers.html">Adding Your Own Binding Modifiers</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/get-load-push-sync-all.html">getAll, loadAll, pushAll, syncAll</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/savestate-and-revert.html">saveState and revert</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/utility-functions.html">Utility Functions</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/more-examples.html">More Examples</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/advanced-configuration.html">Advanced Configuration</a>
+					</li>
+				
+			</ul>
+		</div>
+
+		<div class="eight columns">
+			<h2>Built-In Binding Modifiers</h2>
+
+			<h3><code>value</code></h3>
+<p><code>value</code> is the default behavior you've seen before; The bound value is applied to the node.</p>
+<p>If the <code>data-bound-as</code> attribute is missing, blank, or unrecognized <code>value</code> is used.</p>
+
+
+<h3><code>show</code></h3>
+<p>The <code>show</code> binding modifier will show an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be hidden.</p>
+
+
+<h3><code>showIfEqualTo</code></h3>
+<p><strong>Requires 1 argument.</strong></p>
+<p><code>showIfEqualTo</code> behaves similarly to <code>show</code>, but rather than checking for a <em>truthy</em> value, 
+	it compares the bound attriute's value to the argument. If they're equal, the element is shown.</p>
+
+
+<h3><code>hide</code></h3>
+<p>The <code>hide</code> binding modifier is the opposite of <code>show</code>. It will hide (CSS <code>display: none</code>) an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be shown.</p>
+
+
+<h3><code>hideIfEqualTo</code></h3>
+<p><strong>Requires 1 argument.</strong></p>
+<p><code>hideIfEqualTo</code> is the opposite of <code>showIfEqualTo</code>. It compares the bound attriute's value to the argument.
+	If they're equal, the element is hidden.</p>
+
+
+<h3><code>enable</code></h3>
+<p>The <code>enable</code> binding modifier will enable an <code>input</code> element if the attribute it is bound to is <em>truthy</em>.
+	Otherwise, the element will be disabled.</p>
+
+
+<h3><code>disable</code></h3>
+<p>The <code>disable</code> binding modifier will disable an <code>input</code> element if the attribute it is bound to is <em>truthy</em>.
+	Otherwise, the element will be enabled.</p>
+
+
+<h3><code>toggleClass</code></h3>
+<p><strong>Requires 1 argument.</strong></p>
+<p><code>toggleClass</code> adds a CSS class (passed as an argument) to the bound element if the bound attribute value is <em>truthy</em>.
+	If the value is <em>falsey</em>, the class is removed.</p>
+
+
+<h3><code>currency</code></h3>
+<p><strong>Accepts 1 optional argument.</strong></p>
+<p><code>currency</code> converts the bound attribute to a formatted currency string and sets the bound element's 
+	<code>value</code> or <code>textContent</code> to this currency string.</p>
+<p>You can supply a currency symbol as the only argument. The default is <code>$</code>.</p>
+
+
+<h3><code>template</code></h3>
+<p>The <code>template</code> binding modifier uses the contents of the bound node as an HTML template.
+	It uses a built-in handlebars<em>-ish</em> templating engine.</p>
+<p>Attributes bound with the <code>template</code> binding modifier can be either objects <em>or arrays of objects.</em>
+	If an array of objects is found, the template HTML will be copied for each item in the array.</p>
+
+<h4><code>template</code> Binding Modifier Example</h4>
+
+<pre><code>&lt;table&gt;
+	&lt;thead&gt;
+		&lt;tr&gt;
+			&lt;th&gt;First Name&lt;/th&gt;
+			&lt;th&gt;Last Name&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody data-bound-to="someAttribute" data-bound-as="template"&gt;
+		&lt;tr&gt;
+			&lt;td&gt;{firstName}&lt;/td&gt;
+			&lt;td&gt;{lastName}&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;script&gt;
+	var t = new Tripod();
+	
+	// you can use a single object...
+	t.set('someAttribute', { firstName: 'Mark', lastName: 'Watney'});
+
+	// ...but it's more fun to use an array of objects
+	t.set('someAttribute', [
+		{ firstName: 'Mark', lastName: 'Watney'},
+		{ firstName: 'Harry', lastName: 'Dresden'},
+		{ firstName: 'Jack', lastName: 'Reacher'}
+	]);
+&lt;/script&gt;</code></pre>
+
+<h4>Example DOM Result</h4>
+
+<pre><code>&lt;table&gt;
+	&lt;thead&gt;
+		&lt;tr&gt;
+			&lt;th&gt;First Name&lt;/th&gt;
+			&lt;th&gt;Last Name&lt;/th&gt;
+		&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody data-bound-to="someAttribute" data-bound-as="template"&gt;
+		&lt;tr&gt;
+			&lt;td&gt;Mark&lt;/td&gt;
+			&lt;td&gt;Watney&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td&gt;Harry&lt;/td&gt;
+			&lt;td&gt;Dresden&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td&gt;Jack&lt;/td&gt;
+			&lt;td&gt;Reacher&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+	
+		</div>
+	</div>
+</div>
+	</div>
+
+	<div class="container">
+	<div class="row">
+		<div class="twelve columns">
+			<div id="footer">
+				Tripod.js is maintained by <a href="https://github.com/dgrundel">Daniel Grundel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
