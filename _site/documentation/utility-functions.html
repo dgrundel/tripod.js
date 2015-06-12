@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>
+		
+			Utility Functions |
+		
+		Tripod.js
+		Documentation
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="//fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/tripod.js/css/normalize.css">
+	<link rel="stylesheet" href="/tripod.js/css/skeleton.css">
+	<link rel="stylesheet" href="/tripod.js/css/style.css">
+
+	<script src="/tripod.js/js/tripod.js"></script>
+</head>
+<body>
+	<a name="top"></a>
+
+	<div class="hero  short ">
+	<div class="container">
+		<div class="row">
+			<div class="twelve columns center">
+				<h1>Tripod.js</h1>
+				<p>Two-way data-binding is sooo 2009.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<ul class="navigation">
+	<li ><a href="/tripod.js/index.html">Home</a></li>
+	<li><a href="/tripod.js/index.html#demos">Demos</a></li>
+	<li  class="current" ><a href="/tripod.js/documentation">Documentation</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/zipball/master">Download .zip</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/tarball/master">Download .tar.gz</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js">Github</a></li>
+</ul>
+
+	<div id="pageContent">
+		<div class="container">
+	<div class="row">
+		<div class="four columns">
+			<h4>All Documentation</h4>
+			<ul class="side navigation">
+				
+					<li >
+						<a href="/tripod.js/documentation">Quick Start</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/the-instance.html">The Tripod Instance</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/getting-and-storing-data-in-the-instance.html">Getting and Storing Data in the Instance</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/data-binding-and-the-dom.html">Data binding and the DOM</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/namespaces.html">Namespaces</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/using-binding-modifiers.html">Using Binding Modifiers</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/get-load-push-sync-all.html">getAll, loadAll, pushAll, syncAll</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>
+					</li>
+				
+					<li  class="current" >
+						<a href="/tripod.js/documentation/utility-functions.html">Utility Functions</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/more-examples.html">More Examples</a>
+					</li>
+				
+			</ul>
+		</div>
+
+		<div class="eight columns">
+			<h2>Utility Functions</h2>
+
+			<p>Tripod includes several utility functions it uses internally that you can also take advantage of through the <code>Tripod.util</code> object.</p>
+
+<h3><code>Tripod.util.isArray()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.isArray(someVar)</code></pre>
+
+<p>Returns boolean <code>true</code> if the argument passed to it is an array.</p>
+
+
+<h3><code>Tripod.util.isNotBlank()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.isNotBlank(someVar)</code></pre>
+
+<p>Returns boolean <code>true</code> if the argument passed to it is truthy or boolean <code>false</code>.</p>
+
+
+<h3><code>Tripod.util.arrayMap()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.arrayMap(array, function)</code></pre>
+
+<p>Iterates over the array passed and executes the passed function against every element of the array.</p>
+<p>The array element is passed as the only argument to the function, and the function's return value is stored back in the array at the same index.</p>
+<p>The resulting array is returned.</p>
+
+<h4>Example</h4>
+
+<pre><code>var myArray = ['a', 'b', 'c', 'd'];
+var upCaseIt = function(s) {
+	return s.toUpperCase();
+};
+Tripod.util.arrayMap(myArray, upCaseIt); // returns ['A', 'B', 'C', 'D']</code></pre>
+
+
+<h3><code>Tripod.util.trim()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.trim(string)</code></pre>
+
+<p>A simple, fast string trim implementation.</p>
+
+
+<h3><code>Tripod.util.cloneObject()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.cloneObject(object)</code></pre>
+
+<p>Performs a <strong>shallow</strong> copy of the passed object and returns the copy.</p>
+
+
+<h3><code>Tripod.util.toggleClass()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.toggleClass(domNode, className, addOrRemove)</code></pre>
+
+<p>Adds or removes a CSS class based on the third argument. If the third argument is truthy, the class is added. Otherwise it is removed.</p>
+<p>Classes will not be added twice, and no error will occur if <code>toggleClass</code> is asked to remove a class that isn't present.</p>
+
+
+<h3><code>Tripod.util.formatAsCurrency()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.formatAsCurrency(numberOrString[, currencySymbol])</code></pre>
+
+<p>Given a number or string containing a number, returns a currency formatted string.</p>
+<p><code>currencySymbol</code> is optional and defaults to <code>$</code></p>
+
+<h4>Examples</h4>
+
+<pre><code>Tripod.util.formatAsCurrency(123456.7); // $123,456.70
+Tripod.util.formatAsCurrency('123456'); // $123,456.00
+Tripod.util.formatAsCurrency('hello123'); // $123.00
+Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
+
+
+<h3><code>Tripod.util.getNodeValue()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.getNodeValue(domNode)</code></pre>
+
+<p>The method Tripod uses to retrieve the "value" of a DOM node.</p>
+<p>See <a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>.</p>
+
+
+<h3><code>Tripod.util.setNodeValue()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.setNodeValue(domNode, value)</code></pre>
+
+<p>The method Tripod uses to set the "value" of a DOM node.</p>
+<p>See <a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>.</p>
+
+
+<h3><code>Tripod.util.getNodesByAttributeValue()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.getNodesByAttributeValue(attributeName, attributeValue[, parentNode])</code></pre>
+
+<p>The method Tripod uses to get DOM nodes based on their binding attributes. 
+	You can pass at HTML attribute name and value to grab matching DOM nodes.</p>
+<blockquote>In modern browsers, <code>Tripod.util.getNodesByAttributeValue</code> returns a <code>NodeList</code>.
+	In older versions of IE, this method returns an array. It's safest (and fastest) to iterate over the returned object
+	using a standard <code>for</code> loop.</blockquote>
+
+
+<h3><code>Tripod.util.processTemplate()</code></h3>
+
+<h4>Method signature</h4>
+<pre><code>Tripod.util.processTemplate(templateString, data)</code></pre>
+
+<p>A handlebars<em>-ish</em> templating engine. Tripod uses this for the <code>template</code> binding modifier.</p>
+
+<h4>Example</h4>
+
+<pre><code>var templateString = "Hello, {name}!";
+var data = { name: 'world' };
+Tripod.util.processTemplate(templateString, data); // returns "Hello, world!"</code></pre>
+	
+		</div>
+	</div>
+</div>
+	</div>
+
+	<div class="container">
+	<div class="row">
+		<div class="twelve columns">
+			<div id="footer">
+				Tripod.js is maintained by <a href="https://github.com/dgrundel">Daniel Grundel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

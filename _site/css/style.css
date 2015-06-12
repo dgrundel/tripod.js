@@ -88,10 +88,14 @@ h4 a, h4 a:hover {
 	text-align: left;
 	border-bottom: 0 none;
 }
-.side.navigation li { display: block; }
-.side.navigation li a {
+.side.navigation li {
+	display: block; 
 	margin: 0 0 .8em;
+}
+.side.navigation li a {
+	display: inline;
 	padding: 0;
+	margin: 0;
 }
 
 .highlights { padding-bottom: 4em; }

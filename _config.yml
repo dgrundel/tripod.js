@@ -1,1 +1,12 @@
 baseurl: /tripod.js
+documentationLinks:
+    Quick Start: /documentation
+    The Tripod Instance: /documentation/the-instance.html
+    Getting and Storing Data in the Instance: /documentation/getting-and-storing-data-in-the-instance.html
+    Data binding and the DOM: /documentation/data-binding-and-the-dom.html
+    Namespaces: /documentation/namespaces.html
+    Using Binding Modifiers: /documentation/using-binding-modifiers.html
+    getAll, loadAll, pushAll, syncAll: /documentation/get-load-push-sync-all.html
+    Node Properties Used for Data Binding: /documentation/node-properties-used-for-data-binding.html
+    Utility Functions: /documentation/utility-functions.html
+    More Examples: /documentation/more-examples.html
