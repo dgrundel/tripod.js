@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>
+		
+		Tripod.js
+		Documentation
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="//fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/skeleton.css">
+	<link rel="stylesheet" href="/css/style.css">
+
+	<script src="/js/tripod.js"></script>
+</head>
+<body>
+	<a name="top"></a>
+
+	<div class="hero  short ">
+	<div class="container">
+		<div class="row">
+			<div class="twelve columns center">
+				<h1>Tripod.js</h1>
+				<p>Two-way data-binding is sooo 2009.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<ul class="navigation">
+	<li ><a href="/index.html">Home</a></li>
+	<li><a href="/index.html#demos">Demos</a></li>
+	<li  class="current" ><a href="/documentation">Documentation</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/zipball/master">Download .zip</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js/tarball/master">Download .tar.gz</a></li>
+	<li><a href="https://github.com/dgrundel/tripod.js">Github</a></li>
+</ul>
+
+	<div class="container">
+	<div class="row">
+		<div class="four columns">
+			<ul class="side navigation">
+				<li><a href="#instance">The Tripod Instance</a></li>
+				<li><a href="#dom">Getting and Storing Data from/to the Instance</a></li>
+				<li><a href="#data-binding">Data binding, the DOM, and Namespaces</a></li>
+				<li><a href="#binding-modifiers">Using Binding Modifiers</a></li>
+				<li><a href="#instance-all-methods">The Nuclear Option: [get|load|push|sync]All()</a></li>
+				<li><a href="#nodes">Node Properties Used for Binding</a></li>
+				<li><a href="#more-examples">More Examples</a></li>
+			</ul>
+		</div>
+
+		<div class="eight columns">
+				
+
+
+
+<h2><a name="instance">The Tripod Instance</a></h2>
+
+<p>The instance is basically just an object that you put data into and pull data out of, just like any other JS object. The main difference here is that you use getters and setters, but we'll get to that in a moment.</p>
+<p>Here's the gist of it:</p>
+<pre class="code">
+var myAwesomeInstance = new Tripod([[[(object) initialAttributes], (string) namespace], (boolean) persist]);
+</pre>
+
+<h3>Simplest Example</h3>
+
+<p>Just use the new keyword and you're on your way. This creates an instance with no set attributes, no namespacing (we'll get to that), and that is <em><em>not</em> persisted to local storage</em>.</p>
+<pre class="code">
+var myAwesomeInstance = new Tripod();
+</pre>
+
+<h3>Full Example</h3>
+
+<pre class="code">
+var attributes = {
+make: 'Ford',
+model: 'Pinto',
+color: 'Rust'
+};
+var namespace = 'vehicle';
+var persistToLocalStorage = false;
+
+var firstCar = new Tripod(attributes, namespace, persistToLocalStorage);
+</pre>
+<p>So, what did we do?</p>
+<p>Hopefully the attributes piece is pretty straightforward. Those are the attributes our object will start with. You can always set more later, this is just to get your object going.</p>
+<p>The namespace tells Tripod which nodes in the DOM belong to this instance. We'll talk about that a little more in minute.</p>
+<p>The last argument is a boolean that tells Tripod whether or not to store data in Local Storage as well. If true, data is saved in Local Storage as it is updated and changes will synchronize across open browser tabs. Neat!</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="dom">Getting and Storing Data from/to the Instance</h2>
+
+<p>The aforementioned getter and setter are creatively named <em>get</em> and <em>set</em>.</p>
+
+<h3>instance.get()</h3>
+
+<p>Remember the example <em>firstCar</em> instance we created above? What was the color again? I can't remember.</p>
+<pre class="code">
+var theColor = firstCar.get('color');
+console.log(theColor); // "Rust"
+</pre>
+<p>Note that instance.get() will throw an error if you attempt to access an attribute that doesn't exist.</p>
+
+<h3>instance.set()</h3>
+
+<p>Oh, darn. We forgot to add the year. No worries.</p>
+<pre class="code">
+firstCar.set('year', 1980); // Sweet. This baby is practically brand new.
+</pre>
+<p>Note that we can set an attribute that didn't already exist, just like a normal JS object.</p>
+
+<h3>But, wait a minute, my data is in the DOM!</h3>
+
+<p>Hang on, we're getting there. I'll give you a hint. You're looking for instance.load().</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="data-binding">Data binding, the DOM, and Namespaces</a></h2>
+
+<p>So far we've just looked at Javascript. If we just lived in the land of Javascript milk and honey, we wouldn't need all this fancy data binding goodness. Let's talk about getting your data into and out of the DOM.</p>
+
+<h3>First Things First: Data Attributes</h3>
+
+<p>Tripod needs you to tell it which DOM nodes (inputs, checkboxes, paragraphs, etc) to pay attention to. To do that, you need to add a little data attribute to elements you want to sync with your Tripod instance. The attribute is <em>data-bound-to</em> and it looks like this:</p>
+<pre class="code">
+&lt;input data-bound-to="vehicle.make"&gt;
+</pre>
+<p>Hey, where did <em>vehicle</em> come from? Oh right, I told you we were going to talk about namespaces. Now you know.</p>
+<p>The elaborate formula for your data attributes is: "[namespace.]attribute". How about some examples:</p>
+<pre class="code">
+&lt;!-- namespace: person, attribute: name --&gt;
+&lt;input data-bound-to="person.name"&gt;
+
+&lt;!-- no namepsace, attribute: name --&gt;
+&lt;input data-bound-to="name"&gt;
+</pre>
+<p>Make sense?</p>
+
+<h3>Pulling Data from the DOM Using instance.load()</h3>
+
+<p>In many cases, the data you want is already hanging out in the DOM, but you don't have it available to your Javascript yet. For example, when data is loaded into the page on the server side.</p>
+<p>Consider this HTML markup:</p>
+<pre class="code">
+&lt;input data-bound-to="vehicle.fuel" value="gasoline"&gt;
+</pre>
+<p>Snatching this up and adding it to our <em>firstCar</em> instance is trivial:</p>
+<pre class="code">
+firstCar.load('fuel');
+</pre>
+<p>instance.load() works like instance.set() in that the attribute doesn't have to exist before you call it. It will be created for you.</p>
+
+<h3>instance.load() and Local Storage</h3>
+
+<p>If you passed <em>true</em> as the third argument in the constructor, your Tripod instance will be backed by Local Storage.</p>
+<p><em>In this case, instance.load() will first check Local Storage for a value before looking in the DOM.</em></p>
+
+<h3>Putting Data into the DOM Using instance.push()</h3>
+
+<p>Now consider the opposite example. You have your fancy HTML form ready to go, but your data is late to the party. Maybe your data is being brought in via an AJAX call.</p>
+<p>Have a look at this lovely form:</p>
+<pre class="code">
+&lt;input data-bound-to="vehicle.make"&gt;
+&lt;input data-bound-to="vehicle.model"&gt;
+&lt;input data-bound-to="vehicle.year"&gt;
+</pre>
+<p>instance.push() to the rescue!</p>
+<pre class="code">
+firstCar.push('make');
+firstCar.push('model');
+firstCar.push('year');
+</pre>
+<p>Or, if you're into the whole brevity thing:</p>
+<pre class="code">
+firstCar.push(['make', 'model', 'year']);
+</pre>
+<p><em>Protip:</em> instance.load() also accepts an array of attributes.</p>
+
+<h3>A Final Note About instance.load() and instance.push()</h3>
+
+<p><em>You really only need to use these methods once, if at all.</em> They are designed to perform an initial sync of data between the DOM and your Javascript. Once you have data in both places, any edits to the page will automatically show up in your Javascript, and any edits to the instance (using instance.set()) are automatically pushed to the DOM.</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="binding-modifiers">Using Binding Modifiers</a></h2>
+
+<p>So far all of this data binding goodness has dealt with getting values and pushing them around to various places (the DOM, JS, Local Storage.) One common DOM manipulation task is to show or hide portions of a page based on some value.</p>
+<p>Consider this markup:</p>
+<pre class="code">
+&lt;label&gt;
+&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+My vehicle has air bags.
+&lt;/label&gt;
+
+&lt;div&gt;
+How many air bags does your vehicle have?
+&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+&lt;/div&gt;
+</pre>
+<p>It doesn't really make sense to ask the user how many air bags they have if they don't check the box, right? A better user experience would be to hide the second question if the first checkbox is unchecked. You can use binding modifiers to achieve this.</p>
+<p>All you need to do is bind the container element to the checkbox and use the <em>data-bound-as</em> attribute.</p>
+<p>So, our new markup looks like this:</p>
+<pre class="code">
+&lt;label&gt;
+&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+My vehicle has air bags.
+&lt;/label&gt;
+
+&lt;div data-bound-to="vehicle.hasAirBags" data-bound-as="show"&gt;
+How many air bags does your vehicle have?
+&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+&lt;/div&gt;
+</pre>
+<p><em>data-bound-as</em> is the <em>binding modifier</em>. <em>show</em> is the particular modifier we're using in this case.</p>
+
+<h3>data-bound-as="show"</h3>
+
+<p>The <em>show</em> binding modifier will show an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be hidden.</p>
+
+<h3>data-bound-as="hide"</h3>
+
+<p>The <em>hide</em> binding modifier is the opposite of <em>show</em>. It will hide (display:none) an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be shown.</p>
+
+<h3>data-bound-as="value"</h3>
+
+<p><em>value</em> is the default behavior you've seen above. If the <em>data-bound-as</em> attribute is missing, blank, or unrecognized value is used.</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="instance-all-methods">The Nuclear Option: [get|load|push|sync]All()</a></h2>
+
+<p>These methods do pretty much what you'd expect.</p>
+
+<h3>instance.getAll()</h3>
+
+<p>Returns a Javascript object containing all attributes and their values.</p>
+
+<h3>instance.loadAll()</h3>
+
+<p>Grabs all <em>known</em> attributes from the DOM.</p>
+<p><em>Note that you must have used instance.set(), instance.load(), or included the attribute in the call to the constructor.</em></p>
+
+<h3>instance.pushAll()</h3>
+
+<p>Pushes all <em>known</em> attributes out to the DOM.</p>
+<p><em>Note that you must have used instance.set(), instance.load(), or included the attribute in the call to the constructor.</em></p>
+
+<h3>instance.syncAll()</h3>
+
+<p>Performs a loadAll(), then a pushAll().</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="nodes">Node Properties Used for Binding</a></h2>
+
+<p>You're probably wondering what HTML attributes are set when exchanging data with the DOM. You have come to the right place. Here's a brief summary.</p>
+
+<h3>input[type=checkbox]</h3>
+
+<p>Checkboxes always return boolean true or false, regardless of their value attribute.</p>
+
+<h3>input[type=radio]</h3>
+
+<p>As you might expect, radio buttons will give you the value of the selected radio button.</p>
+
+<h3>input[type=text, tel, url, ...]</h3>
+
+<p>All other inputs use the value attribute to get and set their value.</p>
+
+<h3>select</h3>
+
+<p>Select elements work just as expected, using the value of the selected option.</p>
+
+<h3>All other DOM nodes (div, p, h1, span, ...)</h3>
+
+<p>The textContent (or innerText for IE) attribute is used to get and set values in DOM nodes.</p>
+
+
+<hr>
+
+
+
+<a class="back-to-top" href="#top">Back to Top</a>
+<h2><a name="more-examples">More Examples</a></h2>
+
+<h3>When Data is Loaded into the Page Server Side</h3>
+
+<p>DOM:</p>
+<pre class="code">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;...&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;
+City:&lt;br&gt;
+&lt;input data-bound-to="address.city" value="Anchorage"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+State:&lt;br&gt;
+&lt;select data-bound-to="address.state"&gt;
+&lt;option value="AL"&gt;Alabama&lt;/option&gt;
+&lt;option value="AK" selected&gt;Alaska&lt;/option&gt;
+&lt;option value="AR"&gt;Arkansas&lt;/option&gt;
+...
+&lt;/select&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Javascript:</p>
+<pre class="code">
+var address = new Tripod({city: '', state: ''}, 'address');
+address.loadAll();
+console.log(address.get('city')); // "Anchorage"
+console.log(address.get('state')); // "AK"
+</pre>
+
+<h3>When Data is Loaded into the Page Client Side (via AJAX)</h3>
+
+<p>DOM:</p>
+<pre class="code">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;...&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;
+City:&lt;br&gt;
+&lt;input data-bound-to="address.city"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+State:&lt;br&gt;
+&lt;select data-bound-to="address.state"&gt;
+...
+&lt;/select&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Javascript:</p>
+<pre class="code">
+var addressData = someAjaxCallToGetData(); // returns {city: 'Anchorage', state: 'AK'}
+var address = new Tripod(addressData, 'address');
+address.pushAll(); // now the DOM reflects the loaded AJAX data
+</pre>
+
+
+		</div>
+	</div>
+</div>
+
+	<div class="container">
+	<div class="row">
+		<div class="twelve columns">
+			<div id="footer">
+				Tripod.js is maintained by <a href="https://github.com/dgrundel">Daniel Grundel</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
