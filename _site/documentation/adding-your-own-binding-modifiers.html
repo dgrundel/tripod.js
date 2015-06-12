@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			More Examples |
+			Adding Your Own Binding Modifiers |
 		
 		Tripod.js
 		Documentation
@@ -72,7 +72,7 @@
 						<a href="/tripod.js/documentation/using-binding-modifiers.html">Using Binding Modifiers</a>
 					</li>
 				
-					<li >
+					<li  class="current" >
 						<a href="/tripod.js/documentation/adding-your-own-binding-modifiers.html">Adding Your Own Binding Modifiers</a>
 					</li>
 				
@@ -92,7 +92,7 @@
 						<a href="/tripod.js/documentation/utility-functions.html">Utility Functions</a>
 					</li>
 				
-					<li  class="current" >
+					<li >
 						<a href="/tripod.js/documentation/more-examples.html">More Examples</a>
 					</li>
 				
@@ -104,52 +104,79 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>More Examples</h2>
+			<h2>Adding Your Own Binding Modifiers</h2>
 
-			<h3>When Data is Loaded into the Page on the Server Side</h3>
+			<p>Adding your own custom binding modifiers to Tripod is dead simple.</p>
 
-<pre><code>&lt;p&gt;
-	City:&lt;br&gt;
-	&lt;input data-bound-to="address.city" value="Anchorage"&gt;
-&lt;/p&gt;
-&lt;p&gt;
-	State:&lt;br&gt;
-	&lt;select data-bound-to="address.state"&gt;
-		&lt;option value="AL"&gt;Alabama&lt;/option&gt;
-		&lt;option value="AK" selected&gt;Alaska&lt;/option&gt;
-		&lt;option value="AR"&gt;Arkansas&lt;/option&gt;
-		...
-	&lt;/select&gt;
-&lt;/p&gt;
+<p>Just add your own method to <code>Tripod.bindingModifierFunctions</code>, like so:</p>
+
+<pre><code>Tripod.bindingModifierFunctions.numberToEnglish = function(node, value, bindingModifiers) {
+	switch(value) {
+		case '1':
+			return 'one';
+		case '2':
+			return 'two';
+		// etc...
+	}
+};</code></pre>
+
+<p>Then, in your markup, use your method name as the binding modifier name:</p>
+
+<pre><code>&lt;span data-bound-to="someAttribute" data-bound-as="numberToEnglish"&gt;&lt;/span&gt;</code></pre>
+
+<h3>Binding Modifiers That Don't Update Node Value or Contents</h3>
+
+<p>The value returned by your modifier function will be used as the new value/content for the bound node.
+	If you don't want the node value or contents to be updated, <em>don't return anything in your modifier function.</em></p>
+
+<p>Consider this example:</p>
+
+<pre><code>Tripod.bindingModifierFunctions.makeItBlue = function(node, value, bindingModifiers) {
+	if(value === '5') {
+		node.style.color = 'blue';
+	}
+	//no return value
+};</code></pre>
+
+<p>The fake "makeItBlue" modifier makes the node's CSS <code>color</code> propery <code>blue</code> when the bound
+	attribute value is <code>5</code>. The contents of the node will not be changed.</p>
+
+<blockquote>tl;dr: If you don't return anything, the DOM node will not be changed.</blockquote>
+
+
+<h3>Binding Modifier Arguments</h3>
+
+<p>You may want your binding modifier function to receive some arguments. The built-in <code>toggleClass</code> modifier
+	is a good example of this. You have to tell it what class to toggle on and off.</p>
+
+<p>You can pass arguments to your binding modifier function by including them in the <code>data-bound-as</code> HTML attribute,
+	using the pipe character <code>|</code> to separate arguments. Pass as many as you'd like.</p>
+
+<p>The third argument passed to your modifier function is the array of binding modifiers in the attribute.
+	(Each argument is <code>trim</code>'d for convenience.) Note that the first item in the modifiers array
+	is the name of your modifier function. <em>Under the hood, <code>String.prototype.split()</code> is used to create this array.</em></p>
+
+<h4>Modifier Arguments Example: <code>toggleClass</code></h4>
+
+<pre><code>&lt;span data-bound-to="someAttribute" data-bound-as="toggleClass | myAwesomeClass"&gt;&lt;/span&gt;
 
 &lt;script&gt;
-	var address = new Tripod({}, 'address');
-	address.load(['city', 'state']);
-	console.log(address.get('city')); // "Anchorage"
-	console.log(address.get('state')); // "AK"
+	//the built-in toggleClass modifier, slightly modified for clarity
+	Tripod.bindingModifierFunctions.toggleClass = function(node, value, bindingModifiers) {
+		if(bindingModifiers.length === 2) {
+			var cssClassName = bindingModifiers[1];
+			Tripod.util.toggleClass(node, cssClassName, value);
+		} else {
+			throw 'toggleClass requires a parameter.';
+		}
+	};
 &lt;/script&gt;</code></pre>
 
-<h3>When Data is Loaded into the Page on the Client Side (via AJAX)</h3>
-
-<pre><code>&lt;p&gt;
-	City:&lt;br&gt;
-	&lt;input data-bound-to="address.city"&gt;
-&lt;/p&gt;
-&lt;p&gt;
-	State:&lt;br&gt;
-	&lt;select data-bound-to="address.state"&gt;
-	...
-&lt;/select&gt;
-&lt;/p&gt;
-
-&lt;script&gt;
-	// example AJAX call. Returns {city: 'Anchorage', state: 'AK'}
-	var addressData = someAjaxCallToGetData();
-	var address = new Tripod(addressData, 'address');
-	address.pushAll(); // now the DOM reflects the loaded AJAX data
-&lt;/script&gt;</code></pre>
-
-
+<blockquote>
+	Remember that your function name is always the first item in the array your function is passed.
+	<code>data-bound-as="toggleClass | myAwesomeClass"</code> yields the array: 
+	<code>['toggleClass', 'myAwesomeClass']</code>
+</blockquote>
 	
 		</div>
 	</div>

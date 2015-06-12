@@ -73,6 +73,10 @@
 					</li>
 				
 					<li >
+						<a href="/tripod.js/documentation/adding-your-own-binding-modifiers.html">Adding Your Own Binding Modifiers</a>
+					</li>
+				
+					<li >
 						<a href="/tripod.js/documentation/get-load-push-sync-all.html">getAll, loadAll, pushAll, syncAll</a>
 					</li>
 				
@@ -90,6 +94,10 @@
 				
 					<li >
 						<a href="/tripod.js/documentation/more-examples.html">More Examples</a>
+					</li>
+				
+					<li >
+						<a href="/tripod.js/documentation/advanced-configuration.html">Advanced Configuration</a>
 					</li>
 				
 			</ul>
@@ -117,9 +125,14 @@ console.log(theColor); // "Rust"</code></pre>
 
 <p>Note that we can set an attribute that didn't already exist, just like a normal JS object.</p>
 
+<blockquote>You can store many attributes at once by passing a Javascript object to <code>set()</code>.
+	If you <em>really</em> want to micro-optimize, you can pass your object to <code>setMany()</code> to avoid the
+	overhead of the additional function call and type checking.</blockquote>
+
 <h3>But, wait a minute, my data is in the DOM!</h3>
 
 <p>Hang on, we're getting there. I'll give you a hint. You're looking for <code>load()</code>.</p>
+
 	
 		</div>
 	</div>

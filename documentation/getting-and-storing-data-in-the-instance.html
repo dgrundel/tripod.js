@@ -22,6 +22,10 @@ console.log(theColor); // "Rust"</code></pre>
 
 <p>Note that we can set an attribute that didn't already exist, just like a normal JS object.</p>
 
+<blockquote>You can store many attributes at once by passing a Javascript object to <code>set()</code>.
+	If you <em>really</em> want to micro-optimize, you can pass your object to <code>setMany()</code> to avoid the
+	overhead of the additional function call and type checking.</blockquote>
+
 <h3>But, wait a minute, my data is in the DOM!</h3>
 
 <p>Hang on, we're getting there. I'll give you a hint. You're looking for <code>load()</code>.</p>

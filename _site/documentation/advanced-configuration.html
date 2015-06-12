@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			More Examples |
+			Advanced Configuration |
 		
 		Tripod.js
 		Documentation
@@ -92,11 +92,11 @@
 						<a href="/tripod.js/documentation/utility-functions.html">Utility Functions</a>
 					</li>
 				
-					<li  class="current" >
+					<li >
 						<a href="/tripod.js/documentation/more-examples.html">More Examples</a>
 					</li>
 				
-					<li >
+					<li  class="current" >
 						<a href="/tripod.js/documentation/advanced-configuration.html">Advanced Configuration</a>
 					</li>
 				
@@ -104,52 +104,28 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>More Examples</h2>
+			<h2>Advanced Configuration</h2>
 
-			<h3>When Data is Loaded into the Page on the Server Side</h3>
+			<p>If for some reason Tripod's data attribute names don't suit you or they conflict with another library, it's
+	easy enough to change them through the <code>Tripod.config</code> object.</p>
 
-<pre><code>&lt;p&gt;
-	City:&lt;br&gt;
-	&lt;input data-bound-to="address.city" value="Anchorage"&gt;
-&lt;/p&gt;
-&lt;p&gt;
-	State:&lt;br&gt;
-	&lt;select data-bound-to="address.state"&gt;
-		&lt;option value="AL"&gt;Alabama&lt;/option&gt;
-		&lt;option value="AK" selected&gt;Alaska&lt;/option&gt;
-		&lt;option value="AR"&gt;Arkansas&lt;/option&gt;
-		...
-	&lt;/select&gt;
-&lt;/p&gt;
+<p>These values can be changed on-the-fly and Tripod will start looking for the new attributes immediately,
+	but you're on your own with the markup. :)</p>
 
-&lt;script&gt;
-	var address = new Tripod({}, 'address');
-	address.load(['city', 'state']);
-	console.log(address.get('city')); // "Anchorage"
-	console.log(address.get('state')); // "AK"
-&lt;/script&gt;</code></pre>
+<h3><code>Tripod.config.bindAttribute</code></h3>
 
-<h3>When Data is Loaded into the Page on the Client Side (via AJAX)</h3>
+<p>Default value: <code>data-bound-to</code></p>
 
-<pre><code>&lt;p&gt;
-	City:&lt;br&gt;
-	&lt;input data-bound-to="address.city"&gt;
-&lt;/p&gt;
-&lt;p&gt;
-	State:&lt;br&gt;
-	&lt;select data-bound-to="address.state"&gt;
-	...
-&lt;/select&gt;
-&lt;/p&gt;
-
-&lt;script&gt;
-	// example AJAX call. Returns {city: 'Anchorage', state: 'AK'}
-	var addressData = someAjaxCallToGetData();
-	var address = new Tripod(addressData, 'address');
-	address.pushAll(); // now the DOM reflects the loaded AJAX data
-&lt;/script&gt;</code></pre>
+<pre><code>// change data-bound-to to data-bind
+Tripod.config.bindAttribute = 'data-bind';</code></pre>
 
 
+<h3><code>Tripod.config.bindModifierAttribute</code></h3>
+
+<p>Default value: <code>data-bound-as</code></p>
+
+<pre><code>// change data-bound-as to data-modify-bind
+Tripod.config.bindModifierAttribute = 'data-modify-bind';</code></pre>
 	
 		</div>
 	</div>

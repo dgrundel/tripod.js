@@ -1,0 +1,25 @@
+---
+layout: documentation
+title: Advanced Configuration
+---
+
+<p>If for some reason Tripod's data attribute names don't suit you or they conflict with another library, it's
+	easy enough to change them through the <code>Tripod.config</code> object.</p>
+
+<p>These values can be changed on-the-fly and Tripod will start looking for the new attributes immediately,
+	but you're on your own with the markup. :)</p>
+
+<h3><code>Tripod.config.bindAttribute</code></h3>
+
+<p>Default value: <code>data-bound-to</code></p>
+
+<pre><code>// change data-bound-to to data-bind
+Tripod.config.bindAttribute = 'data-bind';</code></pre>
+
+
+<h3><code>Tripod.config.bindModifierAttribute</code></h3>
+
+<p>Default value: <code>data-bound-as</code></p>
+
+<pre><code>// change data-bound-as to data-modify-bind
+Tripod.config.bindModifierAttribute = 'data-modify-bind';</code></pre>
