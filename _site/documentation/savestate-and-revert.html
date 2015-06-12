@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			Using Binding Modifiers |
+			saveState and revert |
 		
 		Tripod.js
 		Documentation
@@ -68,7 +68,7 @@
 						<a href="/tripod.js/documentation/namespaces.html">Namespaces</a>
 					</li>
 				
-					<li  class="current" >
+					<li >
 						<a href="/tripod.js/documentation/using-binding-modifiers.html">Using Binding Modifiers</a>
 					</li>
 				
@@ -76,7 +76,7 @@
 						<a href="/tripod.js/documentation/get-load-push-sync-all.html">getAll, loadAll, pushAll, syncAll</a>
 					</li>
 				
-					<li >
+					<li  class="current" >
 						<a href="/tripod.js/documentation/savestate-and-revert.html">saveState and revert</a>
 					</li>
 				
@@ -96,56 +96,27 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>Using Binding Modifiers</h2>
+			<h2>saveState and revert</h2>
 
-			<p>So far all of this data binding goodness has dealt with getting values and pushing 
-	them around to various places (the DOM, JS, Local Storage.) One common DOM manipulation
-	task is to show or hide portions of a page based on some value.</p>
+			<p><code>instance.saveState()</code> and <code>instance.revert()</code> allow you to take a snapshot of the 
+	state of your object and revert it back to the way it was when you last called <code>saveState()</code>.</p>
 
-<p>Consider this markup:</p>
+<p>The use case that brought this about was pretty simple. What happens if you open up a form in a dialog box, 
+	the user makes some changes, then clicks the <em>Cancel</em> button? The user expects the changes they made
+	to be canceled, too. (Reverted, actually.)</p>
 
-<pre><code>&lt;label&gt;
-&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
-My vehicle has air bags.
-&lt;/label&gt;
+<h3><code>instance.saveState()</code></h3>
 
-&lt;div&gt;
-How many air bags does your vehicle have?
-&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
-&lt;/div&gt;</code></pre>
+<p>Simply put, the <code>saveState()</code> method makes copy of all the data stored in your Tripod instance and stores it internally.</p>
 
-<p>It doesn't really make sense to ask the user how many air bags they have if they don't check
-	the box, right? A better user experience would be to hide the second question if the
-	first checkbox is unchecked. You can use binding modifiers to achieve this.</p>
+<p><code>saveState()</code> also returns the copy it made if you'd like to inspect it.</p>
 
-<p>All you need to do is bind the container element to the checkbox and use the <code>data-bound-as</code> attribute.</p>
+<h3><code>instance.revert()</code></h3>
 
-<p>So, our new markup looks like this:</p>
+<p>The <code>revert()</code> method uses the copy created by <code>saveState()</code> to return the Tripod object's data to its previous state.</p>
 
-<pre><code>&lt;label&gt;
-&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
-My vehicle has air bags.
-&lt;/label&gt;
-
-&lt;div <span class="highlight">data-bound-to="vehicle.hasAirBags" data-bound-as="show"</span>&gt;
-How many air bags does your vehicle have?
-&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
-&lt;/div&gt;</code></pre>
-
-<p><code>data-bound-as</code> is the <em>binding modifier attribute</em>. <code>show</code> is the name of the modifier function we're using in this case.</p>
-
-<h3><code>data-bound-as="show"</code></h3>
-
-<p>The <code>show</code> binding modifier will show an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be hidden.</p>
-
-<h3><code>data-bound-as="hide"</code></h3>
-
-<p>The <code>hide</code> binding modifier is the opposite of <code>show</code>. It will hide (display:none) an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be shown.</p>
-
-<h3><code>data-bound-as="value"</code></h3>
-
-<p><code>value</code> is the default behavior you've seen before. If the <code>data-bound-as</code> attribute is missing, blank, or unrecognized <code>value</code> is used.</p>
-
+<p>Tripod is smart enough to only re-set attributes that have changed when you call <code>revert()</code>, which
+	saves you a few milliseconds of DOM manipulation time.</p>
 	
 		</div>
 	</div>

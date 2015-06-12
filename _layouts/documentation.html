@@ -10,7 +10,7 @@ category: Documentation
 			<ul class="side navigation">
 				{% for link in site.documentationLinks %}
 					<li {% if page.title == link[0] %} class="current" {% endif %}>
-						<a href="{{ site.baseurl }}{{ link[1] }}">{{ link[0] }}</a>
+						<a href="{{ site.baseurl }}/documentation/{{ link[1] }}">{{ link[0] }}</a>
 					</li>
 				{% endfor %}
 			</ul>
