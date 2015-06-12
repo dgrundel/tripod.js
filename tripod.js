@@ -133,8 +133,19 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 			push(attr);
 			
+		} else if(attr && typeof attr === 'object') {
+			setMany(attr, persist);
+
 		} else {
-			throw 'attribute must be a non-empty string.';
+			throw 'attribute must be a non-empty string or object.';
+		}
+	}
+
+	function setMany(attr, persist) {
+		for(var a in attr) {
+			if(a && attr.hasOwnProperty(a)) {
+				set(a, attr[a], persist);
+			}
 		}
 	}
 	
@@ -201,9 +212,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 	function pushAll() {
 		for(var attr in attrs) {
-			if(attr && attrs.hasOwnProperty(attr)) {
-				push(attr);
-			}
+			push(attr);
 		}
 	}
 
@@ -237,6 +246,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		get: get,
 		getAll: getAll,
 		set: set,
+		setMany: setMany,
 		load: load,
 		loadAll: loadAll,
 		push: push,
