@@ -1,0 +1,68 @@
+---
+layout: documentation
+title: Data binding and the DOM
+---
+
+<p>So far we've just looked at Javascript. If we just lived in the land of Javascript milk and honey,
+	we wouldn't need all this fancy data binding goodness. Let's talk about getting your data into and out of the DOM.</p>
+
+<h3>First Things First: Data Attributes</h3>
+
+<p>Tripod needs you to tell it which DOM nodes (inputs, checkboxes, paragraphs, etc) to pay attention to.
+	To do that, you need to add a little data attribute to elements you want to sync with your Tripod 
+	instance. The attribute is <code>data-bound-to</code> and it looks like this:</p>
+
+<pre><code>&lt;input data-bound-to="vehicle.make"&gt;</code></pre>
+
+<p>The examples you see here are namespaced with <code>vehicle</code>. You'll get a quick rundown of namespaces in the next section.</p>
+
+<h3>Pulling Data from the DOM Using <code>instance.load()</code></h3>
+
+<p>In many cases, the data you want is already hanging out in the DOM, but you don't have it available to
+	your Javascript yet. For example, when data is loaded into the page on the server side.</p>
+
+<p>Consider this HTML markup:</p>
+
+<pre><code>&lt;input data-bound-to="vehicle.fuel" value="gasoline"&gt;</code></pre>
+
+<p>Snatching this up and adding it to our <code>firstCar</code> instance is trivial:</p>
+
+<pre><code>firstCar.load('fuel');</code></pre>
+
+<p><code>instance.load()</code> works like <code>instance.set()</code> in that the attribute doesn't have to exist
+	before you call it. It will be created for you.</p>
+
+<h3><code>instance.load()</code> and LocalStorage</h3>
+
+<p>If you passed <code>true</code> as the third argument in the constructor, your Tripod instance will be backed by LocalStorage.</p>
+
+<blockquote>When your instance is backed by LocalStorage, <code>instance.load()</code> will first check LocalStorage for a value before looking in the DOM.</blockquote>
+
+<h3>Putting Data into the DOM Using <code>instance.push()</code></h3>
+
+<p>Now consider the opposite example. You have your fancy HTML form ready to go, but your data is late to the party.
+	Maybe your data is being brought in via an AJAX call.</p>
+
+<p>Have a look at this lovely form:</p>
+
+<pre><code>&lt;input data-bound-to="vehicle.make"&gt;
+&lt;input data-bound-to="vehicle.model"&gt;
+&lt;input data-bound-to="vehicle.year"&gt;</code></pre>
+
+<p><code>instance.push()</code> to the rescue!</p>
+
+<pre><code>firstCar.push('make');
+firstCar.push('model');
+firstCar.push('year');</code></pre>
+
+<p>Or, if you're into the whole brevity thing:</p>
+
+<pre><code>firstCar.push(['make', 'model', 'year']);</code></pre>
+
+<blockquote><em>Protip:</em> <code>instance.load()</code> and <code>instance.push()</code> also accept an array of attributes.</blockquote>
+
+<h3>A Final Note About <code>instance.load()</code> and <code>instance.push()</code></h3>
+
+<p><em>You really only need to use these methods once, if at all.</em> They are designed to perform an initial sync of data
+	between the DOM and your Javascript. Once you have data in both places, any edits to the page will automatically show up
+	in your Javascript, and any edits to the instance (using <code>instance.set()</code>) are automatically pushed to the DOM.</p>

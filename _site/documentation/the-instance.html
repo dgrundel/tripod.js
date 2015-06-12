@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			Quick Start |
+			The Tripod Instance |
 		
 		Tripod.js
 		Documentation
@@ -68,55 +68,39 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>Quick Start</h2>
+			<h2>The Tripod Instance</h2>
 
-			<h3>Installation</h3>
+			<p>The instance is basically just an object that you put data into and pull data out of, just like any other JS object.
+	The main difference here is that you use getters and setters, but we'll get to that in a moment.</p>
 
-<p>Nothing fancy here. Just include Tripod.js on your page.</p>
-<p>Ideally, it should be included just before the closing <code>body</code> tag in your document.
-	If not, it's cool. Tripod can deal.</p>
+<p>Here's the gist of it:</p>
 
-<h3>New it Up and Add Some Data</h3>
+<pre><code>var myAwesomeInstance = new Tripod([[[(object) initialAttributes], (string) namespace], (boolean) persist]);</code></pre>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod();
-	tripod.set('who', 'world');
-&lt;/script&gt;</code></pre>
+<h3>Simplest Example</h3>
 
-<p><em>or</em></p>
+<p>Just use the <code>new</code> keyword and you're on your way. This creates an instance with no set attributes, no namespacing (we'll get to that), and that is <em>not persisted to local storage</em>.</p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' });
-	tripod.push('who');
-&lt;/script&gt;</code></pre>
+<pre><code>var myAwesomeInstance = new Tripod();</code></pre>
 
-<blockquote><code>push()</code> manually pushes your data to all bound DOM nodes. <code>set()</code> performs a <code>push()</code> for you.</blockquote>
+<h3>Full Example</h3>
 
-<h3>Add a Binding Attribute to Your Markup</h3>
+<pre><code>var attributes = {
+	make: 'Ford',
+	model: 'Pinto',
+	color: 'Rust'
+};
+var namespace = 'vehicle';
+var persistToLocalStorage = false;
 
-<pre><code>&lt;body&gt;
-	...
-	&lt;p&gt;Hello, &lt;span data-bound-to="who"&gt;&lt;/span&gt;!&lt;/p&gt;
-	...
-&lt;/body&gt;</code></pre>
+var firstCar = new Tripod(attributes, namespace, persistToLocalStorage);</code></pre>
 
-<h3>Persisting to LocalStorage (Three-way data binding FTW!)</h3>
-
-<p>To save the data to LocalStorage and automatically sync across tabs, we need to make two small changes to our Javascript:</p>
-
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
-	tripod.<span class="highlight">sync</span>('who');
-&lt;/script&gt;</code></pre>
-
-<p>First, we have to pass <code>true</code> as the third argument to our constructor. This tells Tripod to sync changes to LocalStorage.</p>
-
-<p>Second, we use <code>sync()</code> rather than <code>push()</code> to move our data around. 
-	<code>sync()</code> first calls <code>load()</code> to grab data from LocalStorage.</p>
-
-<blockquote>In this basic example, we passed an empty string <code>''</code> as the namespace, which means no namespace.
-	In your code, you'll want to include a <a href="/tripod.js/documentation/namespaces.html">namespace</a>
-	when storing data in LocalStorage to help prevent collisions.</blockquote>
+<p>So, what did we do?</p>
+<p>Hopefully the attributes piece is pretty straightforward. Those are the attributes our object will start with.
+	You can always set more later, this is just to get your object going.</p>
+<p>The namespace tells Tripod which nodes in the DOM belong to this instance. We'll talk about that a little more in minute.</p>
+<p>The last argument is a boolean that tells Tripod whether or not to store data in Local Storage as well.
+	If <code>true</code>, data is saved in Local Storage as it is updated and changes will synchronize across open browser tabs. Neat!</p>
 	
 		</div>
 	</div>

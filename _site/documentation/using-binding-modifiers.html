@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			Quick Start |
+			Using Binding Modifiers |
 		
 		Tripod.js
 		Documentation
@@ -68,55 +68,56 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>Quick Start</h2>
+			<h2>Using Binding Modifiers</h2>
 
-			<h3>Installation</h3>
+			<p>So far all of this data binding goodness has dealt with getting values and pushing 
+	them around to various places (the DOM, JS, Local Storage.) One common DOM manipulation
+	task is to show or hide portions of a page based on some value.</p>
 
-<p>Nothing fancy here. Just include Tripod.js on your page.</p>
-<p>Ideally, it should be included just before the closing <code>body</code> tag in your document.
-	If not, it's cool. Tripod can deal.</p>
+<p>Consider this markup:</p>
 
-<h3>New it Up and Add Some Data</h3>
+<pre><code>&lt;label&gt;
+&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+My vehicle has air bags.
+&lt;/label&gt;
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod();
-	tripod.set('who', 'world');
-&lt;/script&gt;</code></pre>
+&lt;div&gt;
+How many air bags does your vehicle have?
+&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+&lt;/div&gt;</code></pre>
 
-<p><em>or</em></p>
+<p>It doesn't really make sense to ask the user how many air bags they have if they don't check
+	the box, right? A better user experience would be to hide the second question if the
+	first checkbox is unchecked. You can use binding modifiers to achieve this.</p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' });
-	tripod.push('who');
-&lt;/script&gt;</code></pre>
+<p>All you need to do is bind the container element to the checkbox and use the <code>data-bound-as</code> attribute.</p>
 
-<blockquote><code>push()</code> manually pushes your data to all bound DOM nodes. <code>set()</code> performs a <code>push()</code> for you.</blockquote>
+<p>So, our new markup looks like this:</p>
 
-<h3>Add a Binding Attribute to Your Markup</h3>
+<pre><code>&lt;label&gt;
+&lt;input type="checkbox" data-bound-to="vehicle.hasAirBags"&gt;
+My vehicle has air bags.
+&lt;/label&gt;
 
-<pre><code>&lt;body&gt;
-	...
-	&lt;p&gt;Hello, &lt;span data-bound-to="who"&gt;&lt;/span&gt;!&lt;/p&gt;
-	...
-&lt;/body&gt;</code></pre>
+&lt;div <span class="highlight">data-bound-to="vehicle.hasAirBags" data-bound-as="show"</span>&gt;
+How many air bags does your vehicle have?
+&lt;input type="number" data-bound-to="vehicle.numberOfAirBags"&gt;
+&lt;/div&gt;</code></pre>
 
-<h3>Persisting to LocalStorage (Three-way data binding FTW!)</h3>
+<p><code>data-bound-as</code> is the <em>binding modifier attribute</em>. <code>show</code> is the name of the modifier function we're using in this case.</p>
 
-<p>To save the data to LocalStorage and automatically sync across tabs, we need to make two small changes to our Javascript:</p>
+<h3><code>data-bound-as="show"</code></h3>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
-	tripod.<span class="highlight">sync</span>('who');
-&lt;/script&gt;</code></pre>
+<p>The <code>show</code> binding modifier will show an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be hidden.</p>
 
-<p>First, we have to pass <code>true</code> as the third argument to our constructor. This tells Tripod to sync changes to LocalStorage.</p>
+<h3><code>data-bound-as="hide"</code></h3>
 
-<p>Second, we use <code>sync()</code> rather than <code>push()</code> to move our data around. 
-	<code>sync()</code> first calls <code>load()</code> to grab data from LocalStorage.</p>
+<p>The <code>hide</code> binding modifier is the opposite of <code>show</code>. It will hide (display:none) an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be shown.</p>
 
-<blockquote>In this basic example, we passed an empty string <code>''</code> as the namespace, which means no namespace.
-	In your code, you'll want to include a <a href="/tripod.js/documentation/namespaces.html">namespace</a>
-	when storing data in LocalStorage to help prevent collisions.</blockquote>
+<h3><code>data-bound-as="value"</code></h3>
+
+<p><code>value</code> is the default behavior you've seen before. If the <code>data-bound-as</code> attribute is missing, blank, or unrecognized <code>value</code> is used.</p>
+
 	
 		</div>
 	</div>

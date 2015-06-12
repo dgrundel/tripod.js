@@ -1,0 +1,28 @@
+---
+layout: documentation
+title: Node Properties Used for Data Binding
+---
+
+<p>You're probably wondering what HTML attributes are set when exchanging data with the DOM. You have come to the right place. Here's a brief summary.</p>
+
+<h3><code>input[type=checkbox]</code></h3>
+
+<p>Checkboxes always return boolean <code>true</code> or <code>false</code>, regardless of their <code>value</code> attribute.</p>
+
+<h3><code>input[type=radio]</code></h3>
+
+<p>As you might expect, radio buttons will give you the <code>value</code> of the selected radio button.</p>
+
+<h3><code>input[type=text, tel, url, ...]</code></h3>
+
+<p>All other <code>input</code>s use the <code>value</code> attribute to get and set their value.</p>
+
+<h3><code>select</code></h3>
+
+<p>Select elements work just as expected, using the <code>value</code> of the selected <code>option</code>.</p>
+<p>In no <code>value</code> attribute is present on the selected <code>option</code>, then the text content of the <code>option</code> is used,
+	just like a normal form submit.</p>
+
+<h3>All other DOM nodes (<code>div</code>, <code>p</code>, <code>h1</code>, <code>span</code>, ...)</h3>
+
+<p>The <code>textContent</code> (or <code>innerText</code> for IE) attribute is used to get and set values in DOM nodes.</p>

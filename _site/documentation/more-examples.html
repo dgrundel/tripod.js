@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			Quick Start |
+			More Examples |
 		
 		Tripod.js
 		Documentation
@@ -68,55 +68,52 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>Quick Start</h2>
+			<h2>More Examples</h2>
 
-			<h3>Installation</h3>
+			<h3>When Data is Loaded into the Page on the Server Side</h3>
 
-<p>Nothing fancy here. Just include Tripod.js on your page.</p>
-<p>Ideally, it should be included just before the closing <code>body</code> tag in your document.
-	If not, it's cool. Tripod can deal.</p>
+<pre><code>&lt;p&gt;
+	City:&lt;br&gt;
+	&lt;input data-bound-to="address.city" value="Anchorage"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+	State:&lt;br&gt;
+	&lt;select data-bound-to="address.state"&gt;
+		&lt;option value="AL"&gt;Alabama&lt;/option&gt;
+		&lt;option value="AK" selected&gt;Alaska&lt;/option&gt;
+		&lt;option value="AR"&gt;Arkansas&lt;/option&gt;
+		...
+	&lt;/select&gt;
+&lt;/p&gt;
 
-<h3>New it Up and Add Some Data</h3>
-
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod();
-	tripod.set('who', 'world');
+&lt;script&gt;
+	var address = new Tripod({}, 'address');
+	address.load(['city', 'state']);
+	console.log(address.get('city')); // "Anchorage"
+	console.log(address.get('state')); // "AK"
 &lt;/script&gt;</code></pre>
 
-<p><em>or</em></p>
+<h3>When Data is Loaded into the Page on the Client Side (via AJAX)</h3>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' });
-	tripod.push('who');
-&lt;/script&gt;</code></pre>
-
-<blockquote><code>push()</code> manually pushes your data to all bound DOM nodes. <code>set()</code> performs a <code>push()</code> for you.</blockquote>
-
-<h3>Add a Binding Attribute to Your Markup</h3>
-
-<pre><code>&lt;body&gt;
+<pre><code>&lt;p&gt;
+	City:&lt;br&gt;
+	&lt;input data-bound-to="address.city"&gt;
+&lt;/p&gt;
+&lt;p&gt;
+	State:&lt;br&gt;
+	&lt;select data-bound-to="address.state"&gt;
 	...
-	&lt;p&gt;Hello, &lt;span data-bound-to="who"&gt;&lt;/span&gt;!&lt;/p&gt;
-	...
-&lt;/body&gt;</code></pre>
+&lt;/select&gt;
+&lt;/p&gt;
 
-<h3>Persisting to LocalStorage (Three-way data binding FTW!)</h3>
-
-<p>To save the data to LocalStorage and automatically sync across tabs, we need to make two small changes to our Javascript:</p>
-
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
-	tripod.<span class="highlight">sync</span>('who');
+&lt;script&gt;
+	// example AJAX call. Returns {city: 'Anchorage', state: 'AK'}
+	var addressData = someAjaxCallToGetData();
+	var address = new Tripod(addressData, 'address');
+	address.pushAll(); // now the DOM reflects the loaded AJAX data
 &lt;/script&gt;</code></pre>
 
-<p>First, we have to pass <code>true</code> as the third argument to our constructor. This tells Tripod to sync changes to LocalStorage.</p>
 
-<p>Second, we use <code>sync()</code> rather than <code>push()</code> to move our data around. 
-	<code>sync()</code> first calls <code>load()</code> to grab data from LocalStorage.</p>
-
-<blockquote>In this basic example, we passed an empty string <code>''</code> as the namespace, which means no namespace.
-	In your code, you'll want to include a <a href="/tripod.js/documentation/namespaces.html">namespace</a>
-	when storing data in LocalStorage to help prevent collisions.</blockquote>
 	
 		</div>
 	</div>

@@ -39,7 +39,8 @@
 	<li><a href="https://github.com/dgrundel/tripod.js">Github</a></li>
 </ul>
 
-		<div class="container">
+	<div id="pageContent">
+			<div class="container">
 		<div class="row highlights">
 			<div class="three columns">
 				<h3>What's that you say? Three-way data binding?</h3>
@@ -95,8 +96,7 @@
 			</div>
 			<div class="seven columns">
 				<h3>The Code</h3>
-<pre class="code">
-&lt;p&gt;
+<pre><code>&lt;p&gt;
   &lt;select data-bound-to="pizza.pizzaTopping"&gt;
     &lt;option&gt;Cheese&lt;/option&gt;
     &lt;option&gt;Pepperoni&lt;/option&gt;
@@ -112,7 +112,7 @@
   var pizza = new Tripod({}, 'pizza', true);
   pizza.sync('pizzaTopping');
 &lt;/script&gt;
-</pre>
+</code></pre>
 			</div>
 		</div>
 	</div>
@@ -173,8 +173,7 @@
 
 			<div class="seven columns">
 				<h3>The Code</h3>
-<pre class="code">
-&lt;p&gt;
+<pre><code>&lt;p&gt;
   &lt;label&gt;
     &lt;input type="checkbox" data-bound-to="crazy.check"&gt;
     Check it out, yo.
@@ -213,7 +212,7 @@
   var crazy = new Tripod({}, 'crazy');
   crazy.sync(['check', 'radio', 'yourName']);
 &lt;/script&gt;
-</pre>
+</code></pre>
 			</div>
 		</div>
 	</div>
@@ -269,8 +268,7 @@
 			</div>
 			<div class="seven columns">
 				<h3>The Code</h3>
-<pre class="code">
-&lt;p&gt;
+<pre><code>&lt;p&gt;
   &lt;label&gt;
     &lt;input type="checkbox" data-bound-to="mods.check"&gt;
     Check it out, yo.
@@ -302,7 +300,7 @@
   var mods = new Tripod({}, 'mods');
   mods.sync(['check', 'red', 'currency']);
 &lt;/script&gt;
-</pre>
+</code></pre>
 			</div>
 		</div>
 	</div>
@@ -355,8 +353,7 @@
 			</div>
 			<div class="seven columns">
 				<h3>The Code</h3>
-<pre class="code">
-&lt;table&gt;
+<pre><code>&lt;table&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th&gt;Name&lt;/th&gt;
@@ -385,11 +382,12 @@
   var templating = new Tripod(data, 'templating');
   templating.push('salaryTable');
 &lt;/script&gt;
-</pre>
+</code></pre>
 			</div>
 		</div>
 	</div>
 
+	</div>
 
 	<div class="container">
 	<div class="row">

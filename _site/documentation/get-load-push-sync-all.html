@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>
 		
-			Quick Start |
+			getAll, loadAll, pushAll, syncAll |
 		
 		Tripod.js
 		Documentation
@@ -68,55 +68,29 @@
 		</div>
 
 		<div class="eight columns">
-			<h2>Quick Start</h2>
+			<h2>getAll, loadAll, pushAll, syncAll</h2>
 
-			<h3>Installation</h3>
+			<p>These methods do pretty much what you'd expect.</p>
 
-<p>Nothing fancy here. Just include Tripod.js on your page.</p>
-<p>Ideally, it should be included just before the closing <code>body</code> tag in your document.
-	If not, it's cool. Tripod can deal.</p>
+<h3><code>instance.getAll()</code></h3>
 
-<h3>New it Up and Add Some Data</h3>
+<p>Returns a Javascript object containing all attributes and their values.</p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod();
-	tripod.set('who', 'world');
-&lt;/script&gt;</code></pre>
+<h3><code>instance.loadAll()</code></h3>
 
-<p><em>or</em></p>
+<p>Grabs all <em>known</em> attributes from the DOM.</p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' });
-	tripod.push('who');
-&lt;/script&gt;</code></pre>
+<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
 
-<blockquote><code>push()</code> manually pushes your data to all bound DOM nodes. <code>set()</code> performs a <code>push()</code> for you.</blockquote>
+<h3><code>instance.pushAll()</code></h3>
 
-<h3>Add a Binding Attribute to Your Markup</h3>
+<p>Pushes all <em>known</em> attributes out to the DOM.</p>
 
-<pre><code>&lt;body&gt;
-	...
-	&lt;p&gt;Hello, &lt;span data-bound-to="who"&gt;&lt;/span&gt;!&lt;/p&gt;
-	...
-&lt;/body&gt;</code></pre>
+<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
 
-<h3>Persisting to LocalStorage (Three-way data binding FTW!)</h3>
+<h3><code>instance.syncAll()</code></h3>
 
-<p>To save the data to LocalStorage and automatically sync across tabs, we need to make two small changes to our Javascript:</p>
-
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
-	tripod.<span class="highlight">sync</span>('who');
-&lt;/script&gt;</code></pre>
-
-<p>First, we have to pass <code>true</code> as the third argument to our constructor. This tells Tripod to sync changes to LocalStorage.</p>
-
-<p>Second, we use <code>sync()</code> rather than <code>push()</code> to move our data around. 
-	<code>sync()</code> first calls <code>load()</code> to grab data from LocalStorage.</p>
-
-<blockquote>In this basic example, we passed an empty string <code>''</code> as the namespace, which means no namespace.
-	In your code, you'll want to include a <a href="/tripod.js/documentation/namespaces.html">namespace</a>
-	when storing data in LocalStorage to help prevent collisions.</blockquote>
+<p>Performs a <code>loadAll()</code>, then a <code>pushAll()</code>.</p>
 	
 		</div>
 	</div>

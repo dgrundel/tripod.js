@@ -1,0 +1,26 @@
+---
+layout: documentation
+title: Namespaces
+---
+
+<p>Hey, where did <code>vehicle</code> come from in the last example? 
+	Oh right, I told you we were going to talk about namespaces. Now you know.</p>
+
+<p>The elaborate formula for your data attributes is: <code>[namespace.]attribute</code>. The namespace part is optional but recommended.</p>
+
+<p>How about some examples?</p>
+
+<pre><code>&lt;!-- namespace: person, attribute: name --&gt;
+&lt;input data-bound-to="person.name"&gt;
+
+&lt;!-- no namepsace, attribute: name --&gt;
+&lt;input data-bound-to="name"&gt;</code></pre>
+
+<p>Make sense?</p>
+
+<p>Namespaces are used not only in your binding attributes,
+	but are also used when saving to LocalStorage, so it's a
+	good idea to use them if you're planning on persisting 
+	your data to LocalStorage.</p>
+
+<p>Tripod uses the same <code>namespace.attribute</code> convention as the key for LocalStorage.</p>

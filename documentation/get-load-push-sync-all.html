@@ -1,0 +1,26 @@
+---
+layout: documentation
+title: getAll, loadAll, pushAll, syncAll
+---
+
+<p>These methods do pretty much what you'd expect.</p>
+
+<h3><code>instance.getAll()</code></h3>
+
+<p>Returns a Javascript object containing all attributes and their values.</p>
+
+<h3><code>instance.loadAll()</code></h3>
+
+<p>Grabs all <em>known</em> attributes from the DOM.</p>
+
+<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
+
+<h3><code>instance.pushAll()</code></h3>
+
+<p>Pushes all <em>known</em> attributes out to the DOM.</p>
+
+<blockquote>Note that you must have used <code>instance.set()</code>, <code>instance.load()</code>, or included the attribute in the call to the constructor.</blockquote>
+
+<h3><code>instance.syncAll()</code></h3>
+
+<p>Performs a <code>loadAll()</code>, then a <code>pushAll()</code>.</p>
