@@ -15,7 +15,9 @@
 	<link rel="stylesheet" href="/tripod.js/css/normalize.css">
 	<link rel="stylesheet" href="/tripod.js/css/skeleton.css">
 	<link rel="stylesheet" href="/tripod.js/css/style.css">
+	<link rel="stylesheet" href="/tripod.js/css/tomorrow-night.css">
 
+	<script src="/tripod.js/js/highlight.pack.js"></script>
 	<script src="/tripod.js/js/tripod.js"></script>
 </head>
 <body>
@@ -120,7 +122,7 @@
 
 <p>Default value: <code>data-bound-to</code></p>
 
-<pre><code>// change data-bound-to to data-bind
+<pre><code class="js">// change data-bound-to to data-bind
 Tripod.config.bindAttribute = 'data-bind';</code></pre>
 
 
@@ -128,7 +130,7 @@ Tripod.config.bindAttribute = 'data-bind';</code></pre>
 
 <p>Default value: <code>data-bound-as</code></p>
 
-<pre><code>// change data-bound-as to data-modify-bind
+<pre><code class="js">// change data-bound-as to data-modify-bind
 Tripod.config.bindModifierAttribute = 'data-modify-bind';</code></pre>
 	
 		</div>
@@ -145,6 +147,7 @@ Tripod.config.bindModifierAttribute = 'data-modify-bind';</code></pre>
 		</div>
 	</div>
 </div>
-
+	
+	<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

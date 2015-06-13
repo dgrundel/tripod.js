@@ -8,17 +8,17 @@ title: The Tripod Instance
 
 <p>Here's the gist of it:</p>
 
-<pre><code>var myAwesomeInstance = new Tripod([[[(object) initialAttributes], (string) namespace], (boolean) persist]);</code></pre>
+<pre><code class="js">var myAwesomeInstance = new Tripod([[[(object) initialAttributes], (string) namespace], (boolean) persist]);</code></pre>
 
 <h3>Simplest Example</h3>
 
 <p>Just use the <code>new</code> keyword and you're on your way. This creates an instance with no set attributes, no namespacing (we'll get to that), and that is <em>not persisted to local storage</em>.</p>
 
-<pre><code>var myAwesomeInstance = new Tripod();</code></pre>
+<pre><code class="js">var myAwesomeInstance = new Tripod();</code></pre>
 
 <h3>Full Example</h3>
 
-<pre><code>var attributes = {
+<pre><code class="js">var attributes = {
 	make: 'Ford',
 	model: 'Pinto',
 	color: 'Rust'

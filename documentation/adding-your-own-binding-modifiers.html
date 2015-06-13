@@ -7,7 +7,7 @@ title: Adding Your Own Binding Modifiers
 
 <p>Just add your own method to <code>Tripod.bindingModifierFunctions</code>, like so:</p>
 
-<pre><code>Tripod.bindingModifierFunctions.numberToEnglish = function(node, value, bindingModifiers) {
+<pre><code class="js">Tripod.bindingModifierFunctions.numberToEnglish = function(node, value, bindingModifiers) {
 	switch(value) {
 		case '1':
 			return 'one';
@@ -28,7 +28,7 @@ title: Adding Your Own Binding Modifiers
 
 <p>Consider this example:</p>
 
-<pre><code>Tripod.bindingModifierFunctions.makeItBlue = function(node, value, bindingModifiers) {
+<pre><code class="js">Tripod.bindingModifierFunctions.makeItBlue = function(node, value, bindingModifiers) {
 	if(value === '5') {
 		node.style.color = 'blue';
 	}
@@ -55,19 +55,17 @@ title: Adding Your Own Binding Modifiers
 
 <h4>Modifier Arguments Example: <code>toggleClass</code></h4>
 
-<pre><code>&lt;span data-bound-to="someAttribute" data-bound-as="toggleClass | myAwesomeClass"&gt;&lt;/span&gt;
+<pre><code>&lt;span data-bound-to="someAttribute" data-bound-as="toggleClass | myAwesomeClass"&gt;&lt;/span&gt;</code></pre>
 
-&lt;script&gt;
-	//the built-in toggleClass modifier, slightly modified for clarity
-	Tripod.bindingModifierFunctions.toggleClass = function(node, value, bindingModifiers) {
-		if(bindingModifiers.length === 2) {
-			var cssClassName = bindingModifiers[1];
-			Tripod.util.toggleClass(node, cssClassName, value);
-		} else {
-			throw 'toggleClass requires a parameter.';
-		}
-	};
-&lt;/script&gt;</code></pre>
+<pre><code class="js">//the built-in toggleClass modifier, slightly modified for clarity
+Tripod.bindingModifierFunctions.toggleClass = function(node, value, bindingModifiers) {
+	if(bindingModifiers.length === 2) {
+		var cssClassName = bindingModifiers[1];
+		Tripod.util.toggleClass(node, cssClassName, value);
+	} else {
+		throw 'toggleClass requires a parameter.';
+	}
+};</code></pre>
 
 <blockquote>
 	Remember that your function name is always the first item in the array your function is passed.

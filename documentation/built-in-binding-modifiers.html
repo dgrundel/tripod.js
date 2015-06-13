@@ -72,21 +72,18 @@ title: Built-In Binding Modifiers
 			&lt;td&gt;{lastName}&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;</code></pre>
 
-&lt;script&gt;
-	var t = new Tripod();
-	
-	// you can use a single object...
-	t.set('someAttribute', { firstName: 'Mark', lastName: 'Watney'});
+<pre><code class="js">var t = new Tripod();
+// you can use a single object...
+t.set('someAttribute', { firstName: 'Mark', lastName: 'Watney'});
 
-	// ...but it's more fun to use an array of objects
-	t.set('someAttribute', [
-		{ firstName: 'Mark', lastName: 'Watney'},
-		{ firstName: 'Harry', lastName: 'Dresden'},
-		{ firstName: 'Jack', lastName: 'Reacher'}
-	]);
-&lt;/script&gt;</code></pre>
+// ...but it's more fun to use an array of objects
+t.set('someAttribute', [
+	{ firstName: 'Mark', lastName: 'Watney'},
+	{ firstName: 'Harry', lastName: 'Dresden'},
+	{ firstName: 'Jack', lastName: 'Reacher'}
+]);</code></pre>
 
 <h4>Example DOM Result</h4>
 

@@ -15,7 +15,9 @@
 	<link rel="stylesheet" href="/tripod.js/css/normalize.css">
 	<link rel="stylesheet" href="/tripod.js/css/skeleton.css">
 	<link rel="stylesheet" href="/tripod.js/css/style.css">
+	<link rel="stylesheet" href="/tripod.js/css/tomorrow-night.css">
 
+	<script src="/tripod.js/js/highlight.pack.js"></script>
 	<script src="/tripod.js/js/tripod.js"></script>
 </head>
 <body>
@@ -179,21 +181,18 @@
 			&lt;td&gt;{lastName}&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;</code></pre>
 
-&lt;script&gt;
-	var t = new Tripod();
-	
-	// you can use a single object...
-	t.set('someAttribute', { firstName: 'Mark', lastName: 'Watney'});
+<pre><code class="js">var t = new Tripod();
+// you can use a single object...
+t.set('someAttribute', { firstName: 'Mark', lastName: 'Watney'});
 
-	// ...but it's more fun to use an array of objects
-	t.set('someAttribute', [
-		{ firstName: 'Mark', lastName: 'Watney'},
-		{ firstName: 'Harry', lastName: 'Dresden'},
-		{ firstName: 'Jack', lastName: 'Reacher'}
-	]);
-&lt;/script&gt;</code></pre>
+// ...but it's more fun to use an array of objects
+t.set('someAttribute', [
+	{ firstName: 'Mark', lastName: 'Watney'},
+	{ firstName: 'Harry', lastName: 'Dresden'},
+	{ firstName: 'Jack', lastName: 'Reacher'}
+]);</code></pre>
 
 <h4>Example DOM Result</h4>
 
@@ -234,6 +233,7 @@
 		</div>
 	</div>
 </div>
-
+	
+	<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

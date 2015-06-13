@@ -80,13 +80,10 @@ category: Home
 &lt;/p&gt;
 &lt;p&gt;Great! We'll put extra 
   &lt;strong data-bound-to="pizza.pizzaTopping"&gt;&lt;/strong&gt;
-  on your pizza!&lt;/p&gt;
+  on your pizza!&lt;/p&gt;</code></pre>
 
-&lt;script&gt;
-  var pizza = new Tripod({}, 'pizza', true);
-  pizza.sync('pizzaTopping');
-&lt;/script&gt;
-</code></pre>
+<pre><code class="js">var pizza = new Tripod({}, 'pizza', true);
+pizza.sync('pizzaTopping');</code></pre>
 			</div>
 		</div>
 	</div>
@@ -180,13 +177,10 @@ category: Home
 
 &lt;p data-bound-to="crazy.yourName" data-bound-as="show"&gt;
   Nice to meet you, &lt;strong data-bound-to="crazy.yourName"&gt;&lt;/strong&gt;!
-&lt;/p&gt;
+&lt;/p&gt;</code></pre>
 
-&lt;script&gt;
-  var crazy = new Tripod({}, 'crazy');
-  crazy.sync(['check', 'radio', 'yourName']);
-&lt;/script&gt;
-</code></pre>
+<pre><code class="js">var crazy = new Tripod({}, 'crazy');
+crazy.sync(['check', 'radio', 'yourName']);</code></pre>
 			</div>
 		</div>
 	</div>
@@ -268,13 +262,10 @@ category: Home
 
 &lt;p data-bound-to="mods.currency" data-bound-as="show"&gt;
   &lt;span data-bound-to="mods.currency" data-bound-as="currency"&gt;&lt;/span&gt;
-&lt;/p&gt;
+&lt;/p&gt;</code></pre>
 
-&lt;script&gt;
-  var mods = new Tripod({}, 'mods');
-  mods.sync(['check', 'red', 'currency']);
-&lt;/script&gt;
-</code></pre>
+<pre><code class="js">var mods = new Tripod({}, 'mods');
+mods.sync(['check', 'red', 'currency']);</code></pre>
 			</div>
 		</div>
 	</div>
@@ -342,21 +333,19 @@ category: Home
       &lt;td&gt;{salary}&lt;/td&gt;
     &lt;/tr&gt;       
   &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;</code></pre>
 
-&lt;script&gt;
-  var data = {
-    salaryTable: [
-      { name: 'Bob', dept: 'Human Resources', salary: '$56,000'},
-      { name: 'Jane', dept: 'Engineering', salary: '$118,000'},
-      { name: 'Sue', dept: 'Management', salary: '$231,500'}
-    ]
-  };
+<pre><code class="js">
+var data = {
+  salaryTable: [
+    { name: 'Bob', dept: 'Human Resources', salary: '$56,000'},
+    { name: 'Jane', dept: 'Engineering', salary: '$118,000'},
+    { name: 'Sue', dept: 'Management', salary: '$231,500'}
+  ]
+};
 
-  var templating = new Tripod(data, 'templating');
-  templating.push('salaryTable');
-&lt;/script&gt;
-</code></pre>
+var templating = new Tripod(data, 'templating');
+templating.push('salaryTable');</code></pre>
 			</div>
 		</div>
 	</div>

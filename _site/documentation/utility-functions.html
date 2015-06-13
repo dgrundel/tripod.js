@@ -15,7 +15,9 @@
 	<link rel="stylesheet" href="/tripod.js/css/normalize.css">
 	<link rel="stylesheet" href="/tripod.js/css/skeleton.css">
 	<link rel="stylesheet" href="/tripod.js/css/style.css">
+	<link rel="stylesheet" href="/tripod.js/css/tomorrow-night.css">
 
+	<script src="/tripod.js/js/highlight.pack.js"></script>
 	<script src="/tripod.js/js/tripod.js"></script>
 </head>
 <body>
@@ -115,7 +117,7 @@
 <h3><code>Tripod.util.isArray()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.isArray(someVar)</code></pre>
+<pre><code class="js">Tripod.util.isArray(someVar)</code></pre>
 
 <p>Returns boolean <code>true</code> if the argument passed to it is an array.</p>
 
@@ -123,7 +125,7 @@
 <h3><code>Tripod.util.isNotBlank()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.isNotBlank(someVar)</code></pre>
+<pre><code class="js">Tripod.util.isNotBlank(someVar)</code></pre>
 
 <p>Returns boolean <code>true</code> if the argument passed to it is truthy or boolean <code>false</code>.</p>
 
@@ -131,7 +133,7 @@
 <h3><code>Tripod.util.arrayMap()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.arrayMap(array, function)</code></pre>
+<pre><code class="js">Tripod.util.arrayMap(array, callbackFunction)</code></pre>
 
 <p>Iterates over the array passed and executes the passed function against every element of the array.</p>
 <p>The array element is passed as the only argument to the function, and the function's return value is stored back in the array at the same index.</p>
@@ -139,7 +141,7 @@
 
 <h4>Example</h4>
 
-<pre><code>var myArray = ['a', 'b', 'c', 'd'];
+<pre><code class="js">var myArray = ['a', 'b', 'c', 'd'];
 var upCaseIt = function(s) {
 	return s.toUpperCase();
 };
@@ -149,7 +151,7 @@ Tripod.util.arrayMap(myArray, upCaseIt); // returns ['A', 'B', 'C', 'D']</code><
 <h3><code>Tripod.util.trim()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.trim(string)</code></pre>
+<pre><code class="js">Tripod.util.trim(string)</code></pre>
 
 <p>A simple, fast string trim implementation.</p>
 
@@ -157,7 +159,7 @@ Tripod.util.arrayMap(myArray, upCaseIt); // returns ['A', 'B', 'C', 'D']</code><
 <h3><code>Tripod.util.cloneObject()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.cloneObject(object)</code></pre>
+<pre><code class="js">Tripod.util.cloneObject(object)</code></pre>
 
 <p>Performs a <strong>shallow</strong> copy of the passed object and returns the copy.</p>
 
@@ -165,7 +167,7 @@ Tripod.util.arrayMap(myArray, upCaseIt); // returns ['A', 'B', 'C', 'D']</code><
 <h3><code>Tripod.util.toggleClass()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.toggleClass(domNode, className, addOrRemove)</code></pre>
+<pre><code class="js">Tripod.util.toggleClass(domNode, className, addOrRemove)</code></pre>
 
 <p>Adds or removes a CSS class based on the third argument. If the third argument is truthy, the class is added. Otherwise it is removed.</p>
 <p>Classes will not be added twice, and no error will occur if <code>toggleClass</code> is asked to remove a class that isn't present.</p>
@@ -174,14 +176,14 @@ Tripod.util.arrayMap(myArray, upCaseIt); // returns ['A', 'B', 'C', 'D']</code><
 <h3><code>Tripod.util.formatAsCurrency()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.formatAsCurrency(numberOrString[, currencySymbol])</code></pre>
+<pre><code class="js">Tripod.util.formatAsCurrency(numberOrString[, currencySymbol])</code></pre>
 
 <p>Given a number or string containing a number, returns a currency formatted string.</p>
 <p><code>currencySymbol</code> is optional and defaults to <code>$</code></p>
 
 <h4>Examples</h4>
 
-<pre><code>Tripod.util.formatAsCurrency(123456.7); // $123,456.70
+<pre><code class="js">Tripod.util.formatAsCurrency(123456.7); // $123,456.70
 Tripod.util.formatAsCurrency('123456'); // $123,456.00
 Tripod.util.formatAsCurrency('hello123'); // $123.00
 Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
@@ -190,7 +192,7 @@ Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
 <h3><code>Tripod.util.getNodeValue()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.getNodeValue(domNode)</code></pre>
+<pre><code class="js">Tripod.util.getNodeValue(domNode)</code></pre>
 
 <p>The method Tripod uses to retrieve the "value" of a DOM node.</p>
 <p>See <a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>.</p>
@@ -199,7 +201,7 @@ Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
 <h3><code>Tripod.util.setNodeValue()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.setNodeValue(domNode, value)</code></pre>
+<pre><code class="js">Tripod.util.setNodeValue(domNode, value)</code></pre>
 
 <p>The method Tripod uses to set the "value" of a DOM node.</p>
 <p>See <a href="/tripod.js/documentation/node-properties-used-for-data-binding.html">Node Properties Used for Data Binding</a>.</p>
@@ -208,7 +210,7 @@ Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
 <h3><code>Tripod.util.getNodesByAttributeValue()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.getNodesByAttributeValue(attributeName, attributeValue[, parentNode])</code></pre>
+<pre><code class="js">Tripod.util.getNodesByAttributeValue(attributeName, attributeValue[, parentNode])</code></pre>
 
 <p>The method Tripod uses to get DOM nodes based on their binding attributes. 
 	You can pass at HTML attribute name and value to grab matching DOM nodes.</p>
@@ -220,13 +222,13 @@ Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
 <h3><code>Tripod.util.processTemplate()</code></h3>
 
 <h4>Method signature</h4>
-<pre><code>Tripod.util.processTemplate(templateString, data)</code></pre>
+<pre><code class="js">Tripod.util.processTemplate(templateString, data)</code></pre>
 
 <p>A handlebars<em>-ish</em> templating engine. Tripod uses this for the <code>template</code> binding modifier.</p>
 
 <h4>Example</h4>
 
-<pre><code>var templateString = "Hello, {name}!";
+<pre><code class="js">var templateString = "Hello, {name}!";
 var data = { name: 'world' };
 Tripod.util.processTemplate(templateString, data); // returns "Hello, world!"</code></pre>
 	
@@ -244,6 +246,7 @@ Tripod.util.processTemplate(templateString, data); // returns "Hello, world!"</c
 		</div>
 	</div>
 </div>
-
+	
+	<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

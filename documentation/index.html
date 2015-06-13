@@ -11,17 +11,14 @@ title: Quick Start
 
 <h3>New it Up and Add Some Data</h3>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod();
-	tripod.set('who', 'world');
-&lt;/script&gt;</code></pre>
+<pre><code class="js">var tripod = new Tripod();
+tripod.set('who', 'world');</code></pre>
 
 <p><em>or</em></p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' });
-	tripod.push('who');
-&lt;/script&gt;</code></pre>
+<pre><code class="js">var tripod = new Tripod({ who: 'world' });
+tripod.push('who');
+</code></pre>
 
 <blockquote><code>push()</code> manually pushes your data to all bound DOM nodes. <code>set()</code> performs a <code>push()</code> for you.</blockquote>
 
@@ -37,10 +34,8 @@ title: Quick Start
 
 <p>To save the data to LocalStorage and automatically sync across tabs, we need to make two small changes to our Javascript:</p>
 
-<pre><code>&lt;script&gt;
-	var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
-	tripod.<span class="highlight">sync</span>('who');
-&lt;/script&gt;</code></pre>
+<pre><code class="js">var tripod = new Tripod({ who: 'world' }<span class="highlight">, '', true</span>);
+tripod.<span class="highlight">sync</span>('who');</code></pre>
 
 <p>First, we have to pass <code>true</code> as the third argument to our constructor. This tells Tripod to sync changes to LocalStorage.</p>
 

@@ -38,7 +38,7 @@ title: Data binding and the DOM
 
 <p>Snatching this up and adding it to our <code>firstCar</code> instance is trivial:</p>
 
-<pre><code>firstCar.load('fuel');</code></pre>
+<pre><code class="js">firstCar.load('fuel');</code></pre>
 
 <p><code>load()</code> works like <code>set()</code> in that the attribute doesn't have to exist
 	before you call it. It will be created for you.</p>
@@ -64,13 +64,13 @@ title: Data binding and the DOM
 
 <p><code>push()</code> to the rescue!</p>
 
-<pre><code>firstCar.push('make');
+<pre><code class="js">firstCar.push('make');
 firstCar.push('model');
 firstCar.push('year');</code></pre>
 
 <p>Or, if you're into the whole brevity thing:</p>
 
-<pre><code>firstCar.push(['make', 'model', 'year']);</code></pre>
+<pre><code class="js">firstCar.push(['make', 'model', 'year']);</code></pre>
 
 <blockquote><em>Protip:</em> <code>load()</code> and <code>push()</code> also accept an array of attributes.</blockquote>
 
@@ -98,17 +98,14 @@ firstCar.push('year');</code></pre>
 &lt;/div&gt;
 &lt;div id="two"&gt;
 	&lt;input type="text" data-bound-to="confusion" value="2"&gt;
-&lt;/div&gt;
+&lt;/div&gt;</code></pre>
 
-&lt;script&gt;
-	var t = new Tripod();
+<pre><code class="js">var t = new Tripod();
+t.load('confusion');
+t.get('confusion'); // returns '1';
 
-	t.load('confusion');
-	t.get('confusion'); // returns '1';
-	
-	t.load('confusion', document.getElementById('two'));
-	t.get('confusion'); // returns '2';
-&lt;/script&gt;</code></pre>
+t.load('confusion', document.getElementById('two'));
+t.get('confusion'); // returns '2';</code></pre>
 
 <blockquote><code>load()</code> expects the second argument to be a DOM node that <em>contains</em> 
 	the bound elements you want, not a bound element itself.</blockquote>

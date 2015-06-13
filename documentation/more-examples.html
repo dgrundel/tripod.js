@@ -17,14 +17,12 @@ title: More Examples
 		&lt;option value="AR"&gt;Arkansas&lt;/option&gt;
 		...
 	&lt;/select&gt;
-&lt;/p&gt;
+&lt;/p&gt;</code></pre>
 
-&lt;script&gt;
-	var address = new Tripod({}, 'address');
-	address.load(['city', 'state']);
-	console.log(address.get('city')); // "Anchorage"
-	console.log(address.get('state')); // "AK"
-&lt;/script&gt;</code></pre>
+<pre><code class="js">var address = new Tripod({}, 'address');
+address.load(['city', 'state']);
+console.log(address.get('city')); // "Anchorage"
+console.log(address.get('state')); // "AK"</code></pre>
 
 <h3>When Data is Loaded into the Page on the Client Side (via AJAX)</h3>
 
@@ -37,12 +35,10 @@ title: More Examples
 	&lt;select data-bound-to="address.state"&gt;
 	...
 &lt;/select&gt;
-&lt;/p&gt;
+&lt;/p&gt;</code></pre>
 
-&lt;script&gt;
-	// example AJAX call. Returns {city: 'Anchorage', state: 'AK'}
-	var addressData = someAjaxCallToGetData();
-	var address = new Tripod(addressData, 'address');
-	address.pushAll(); // now the DOM reflects the loaded AJAX data
-&lt;/script&gt;</code></pre>
+<pre><code class="js">// example AJAX call. Returns {city: 'Anchorage', state: 'AK'}
+var addressData = someAjaxCallToGetData();
+var address = new Tripod(addressData, 'address');
+address.pushAll(); // now the DOM reflects the loaded AJAX data</code></pre>
 
