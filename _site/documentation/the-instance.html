@@ -115,15 +115,13 @@
 			<p>The instance is basically just an object that you put data into and pull data out of, just like any other JS object.
 	The main difference here is that you use getters and setters, but we'll get to that in a moment.</p>
 
-<p>Here's the gist of it:</p>
-
-<pre><code class="js">var myAwesomeInstance = new Tripod([[[(object) initialAttributes], (string) namespace], (boolean) persist]);</code></pre>
 
 <h3>Simplest Example</h3>
 
 <p>Just use the <code>new</code> keyword and you're on your way. This creates an instance with no set attributes, no namespacing (we'll get to that), and that is <em>not persisted to local storage</em>.</p>
 
 <pre><code class="js">var myAwesomeInstance = new Tripod();</code></pre>
+
 
 <h3>Full Example</h3>
 
@@ -138,11 +136,18 @@ var persistToLocalStorage = false;
 var firstCar = new Tripod(attributes, namespace, persistToLocalStorage);</code></pre>
 
 <p>So, what did we do?</p>
+
 <p>Hopefully the attributes piece is pretty straightforward. Those are the attributes our object will start with.
 	You can always set more later, this is just to get your object going.</p>
+
+<blockquote>You can add new attributes to your object at any time with <code>set()</code>.</blockquote>
+
 <p>The namespace tells Tripod which nodes in the DOM belong to this instance. We'll talk about that a little more in minute.</p>
+
 <p>The last argument is a boolean that tells Tripod whether or not to store data in Local Storage as well.
 	If <code>true</code>, data is saved in Local Storage as it is updated and changes will synchronize across open browser tabs. Neat!</p>
+
+<blockquote>By default, data is <em>not</em> saved in LocalStorage.</blockquote>
 	
 		</div>
 	</div>
