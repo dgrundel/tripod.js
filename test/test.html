@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tripod.js Unit Tests</title>
+	<link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.18.0.css">
+	<style>
+		#tripodTestDom { display: none; }
+	</style>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+
+	<div id="tripodTestDom">
+		<input type="text" data-bound-to="test.domLoadTest" value="domLoadTestValue">
+
+		<input type="text" data-bound-to="test.domLoadAllTest" value="domLoadAllTestValue">
+
+		<input id="domPushTestNode" type="text" data-bound-to="test.domPushTest">
+
+		<input id="domPushAllTestNode" type="text" data-bound-to="test.domPushAllTest">
+
+		<input id="domSyncTestNode" type="text" data-bound-to="test.domSyncTest" value="domSyncTestValue">
+		<input id="domSyncTestNode2" type="text" data-bound-to="test.domSyncTest">
+
+		<input id="domSyncAllTestNode" type="text" data-bound-to="test.domSyncAllTest" value="domSyncAllTestValue">
+		<input id="domSyncAllTestNode2" type="text" data-bound-to="test.domSyncAllTest">
+	</div>
+	
+	<script src="../tripod.js"></script>
+	<script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
+	<script src="tripod.tests.js"></script>
+	<script src="tripod.util.tests.js"></script>
+</body>
+</html>

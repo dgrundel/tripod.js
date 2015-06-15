@@ -276,7 +276,7 @@ Tripod.util = {
 		return Object.prototype.toString.call(obj) === '[object Array]';
 	},
 	isNotBlank: function(value) {
-		return value || value === false;
+		return value || value === false || value === 0 ? true : false;
 	},
 	arrayMap: function(arr, callback) {
 		var len = arr.length;
@@ -286,9 +286,9 @@ Tripod.util = {
 		return arr;
 	},
 	trim: function(str) {
+		str = str.replace(/^\s\s*/, '');
 		var ws = /\s/;
 		var i = str.length;
-		str = str.replace(/^\s\s*/, '');
 		while (ws.test(str.charAt(--i)));
 		return str.slice(0, i + 1);
 	},
@@ -308,15 +308,17 @@ Tripod.util = {
 
 		if(value && !hasClass) {
 			appliedClasses.push(className);
-		} else if(hasClass) {
+		} else if(!value && hasClass) {
 			appliedClasses.splice(index, 1);
+		} else {
+			return; //no action needed
 		}
 
 		node.className = appliedClasses.join(' ');
 	},
 	formatAsCurrency: function(value, currencySymbol) {
 		currencySymbol = currencySymbol || '$';
-		var valueAsNumber = Number(value.replace(/[^0-9.]/g, '')).toFixed(2);
+		var valueAsNumber = Number((value + '').replace(/[^0-9.]/g, '')).toFixed(2);
 		return currencySymbol + valueAsNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,');
 	},
 	getNodeValue: function(node) {
@@ -416,7 +418,7 @@ Tripod.bindingModifierFunctions = {
 		if(bindingModifiers.length === 2) {
 			node.style.display = (value + '') === bindingModifiers[1] ? 'block' : 'none';
 		} else {
-			throw 'showIfEqualTo requires a parameter.'
+			throw 'showIfEqualTo requires a parameter.';
 		}
 	},
 	hide: function(node, value) {
@@ -426,7 +428,7 @@ Tripod.bindingModifierFunctions = {
 		if(bindingModifiers.length === 2) {
 			node.style.display = (value + '') === bindingModifiers[1] ? 'none' : 'block';
 		} else {
-			throw 'hideIfEqualTo requires a parameter.'
+			throw 'hideIfEqualTo requires a parameter.';
 		}
 	},
 	enable: function(node, value) {
@@ -439,7 +441,7 @@ Tripod.bindingModifierFunctions = {
 		if(bindingModifiers.length === 2) {
 			Tripod.util.toggleClass(node, bindingModifiers[1], value);
 		} else {
-			throw 'toggleClass requires a parameter.'
+			throw 'toggleClass requires a parameter.';
 		}
 	},
 	currency: function(node, value, bindingModifiers) {
@@ -459,7 +461,7 @@ Tripod.bindingModifierFunctions = {
 				generatedHtml += Tripod.util.processTemplate(templateHtml, value[ii]);
 			}
 			node.innerHTML = generatedHtml;
-			node.setAttribute(templateAttributeName, templateHtml)
+			node.setAttribute(templateAttributeName, templateHtml);
 		}
 	},
 	value: function(node, value) {
