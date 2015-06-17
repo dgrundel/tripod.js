@@ -155,6 +155,46 @@ QUnit.test("Tripod.util.formatAsCurrency with Undefined", function( assert ) {
 });
 
 // Tripod.util.getNodeValue: function(node)
+
+function assertNodeValue(assert, nodeId) {
+	var testNode = document.getElementById(nodeId);
+	assert.deepEqual(Tripod.util.getNodeValue(testNode), 'utilGetNodeValueTestValue');
+}
+
+QUnit.test("Tripod.util.getNodeValue with Input", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestInput');
+});
+
+QUnit.test("Tripod.util.getNodeValue with Textarea", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestParagraph');
+});
+
+QUnit.test("Tripod.util.getNodeValue with Anchor", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestTextarea');
+});
+
+QUnit.test("Tripod.util.getNodeValue with Select with Value", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestSelectWithValue');
+});
+
+QUnit.test("Tripod.util.getNodeValue with Select with No Value", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestSelectNoValue');
+});
+
+QUnit.test("Tripod.util.getNodeValue with Radio", function( assert ) {
+	assertNodeValue(assert, 'utilGetNodeValueTestRadio');
+});
+
 // Tripod.util.setNodeValue: function(node, value)
 // Tripod.util.getNodesByAttributeValue: function(attributeName, attributeValue, parentNode)
+
 // Tripod.util.processTemplate: function(templateString, data)
+
+QUnit.test("Tripod.util.processTemplate", function( assert ) {
+	var testTemplate = "{greeting}, {who}!";
+	var testData = { 
+		greeting: 'Hello',
+		who: 'test' 
+	};
+	assert.deepEqual(Tripod.util.processTemplate(testTemplate, testData), 'Hello, test!');
+});

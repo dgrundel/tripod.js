@@ -26,6 +26,28 @@
 
 		<input id="domSyncAllTestNode" type="text" data-bound-to="test.domSyncAllTest" value="domSyncAllTestValue">
 		<input id="domSyncAllTestNode2" type="text" data-bound-to="test.domSyncAllTest">
+
+		<input id="utilGetNodeValueTestInput" type="text" value="utilGetNodeValueTestValue">
+		
+		<p id="utilGetNodeValueTestParagraph">utilGetNodeValueTestValue</p>
+		
+		<textarea id="utilGetNodeValueTestTextarea">utilGetNodeValueTestValue</textarea>
+		
+		<select id="utilGetNodeValueTestSelectWithValue">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option selected="selected" value="utilGetNodeValueTestValue">3</option>
+		</select>
+
+		<select id="utilGetNodeValueTestSelectNoValue">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option selected="selected">utilGetNodeValueTestValue</option>
+		</select>
+
+		<input type="radio" id="utilGetNodeValueTestRadio" name="utilGetNodeValueTestRadioName" value="1">
+		<input type="radio" name="utilGetNodeValueTestRadioName" value="2">
+		<input type="radio" name="utilGetNodeValueTestRadioName" value="utilGetNodeValueTestValue" checked="checked">
 	</div>
 	
 	<script src="../tripod.js"></script>
