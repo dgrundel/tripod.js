@@ -1,15 +1,19 @@
+function assertNodeDisplay(assert, testNode, isHidden) {
+	assert.deepEqual(testNode.style.display, isHidden ? 'none' : 'block');
+}
+
 // Tripod.bindingModifierFunctions.show: function(node, value) {
 
 QUnit.test("Tripod.bindingModifierFunctions.show with true", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.show(testNode, true);
-	assert.deepEqual(testNode.style.display, 'block');
+	assertNodeDisplay(assert, testNode, false);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.show with false", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.show(testNode, false);
-	assert.deepEqual(testNode.style.display, 'none');
+	assertNodeDisplay(assert, testNode, true);
 });
 
 // Tripod.bindingModifierFunctions.showIfEqualTo: function(node, value, bindingModifiers) {
@@ -17,13 +21,13 @@ QUnit.test("Tripod.bindingModifierFunctions.show with false", function( assert )
 QUnit.test("Tripod.bindingModifierFunctions.showIfEqualTo with true condition", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.showIfEqualTo(testNode, 'someValue', ['showIfEqualTo', 'someValue']);
-	assert.deepEqual(testNode.style.display, 'block');
+	assertNodeDisplay(assert, testNode, false);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.showIfEqualTo with false condition", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.showIfEqualTo(testNode, 'someValue', ['showIfEqualTo', 'someOtherValue']);
-	assert.deepEqual(testNode.style.display, 'none');
+	assertNodeDisplay(assert, testNode, true);
 });
 
 // Tripod.bindingModifierFunctions.hide: function(node, value) {
@@ -31,13 +35,13 @@ QUnit.test("Tripod.bindingModifierFunctions.showIfEqualTo with false condition",
 QUnit.test("Tripod.bindingModifierFunctions.hide with true", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.hide(testNode, true);
-	assert.deepEqual(testNode.style.display, 'none');
+	assertNodeDisplay(assert, testNode, true);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.hide with false", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.hide(testNode, false);
-	assert.deepEqual(testNode.style.display, 'block');
+	assertNodeDisplay(assert, testNode, false);
 });
 
 // Tripod.bindingModifierFunctions.hideIfEqualTo: function(node, value, bindingModifiers) {
@@ -45,69 +49,71 @@ QUnit.test("Tripod.bindingModifierFunctions.hide with false", function( assert )
 QUnit.test("Tripod.bindingModifierFunctions.hideIfEqualTo with true condition", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.hideIfEqualTo(testNode, 'someValue', ['hideIfEqualTo', 'someValue']);
-	assert.deepEqual(testNode.style.display, 'none');
+	assertNodeDisplay(assert, testNode, true);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.hideIfEqualTo with false condition", function( assert ) {
 	var testNode = document.createElement('div');
 	Tripod.bindingModifierFunctions.hideIfEqualTo(testNode, 'someValue', ['hideIfEqualTo', 'someOtherValue']);
-	assert.deepEqual(testNode.style.display, 'block');
+	assertNodeDisplay(assert, testNode, false);
 });
 
 // Tripod.bindingModifierFunctions.enable: function(node, value) {
 
+function assertEnableBindingModifier(assert, testNode, isDisabled) {
+	Tripod.bindingModifierFunctions.enable(testNode, !isDisabled);
+	assert.deepEqual(testNode.disabled, isDisabled);
+}
+
 QUnit.test("Tripod.bindingModifierFunctions.enable with true", function( assert ) {
 	var testNode = document.createElement('input');
-	Tripod.bindingModifierFunctions.enable(testNode, true);
-	assert.deepEqual(testNode.disabled, false);
+	assertEnableBindingModifier(assert, testNode, false);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.enable with true with disabled node", function( assert ) {
 	var testNode = document.createElement('input');
 	testNode.disabled = true;
-	Tripod.bindingModifierFunctions.enable(testNode, true);
-	assert.deepEqual(testNode.disabled, false);
+	assertEnableBindingModifier(assert, testNode, false);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.enable with false", function( assert ) {
 	var testNode = document.createElement('input');
-	Tripod.bindingModifierFunctions.enable(testNode, false);
-	assert.deepEqual(testNode.disabled, true);
+	assertEnableBindingModifier(assert, testNode, true);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.enable with false with disabled node", function( assert ) {
 	var testNode = document.createElement('input');
 	testNode.disabled = true;
-	Tripod.bindingModifierFunctions.enable(testNode, false);
-	assert.deepEqual(testNode.disabled, true);
+	assertEnableBindingModifier(assert, testNode, true);
 });
 
 // Tripod.bindingModifierFunctions.disable: function(node, value) {
 
+function assertDisableBindingModifier(assert, testNode, isDisabled) {
+	Tripod.bindingModifierFunctions.disable(testNode, isDisabled);
+	assert.deepEqual(testNode.disabled, isDisabled);
+}
+
 QUnit.test("Tripod.bindingModifierFunctions.disable with true", function( assert ) {
 	var testNode = document.createElement('input');
-	Tripod.bindingModifierFunctions.disable(testNode, true);
-	assert.deepEqual(testNode.disabled, true);
+	assertDisableBindingModifier(assert, testNode, true);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.disable with true with disabled node", function( assert ) {
 	var testNode = document.createElement('input');
 	testNode.disabled = true;
-	Tripod.bindingModifierFunctions.disable(testNode, true);
-	assert.deepEqual(testNode.disabled, true);
+	assertDisableBindingModifier(assert, testNode, true);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.disable with false", function( assert ) {
 	var testNode = document.createElement('input');
-	Tripod.bindingModifierFunctions.disable(testNode, false);
-	assert.deepEqual(testNode.disabled, false);
+	assertDisableBindingModifier(assert, testNode, false);
 });
 
 QUnit.test("Tripod.bindingModifierFunctions.disable with false with disabled node", function( assert ) {
 	var testNode = document.createElement('input');
 	testNode.disabled = true;
-	Tripod.bindingModifierFunctions.disable(testNode, false);
-	assert.deepEqual(testNode.disabled, false);
+	assertDisableBindingModifier(assert, testNode, false);
 });
 
 // Tripod.bindingModifierFunctions.toggleClass: function(node, value, bindingModifiers) {
