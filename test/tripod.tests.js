@@ -1,3 +1,4 @@
+QUnit.module("Tripod Instance");
 
 QUnit.test("Empty Attributes", function( assert ) {
 	var t = new Tripod();

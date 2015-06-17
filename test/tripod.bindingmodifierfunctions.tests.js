@@ -1,3 +1,5 @@
+QUnit.module("Tripod.bindingModifierFunctions");
+
 function assertNodeDisplay(assert, testNode, isHidden) {
 	assert.deepEqual(testNode.style.display, isHidden ? 'none' : 'block');
 }

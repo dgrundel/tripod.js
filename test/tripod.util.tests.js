@@ -1,3 +1,5 @@
+QUnit.module("Tripod.util");
+
 // Tripod.util.isArray: function(obj)
 
 QUnit.test("Tripod.util.isArray with Array", function( assert ) {
