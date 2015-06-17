@@ -112,3 +112,40 @@ QUnit.test("DOM SyncAll", function( assert ) {
 	assert.deepEqual(t.get('domSyncAllTest'), 'domSyncAllTestValue');
 	assert.deepEqual(domValue, 'domSyncAllTestValue');
 });
+
+function setLocalStorageItem(key, value) {
+	localStorage.setItem(key, JSON.stringify(value));
+}
+
+function getLocalStorageItem(key) {
+	var value = localStorage.getItem(key);
+	return value ? JSON.parse(value) : null;
+}
+
+QUnit.test("LocalStorage Persist", function( assert ) {
+	var t = new Tripod({}, 'localStoragePersistTest', true);
+	var localStorageKey = 'localStoragePersistTest.localStoragePersistTestAttribute';
+	var testValue;
+
+	t.set('localStoragePersistTestAttribute', 'localStoragePersistTestValue');
+	
+	testValue = getLocalStorageItem(localStorageKey);
+	localStorage.removeItem(localStorageKey);
+	
+	assert.deepEqual(testValue, 'localStoragePersistTestValue');
+});
+
+QUnit.test("LocalStorage Load", function( assert ) {
+	var t = new Tripod({}, 'localStorageLoadTest', true);
+	var localStorageKey = 'localStorageLoadTest.localStorageLoadTestAttribute';
+	var testValue;
+
+	setLocalStorageItem(localStorageKey, 'localStorageLoadTestValue');
+
+	t.load('localStorageLoadTestAttribute');
+	
+	testValue = t.get('localStorageLoadTestAttribute');
+	localStorage.removeItem(localStorageKey);
+	
+	assert.deepEqual(testValue, 'localStorageLoadTestValue');
+});
