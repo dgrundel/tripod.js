@@ -45,9 +45,47 @@
 			<option selected="selected">utilGetNodeValueTestValue</option>
 		</select>
 
-		<input type="radio" id="utilGetNodeValueTestRadio" name="utilGetNodeValueTestRadioName" value="1">
+		<input type="radio" name="utilGetNodeValueTestRadioName" value="1" id="utilGetNodeValueTestRadio">
 		<input type="radio" name="utilGetNodeValueTestRadioName" value="2">
 		<input type="radio" name="utilGetNodeValueTestRadioName" value="utilGetNodeValueTestValue" checked="checked">
+
+		<input id="utilSetNodeValueTestInput" type="text">
+		
+		<p id="utilSetNodeValueTestParagraph"></p>
+		
+		<textarea id="utilSetNodeValueTestTextarea"></textarea>
+		
+		<select id="utilSetNodeValueTestSelectWithValue">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="utilSetNodeValueTestValue">3</option>
+		</select>
+
+		<select id="utilSetNodeValueTestSelectNoValue">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option>utilSetNodeValueTestValue</option>
+		</select>
+
+		<input type="radio" name="utilSetNodeValueTestRadioName" value="1">
+		<input type="radio" name="utilSetNodeValueTestRadioName" value="2">
+		<input type="radio" name="utilSetNodeValueTestRadioName" value="utilSetNodeValueTestValue" id="utilSetNodeValueTestRadio">
+
+		<input type="text" data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue">
+		<p data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></p>
+		<h1 data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></h1>
+		<a data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></a>
+		<div data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></div>
+		<span data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></span>
+
+		<div id="utilGetNodesByAttributeValueParentNode">
+			<input type="text" data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue">
+			<p data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></p>
+			<h1 data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></h1>
+			<a data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></a>
+			<div data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></div>
+			<span data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></span>
+		</div>
 	</div>
 	
 	<script src="../tripod.js"></script>

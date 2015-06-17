@@ -165,11 +165,11 @@ QUnit.test("Tripod.util.getNodeValue with Input", function( assert ) {
 	assertNodeValue(assert, 'utilGetNodeValueTestInput');
 });
 
-QUnit.test("Tripod.util.getNodeValue with Textarea", function( assert ) {
+QUnit.test("Tripod.util.getNodeValue with Paragraph", function( assert ) {
 	assertNodeValue(assert, 'utilGetNodeValueTestParagraph');
 });
 
-QUnit.test("Tripod.util.getNodeValue with Anchor", function( assert ) {
+QUnit.test("Tripod.util.getNodeValue with Textarea", function( assert ) {
 	assertNodeValue(assert, 'utilGetNodeValueTestTextarea');
 });
 
@@ -186,7 +186,66 @@ QUnit.test("Tripod.util.getNodeValue with Radio", function( assert ) {
 });
 
 // Tripod.util.setNodeValue: function(node, value)
+
+QUnit.test("Tripod.util.setNodeValue with Input", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestInput');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.value;
+	assert.deepEqual(actual, 'utilSetNodeValueTestValue');
+});
+
+QUnit.test("Tripod.util.setNodeValue with Paragraph", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestParagraph');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.textContent;
+	assert.deepEqual(actual, 'utilSetNodeValueTestValue');
+});
+
+QUnit.test("Tripod.util.setNodeValue with Textarea", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestTextarea');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.value;
+	assert.deepEqual(actual, 'utilSetNodeValueTestValue');
+});
+
+QUnit.test("Tripod.util.setNodeValue with Select with Value", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestSelectWithValue');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.options[testNode.selectedIndex].value;
+	assert.deepEqual(actual, 'utilSetNodeValueTestValue');
+});
+
+QUnit.test("Tripod.util.setNodeValue with Select with No Value", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestSelectNoValue');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.options[testNode.selectedIndex].value;
+	assert.deepEqual(actual, 'utilSetNodeValueTestValue');
+});
+
+QUnit.test("Tripod.util.setNodeValue with Radio", function( assert ) {
+	var testNode = document.getElementById('utilSetNodeValueTestRadio');
+	Tripod.util.setNodeValue(testNode, 'utilSetNodeValueTestValue');
+	var actual = testNode.checked;
+	assert.deepEqual(actual, true);
+});
+
 // Tripod.util.getNodesByAttributeValue: function(attributeName, attributeValue, parentNode)
+
+function assertGetNodesByAttributeValue(assert, nodeCount, testParentNode) {
+	var testAttributeName = 'data-util-get-nodes-by-attribute-value-attribute';
+	var testAttributeValue = 'utilGetNodesByAttributeValueValue';
+	var testNodes = Tripod.util.getNodesByAttributeValue(testAttributeName, testAttributeValue, testParentNode);
+	assert.deepEqual(testNodes.length, nodeCount);
+}
+
+QUnit.test("Tripod.util.getNodesByAttributeValue without parentNode", function( assert ) {
+	assertGetNodesByAttributeValue(assert, 12);
+});
+
+QUnit.test("Tripod.util.getNodesByAttributeValue with parentNode", function( assert ) {
+	var testParentNode = document.getElementById('utilGetNodesByAttributeValueParentNode');
+	assertGetNodesByAttributeValue(assert, 6, testParentNode);
+});
 
 // Tripod.util.processTemplate: function(templateString, data)
 
