@@ -10,6 +10,7 @@ body {
 }
 strong, strong *,
 th, th * { font-weight: 400; }
+h1, h2, h3, h4 { position: relative; }
 h2 { font-size: 3.6rem; }
 h3 { font-size: 2.9rem; }
 h4 { font-size: 2.5rem; }
@@ -32,6 +33,17 @@ h3 a, h3 a:hover,
 h4 a, h4 a:hover {
 	text-decoration: inherit;
 	color: inherit; 
+}
+
+.bg-icon {
+	font-size: 150px;
+	position: absolute;
+	top: -30px;
+	left: -20px;
+	z-index: -100;
+	opacity: .1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+	filter: alpha(opacity=10);
 }
 
 .hero {
