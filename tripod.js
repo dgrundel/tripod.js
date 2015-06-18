@@ -142,10 +142,43 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function setMany(attr, persist) {
-		for(var a in attr) {
-			if(a && attr.hasOwnProperty(a)) {
-				set(a, attr[a], persist);
+		if(typeof attr === 'object') {
+			for(var a in attr) {
+				if(a && attr.hasOwnProperty(a)) {
+					set(a, attr[a], persist);
+				}
 			}
+
+		} else {
+			throw 'attributes must be an object.';
+		}
+	}
+
+	function update(attr, value, persist) {
+		if(attr && typeof attr === 'string') {
+			if(attrs.hasOwnProperty(attr)) {
+				set(attr, value, persist);
+			}
+			
+		} else if(attr && typeof attr === 'object') {
+			updateMany(attr, persist);
+
+		} else {
+			throw 'attribute must be a non-empty string or object.';
+		}
+		
+	}
+
+	function updateMany(attr, persist) {
+		if(typeof attr === 'object') {
+			for(var a in attr) {
+				if(a && attr.hasOwnProperty(a)) {
+					update(a, attr[a], persist);
+				}
+			}
+
+		} else {
+			throw 'attributes must be an object.';
 		}
 	}
 	
@@ -247,6 +280,8 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		getAll: getAll,
 		set: set,
 		setMany: setMany,
+		update: update,
+		updateMany: updateMany,
 		load: load,
 		loadAll: loadAll,
 		push: push,
