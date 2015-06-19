@@ -149,3 +149,54 @@ QUnit.test("LocalStorage Load", function( assert ) {
 	
 	assert.deepEqual(testValue, 'localStorageLoadTestValue');
 });
+
+QUnit.test("Update", function( assert ) {
+	var t = new Tripod();
+	var exceptionText;
+	t.set('someAttribute', 'someValue');
+	t.update('someAttribute', 'someOtherValue');
+	t.update('someMissingAttribute', 'someMissingValue');
+
+	try {
+		t.get('someMissingAttribute');
+	} catch(e) {
+		exceptionText = e;
+	}
+
+	assert.deepEqual(t.get('someAttribute'), 'someOtherValue');
+	assert.deepEqual(exceptionText, 'attribute "someMissingAttribute" does not exist.');
+});
+
+QUnit.test("Update with Object", function( assert ) {
+	var t = new Tripod();
+	var exceptionText;
+
+	t.set({ someAttribute: 'someValue', someOtherAttribute: 'someOtherValue'});
+	t.update({ someAttribute: 'yetAnotherValue', someMissingAttribute: 'someMissingValue'});
+
+	try {
+		t.get('someMissingAttribute');
+	} catch(e) {
+		exceptionText = e;
+	}
+
+	assert.deepEqual(t.getAll(), { someAttribute: 'yetAnotherValue', someOtherAttribute: 'someOtherValue'});
+	assert.deepEqual(exceptionText, 'attribute "someMissingAttribute" does not exist.');
+});
+
+QUnit.test("UpdateMany", function( assert ) {
+	var t = new Tripod();
+	var exceptionText;
+
+	t.set({ someAttribute: 'someValue', someOtherAttribute: 'someOtherValue'});
+	t.updateMany({ someAttribute: 'yetAnotherValue', someMissingAttribute: 'someMissingValue'});
+
+	try {
+		t.get('someMissingAttribute');
+	} catch(e) {
+		exceptionText = e;
+	}
+
+	assert.deepEqual(t.getAll(), { someAttribute: 'yetAnotherValue', someOtherAttribute: 'someOtherValue'});
+	assert.deepEqual(exceptionText, 'attribute "someMissingAttribute" does not exist.');
+});
