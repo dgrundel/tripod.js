@@ -86,10 +86,17 @@
 			<div data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></div>
 			<span data-util-get-nodes-by-attribute-value-attribute="utilGetNodesByAttributeValueValue"></span>
 		</div>
+
+		<div id="bindingModifiersTemplate">{greeting}, {who}!</div>
+		<div id="bindingModifiersTemplateWithArray"><p>{greeting}, {who}!</p></div>
+		<script id="bindingModifiersTemplateExternalTemplate" type="text/template">{greeting}, {who}!</script>
 	</div>
 	
 	<script src="../tripod.js"></script>
 	<script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
+	<script>
+		QUnit.config.hidepassed = true;
+	</script>
 	<script src="tripod.tests.js"></script>
 	<script src="tripod.util.tests.js"></script>
 	<script src="tripod.bindingmodifierfunctions.tests.js"></script>

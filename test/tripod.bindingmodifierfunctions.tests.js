@@ -180,7 +180,74 @@ QUnit.test("Tripod.bindingModifierFunctions.currency with Undefined", function( 
 });
 
 // Tripod.bindingModifierFunctions.template: function(node, value, bindingModifiers) {
-// No tests yet.
+
+QUnit.test("Tripod.bindingModifierFunctions.template", function( assert ) {
+	var testNode = document.getElementById('bindingModifiersTemplate');
+	var testData = { 
+		greeting: 'Hello',
+		who: 'test' 
+	};
+
+	Tripod.bindingModifierFunctions.template(testNode, testData, ['template']);
+	
+	assert.deepEqual(testNode.innerHTML, 'Hello, test!');
+	assert.deepEqual(testNode.getAttribute('data-original-template'), '{greeting}, {who}!');
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.template with Array of Data", function( assert ) {
+	var testNode = document.getElementById('bindingModifiersTemplateWithArray');
+	var testData = [{
+		greeting: 'Hello',
+		who: 'test' 
+	},{
+		greeting: 'Goodbye',
+		who: 'Mark'
+	},{
+		greeting: 'Aloha',
+		who: 'Holly' 
+	}];
+
+	Tripod.bindingModifierFunctions.template(testNode, testData, ['template']);
+	
+	assert.deepEqual(testNode.innerHTML, '<p>Hello, test!</p><p>Goodbye, Mark!</p><p>Aloha, Holly!</p>');
+	assert.deepEqual(testNode.getAttribute('data-original-template'), '<p>{greeting}, {who}!</p>');
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.template with External Template", function( assert ) {
+	var testNode = document.createElement('div');
+	var testData = { 
+		greeting: 'Hello',
+		who: 'test' 
+	};
+
+	Tripod.bindingModifierFunctions.template(testNode, testData, ['template', 'bindingModifiersTemplateExternalTemplate']);
+	
+	assert.deepEqual(testNode.innerHTML, 'Hello, test!');
+});
 
 // Tripod.bindingModifierFunctions.value: function(node, value) {
-// No tests yet.
+
+QUnit.test("Tripod.bindingModifierFunctions.value with Null", function( assert ) {
+	var testValue = null;
+	assert.deepEqual(Tripod.bindingModifierFunctions.value(null, testValue, []), null);
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.value with Number", function( assert ) {
+	var testValue = 42;
+	assert.deepEqual(Tripod.bindingModifierFunctions.value(null, testValue, []), 42);
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.value with String", function( assert ) {
+	var testValue = 'someValue';
+	assert.deepEqual(Tripod.bindingModifierFunctions.value(null, testValue, []), 'someValue');
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.value with Array", function( assert ) {
+	var testValue = ['a', 'b', 'c'];
+	assert.deepEqual(Tripod.bindingModifierFunctions.value(null, testValue, []), ['a', 'b', 'c']);
+});
+
+QUnit.test("Tripod.bindingModifierFunctions.value with Object", function( assert ) {
+	var testValue = { a: '1', b: '2', c: '3' };
+	assert.deepEqual(Tripod.bindingModifierFunctions.value(null, testValue, []), { a: '1', b: '2', c: '3' });
+});

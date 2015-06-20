@@ -486,7 +486,19 @@ Tripod.bindingModifierFunctions = {
 	template: function(node, value, bindingModifiers) {
 		var templateAttributeName = 'data-original-template';
 		var generatedHtml = '';
-		var templateHtml = node.getAttribute(templateAttributeName) || node.innerHTML;
+		var templateNode;
+		var templateHtml = node.getAttribute(templateAttributeName);
+
+		if(!templateHtml) {
+			if(bindingModifiers.length === 2 && bindingModifiers[1]) {
+				templateNode = document.getElementById(bindingModifiers[1]);
+				if(templateNode) {
+					templateHtml = templateNode.innerHTML;
+				}
+			} else {
+				templateHtml = node.innerHTML;
+			}
+		}
 
 		if(templateHtml) {
 			if(!Tripod.util.isArray(value)) {
