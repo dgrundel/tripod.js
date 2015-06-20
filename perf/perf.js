@@ -25,7 +25,7 @@ perf.prototype.setup = function(callback) {
 	return this;
 }
 
-perf.prototype.addTeardown = function(callback) {
+perf.prototype.teardown = function(callback) {
 	this.teardowns.push(callback);
 	return this;
 }
@@ -77,7 +77,7 @@ perf.log = function(message, cssClass) {
 	if(cssClass) {
 		messageNode.className = cssClass;
 	}
-	messageNode.innerHTML = message;
+	messageNode.innerHTML = (message + '').replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
 	perf.config.logNode.appendChild(messageNode);
 
 	return this;
@@ -99,7 +99,7 @@ perf.compare = function() {
 		}
 	}
 
-	perf.log(fastest.formattedTestName + ' was fastest.', 'result');
+	perf.log(fastest.formattedTestName + ' is fastest.', 'result');
 }
 
 perf.config = {
