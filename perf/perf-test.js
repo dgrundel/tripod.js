@@ -1,15 +1,3 @@
-perf.log('So, for some reason, I couldn\'t get to JSPerf today. This is the result.');
-
-perf.log('Here\'s a really simple example test:');
-
-new perf('Add two numbers')
-	.test(function(namespace){
-		var result = 2 + 2;
-	})
-	.run();
-
-perf.log('...and now a little suite of tests that compares the results:');
-
 perf.compare(
 	'Testing methods to grab a template string from the DOM.',
 
