@@ -26,6 +26,18 @@ console.log(theColor); // "Rust"</code></pre>
 	If you <em>really</em> want to micro-optimize, you can pass your object to <code>setMany()</code> to avoid the
 	overhead of the additional function call and type checking.</blockquote>
 
+<h3><code>update()</code></h3>
+
+<p>Sometimes you only want to set an attribute if it already exists in your Tripod instance. 
+	<code>update()</code> will do that for you.</p>
+
+<p>The API for <code>update()</code> is identical to <code>set()</code>, so you can update either a 
+	single value using <code>update(attributeName, attributeValue)</code> or many values at once using
+	<code>update(object)</code>. There's even an <code>updateMany()</code> that is akin to <code>setMany()</code>.</p>
+
+<blockquote>When <code>update()</code> is passed an object, it iterates through the object's properties and updates
+	attributes that already exist. Other properties in the object are discarded.</blockquote>
+
 <h3>But, wait a minute, my data is in the DOM!</h3>
 
 <p>Hang on, we're getting there. I'll give you a hint. You're looking for <code>load()</code>.</p>
