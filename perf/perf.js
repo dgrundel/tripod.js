@@ -1,5 +1,6 @@
 var perf = function(testName) {
 	this.testName = testName;
+	this.formattedTestName = '<span class="testName">' + testName + '</span>';
 	this.iterations = perf.config.defaultIterations;
 	this.setups = [];
 	this.tests = [];
@@ -33,7 +34,6 @@ perf.prototype.run = function() {
 	var t0;
 	var t1;
 	var namespace = {};
-	var formattedName = '<span class="testName">' + this.testName + '</span>';
 	var error = false;
 	var runAll = function(arrayOfFunctions) {
 		for(var i = 0, l = arrayOfFunctions.length; i < l; i++) {
@@ -55,7 +55,7 @@ perf.prototype.run = function() {
 	t0 = performance.now();
 	for(var iterationIndex = 0; iterationIndex < this.iterations; iterationIndex++) {
 		if(runAll(this.tests) === false) {
-			perf.log('Exception thrown, ' + formattedName + ' ended prematurely.', 'alert');
+			perf.log('Exception thrown, ' + this.formattedTestName + ' ended prematurely.', 'alert');
 			error = true;
 			break;
 		}
@@ -66,7 +66,7 @@ perf.prototype.run = function() {
 
 	if(error !== true) {
 		this.lastRunTime = (t1 - t0);
-		perf.log(formattedName + ' (x ' + this.iterations + ') <span class="time">' + this.lastRunTime.toFixed(8) + ' ms</span>');
+		perf.log(this.formattedTestName + ' (x ' + this.iterations + ') <span class="time">' + this.lastRunTime.toFixed(8) + ' ms</span>');
 	}
 
 	return this;
@@ -81,6 +81,25 @@ perf.log = function(message, cssClass) {
 	perf.config.logNode.appendChild(messageNode);
 
 	return this;
+}
+
+perf.compare = function() {
+	var fastest = null;
+	for(var i = 0, l = arguments.length; i < l; i++) {
+		if(typeof arguments[i] === 'string') {
+			perf.log(arguments[i], 'note');
+
+		} else {
+			if(arguments[i].lastRunTime === 0) {
+				arguments[i].run();
+			}
+			if(fastest === null || arguments[i].lastRunTime < fastest.lastRunTime) {
+				fastest = arguments[i];
+			}
+		}
+	}
+
+	perf.log(fastest.formattedTestName + ' was fastest.', 'result');
 }
 
 perf.config = {

@@ -1,16 +1,18 @@
 body {
 	background-color: #2C2828;
 	color: #8F938F;
+	font-family: monospace;
+}
+#container {
+	width: 940px;
+	margin:30px auto;
 }
 #testLog {
-	width: 880px;
-	margin:30px auto;
 	padding: 0 0 0 60px;
 	background-color: #322F2F;
 }
 #testLog li {
 	list-style-position: outside;
-	font-family: monospace;
 	padding: 0 10px;
 	margin: 0 0 -1px 0;
 	border-bottom: 1px solid #322F2F;
@@ -27,5 +29,6 @@ body {
 .alert { color: #E5C854; }
 .error { background-color: #BB5233 !important; color: #fff; }
 .note { color: #DA66ED; }
+.result { background-color: #1D1D1D !important; color: #B2F063; }
 
 #testDom { visibility: hidden; }
