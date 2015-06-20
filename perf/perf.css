@@ -1,7 +1,7 @@
 body {
 	background-color: #2C2828;
 	color: #8F938F;
-	font-family: monospace;
+	font-family: 'Ubuntu Mono', monospace;
 }
 #container {
 	width: 940px;
@@ -18,7 +18,7 @@ body {
 	border-bottom: 1px solid #322F2F;
 	border-top: 1px solid #322F2F;
 	line-height: 30px;
-	font-size: 14px;
+	font-size: 16px;
 	background-color: #2C2828;
 }
 #testLog .testName { color: #83E7FF; }
