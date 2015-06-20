@@ -52,9 +52,14 @@ title: Built-In Binding Modifiers
 
 
 <h3><code>template</code></h3>
+<p><strong>Accepts 1 optional argument.</strong></p>
 <p>The <code>template</code> binding modifier uses the contents of the bound node as an HTML template.
 	It uses a built-in handlebars<em>-ish</em> templating engine.</p>
-<p>Attributes bound with the <code>template</code> binding modifier can be either objects <em>or arrays of objects.</em>
+<p>Optionally, you can supply the <code>id</code> of another DOM node to use as a template. For best performance 
+	and fewer surprises, your best bet is to use something like 
+	<code>&lt;script id="yourTemplateNodeIdHere" type="text/template"&gt;&lt;/script&gt;</code> for your template 
+	container.</p>
+<p>Tripod attributes bound with the <code>template</code> binding modifier can be either objects <em>or arrays of objects.</em>
 	If an array of objects is found, the template HTML will be copied for each item in the array.</p>
 
 <h4><code>template</code> Binding Modifier Example</h4>

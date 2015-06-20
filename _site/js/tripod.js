@@ -142,10 +142,43 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function setMany(attr, persist) {
-		for(var a in attr) {
-			if(a && attr.hasOwnProperty(a)) {
-				set(a, attr[a], persist);
+		if(typeof attr === 'object') {
+			for(var a in attr) {
+				if(a && attr.hasOwnProperty(a)) {
+					set(a, attr[a], persist);
+				}
 			}
+
+		} else {
+			throw 'attributes must be an object.';
+		}
+	}
+
+	function update(attr, value, persist) {
+		if(attr && typeof attr === 'string') {
+			if(attrs.hasOwnProperty(attr)) {
+				set(attr, value, persist);
+			}
+			
+		} else if(attr && typeof attr === 'object') {
+			updateMany(attr, persist);
+
+		} else {
+			throw 'attribute must be a non-empty string or object.';
+		}
+		
+	}
+
+	function updateMany(attr, persist) {
+		if(typeof attr === 'object') {
+			for(var a in attr) {
+				if(a && attr.hasOwnProperty(a)) {
+					update(a, attr[a], persist);
+				}
+			}
+
+		} else {
+			throw 'attributes must be an object.';
 		}
 	}
 	
@@ -247,6 +280,8 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		getAll: getAll,
 		set: set,
 		setMany: setMany,
+		update: update,
+		updateMany: updateMany,
 		load: load,
 		loadAll: loadAll,
 		push: push,
@@ -276,7 +311,7 @@ Tripod.util = {
 		return Object.prototype.toString.call(obj) === '[object Array]';
 	},
 	isNotBlank: function(value) {
-		return value || value === false;
+		return value || value === false || value === 0 ? true : false;
 	},
 	arrayMap: function(arr, callback) {
 		var len = arr.length;
@@ -286,9 +321,9 @@ Tripod.util = {
 		return arr;
 	},
 	trim: function(str) {
+		str = str.replace(/^\s\s*/, '');
 		var ws = /\s/;
 		var i = str.length;
-		str = str.replace(/^\s\s*/, '');
 		while (ws.test(str.charAt(--i)));
 		return str.slice(0, i + 1);
 	},
@@ -308,15 +343,17 @@ Tripod.util = {
 
 		if(value && !hasClass) {
 			appliedClasses.push(className);
-		} else if(hasClass) {
+		} else if(!value && hasClass) {
 			appliedClasses.splice(index, 1);
+		} else {
+			return; //no action needed
 		}
 
 		node.className = appliedClasses.join(' ');
 	},
 	formatAsCurrency: function(value, currencySymbol) {
 		currencySymbol = currencySymbol || '$';
-		var valueAsNumber = Number(value.replace(/[^0-9.]/g, '')).toFixed(2);
+		var valueAsNumber = Number((value + '').replace(/[^0-9.]/g, '')).toFixed(2);
 		return currencySymbol + valueAsNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,');
 	},
 	getNodeValue: function(node) {
