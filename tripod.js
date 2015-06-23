@@ -483,6 +483,11 @@ Tripod.bindingModifierFunctions = {
 		var currencySymbol = bindingModifiers.length === 2 ? bindingModifiers[1] : '$';
 		return Tripod.util.formatAsCurrency(value, currencySymbol);
 	},
+	roundNumber: function(node, value, bindingModifiers) {
+		var decimalPlaces = bindingModifiers.length === 2 ? bindingModifiers[1] : 0;
+		decimalPlaces = Number(decimalPlaces) || 0;
+		return ( Number(value) || 0 ).toFixed(decimalPlaces);
+	},
 	template: function(node, value, bindingModifiers) {
 		var templateAttributeName = 'data-original-template';
 		var generatedHtml = '';
@@ -510,6 +515,9 @@ Tripod.bindingModifierFunctions = {
 			node.innerHTML = generatedHtml;
 			node.setAttribute(templateAttributeName, templateHtml);
 		}
+	},
+	html: function(node, value) {
+		node.innerHTML = value;
 	},
 	value: function(node, value) {
 		return value;
