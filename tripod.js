@@ -440,6 +440,18 @@ Tripod.util = {
 			}
 		}
 		return templateString;
+	},
+	resettableDelay: function(uniqueId, callback, timeoutDelay) {
+		Tripod.util.resettableDelay.timeoutIds = Tripod.util.resettableDelay.timeoutIds || {};
+		timeoutDelay = timeoutDelay || Tripod.util.resettableDelay.defaultTimeoutDelay || 250;
+		
+		if(Tripod.util.resettableDelay.timeoutIds[uniqueId]) {
+			clearTimeout(Tripod.util.resettableDelay.timeoutIds[uniqueId]);
+		}
+
+		Tripod.util.resettableDelay.timeoutIds[uniqueId] = setTimeout(function(){
+			callback();
+		}, timeoutDelay);
 	}
 };
 
