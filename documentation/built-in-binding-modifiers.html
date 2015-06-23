@@ -8,6 +8,12 @@ title: Built-In Binding Modifiers
 <p>If the <code>data-bound-as</code> attribute is missing, blank, or unrecognized <code>value</code> is used.</p>
 
 
+<h3><code>html</code></h3>
+<p>Where the <code>value</code> binding modifier sets an element's <code>textContent</code> (or <code>innerText</code> for old IE) property, the
+	<code>html</code> binding modifier sets the element's <code>innerHTML</code> property.</p>
+<p>If your data is in HTML form and you expect to see it inserted into your page's DOM, this is the binding modifier you need.</p>
+
+
 <h3><code>show</code></h3>
 <p>The <code>show</code> binding modifier will show an element if the attribute it is bound to is <em>truthy</em>. Otherwise, the element will be hidden.</p>
 
@@ -49,6 +55,13 @@ title: Built-In Binding Modifiers
 <p><code>currency</code> converts the bound attribute to a formatted currency string and sets the bound element's 
 	<code>value</code> or <code>textContent</code> to this currency string.</p>
 <p>You can supply a currency symbol as the only argument. The default is <code>$</code>.</p>
+
+
+<h3><code>roundNumber</code></h3>
+<p><strong>Accepts 1 optional argument.</strong></p>
+<p><code>roundNumber</code> converts the bound attribute to a rounded number and sets the bound element's 
+	<code>value</code> or <code>textContent</code> to this rounded number string.</p>
+<p>You can supply the number of decimal places to round to as the only argument. The default is <code>0</code> (round to a whole number/integer).</p>
 
 
 <h3><code>template</code></h3>
