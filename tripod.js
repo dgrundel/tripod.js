@@ -226,7 +226,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 	
-	function push(attr) {
+	function push(attr, includeActiveElement) {
 		if(Tripod.util.isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
 				push(attr[a]);
@@ -235,7 +235,9 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		} else if(attr && typeof attr === 'string') {
 			var nodes = getNodesForAttr(attr);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
-				updateNode(nodes[n], attrs[attr]);
+				if(nodes[n] !== document.activeElement || includeActiveElement === true) {
+					updateNode(nodes[n], attrs[attr]);
+				}
 			}
 			
 		} else {
