@@ -2,6 +2,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	'use strict';
 
 	var attrs = initialAttrs || {};
+	var eventHandlers = {};
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
 	var savedState = null;
@@ -132,6 +133,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 			}
 
 			push(attr);
+
+			Tripod.util.debounce(getNamespacedAttrName(attr) + 'set', function(){
+				trigger('set', attr, null, [value]);
+			});
 			
 		} else if(attr && typeof attr === 'object') {
 			setMany(attr, persist);
@@ -226,7 +231,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 	
-	function push(attr) {
+	function push(attr, includeActiveElement) {
 		if(Tripod.util.isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
 				push(attr[a]);
@@ -235,7 +240,9 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		} else if(attr && typeof attr === 'string') {
 			var nodes = getNodesForAttr(attr);
 			for(var n = 0, nl = nodes.length; n < nl; n++) {
-				updateNode(nodes[n], attrs[attr]);
+				if(nodes[n] !== document.activeElement || includeActiveElement === true) {
+					updateNode(nodes[n], attrs[attr]);
+				}
 			}
 			
 		} else {
@@ -275,6 +282,58 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		return getAll();
 	}
 
+	function on(eventName, attr, callback) {
+		if(typeof callback === 'function' && typeof eventName === 'string' && typeof attr === 'string') {
+			eventHandlers[eventName] = eventHandlers[eventName] || {};
+			eventHandlers[eventName][attr] = eventHandlers[eventName][attr] || [];
+			eventHandlers[eventName][attr].push(callback);
+
+		} else if(typeof callback !== 'function') {
+			throw 'callback must be a function';
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
+		}
+	}
+
+	function off(eventName, attr, callback) {
+		if(typeof callback === 'function' && typeof eventName === 'string' && typeof attr === 'string') {
+			if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+				for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+					if(eventHandlers[eventName][attr][ii] === callback) {
+						eventHandlers[eventName][attr].splice(ii, 1);
+						return true;
+					}
+				}
+			}
+			
+		} else if(typeof callback !== 'function') {
+			throw 'callback must be a function';
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
+		}
+
+		return false;
+	}
+
+	function trigger(eventName, attr, node, args) {
+		if(typeof eventName === 'string' && typeof attr === 'string') {
+			if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+				for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+					eventHandlers[eventName][attr][ii].apply(node, args);
+				}
+			}
+
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
+		}
+	}
+
 	return {
 		get: get,
 		getAll: getAll,
@@ -289,7 +348,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		sync: sync,
 		syncAll: syncAll,
 		saveState: saveState,
-		revert: revert
+		revert: revert,
+		on: on,
+		off: off,
+		trigger: trigger
 	};
 };
 
@@ -438,6 +500,18 @@ Tripod.util = {
 			}
 		}
 		return templateString;
+	},
+	debounce: function(uniqueId, callback, timeoutDelay) {
+		Tripod.util.debounce.timeoutIds = Tripod.util.debounce.timeoutIds || {};
+		timeoutDelay = timeoutDelay || Tripod.util.debounce.defaultTimeoutDelay || 250;
+		
+		if(Tripod.util.debounce.timeoutIds[uniqueId]) {
+			clearTimeout(Tripod.util.debounce.timeoutIds[uniqueId]);
+		}
+
+		Tripod.util.debounce.timeoutIds[uniqueId] = setTimeout(function(){
+			callback();
+		}, timeoutDelay);
 	}
 };
 
@@ -483,10 +557,27 @@ Tripod.bindingModifierFunctions = {
 		var currencySymbol = bindingModifiers.length === 2 ? bindingModifiers[1] : '$';
 		return Tripod.util.formatAsCurrency(value, currencySymbol);
 	},
+	roundNumber: function(node, value, bindingModifiers) {
+		var decimalPlaces = bindingModifiers.length === 2 ? bindingModifiers[1] : 0;
+		decimalPlaces = Number(decimalPlaces) || 0;
+		return ( Number(value) || 0 ).toFixed(decimalPlaces);
+	},
 	template: function(node, value, bindingModifiers) {
 		var templateAttributeName = 'data-original-template';
 		var generatedHtml = '';
-		var templateHtml = node.getAttribute(templateAttributeName) || node.innerHTML;
+		var templateNode;
+		var templateHtml = node.getAttribute(templateAttributeName);
+
+		if(!templateHtml) {
+			if(bindingModifiers.length === 2 && bindingModifiers[1]) {
+				templateNode = document.getElementById(bindingModifiers[1]);
+				if(templateNode) {
+					templateHtml = templateNode.innerHTML;
+				}
+			} else {
+				templateHtml = node.innerHTML;
+			}
+		}
 
 		if(templateHtml) {
 			if(!Tripod.util.isArray(value)) {
@@ -498,6 +589,9 @@ Tripod.bindingModifierFunctions = {
 			node.innerHTML = generatedHtml;
 			node.setAttribute(templateAttributeName, templateHtml);
 		}
+	},
+	html: function(node, value) {
+		node.innerHTML = value;
 	},
 	value: function(node, value) {
 		return value;

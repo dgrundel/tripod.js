@@ -122,3 +122,16 @@ Tripod.util.formatAsCurrency(123.45, 'EUR'); // EUR123.45</code></pre>
 <pre><code class="js">var templateString = "Hello, {name}!";
 var data = { name: 'world' };
 Tripod.util.processTemplate(templateString, data); // returns "Hello, world!"</code></pre>
+
+
+<h3><code>Tripod.util.debounce</code></h3>
+
+<h4>Method signature</h4>
+<pre><code class="js">Tripod.util.debounce(uniqueId, callbackFunction, timeoutDelay)</code></pre>
+
+<p><code>debounce</code> is used to limit the rate at which a function can be called.</p>
+<p><code>debounce</code> is used internally by Tripod when triggering the <code>set</code> event. It's primary purpose is to
+	prevent Tripod from triggering an excessive number of events and bogging down the browser as a user types into the input field.</p>
+<p>Essentially, <code>debounce</code> introduces a small delay before executing the <code>callback</code> function. If debounce is called 
+	again before the delay timer runs out, the timer is reset and the waiting period begins again.</p>
+<p>The <code>timeoutDelay</code> argument is optional and defaults to <code>250</code>. <code>timeoutDelay</code> is in milliseconds.</p>
