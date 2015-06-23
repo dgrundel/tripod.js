@@ -2,6 +2,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	'use strict';
 
 	var attrs = initialAttrs || {};
+	var eventHandlers = {};
 	var bindNamespace = namespace;
 	var persistent = persist === true && window.localStorage && window.JSON;
 	var savedState = null;
@@ -132,6 +133,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 			}
 
 			push(attr);
+
+			Tripod.util.resettableDelay(getNamespacedAttrName(attr) + 'set', function(){
+				trigger('set', attr, null, [value]);
+			});
 			
 		} else if(attr && typeof attr === 'object') {
 			setMany(attr, persist);
@@ -277,6 +282,36 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		return getAll();
 	}
 
+	function on(eventName, attr, callback) {
+		if(typeof callback === 'function') {
+			eventHandlers[eventName] = eventHandlers[eventName] || {};
+			eventHandlers[eventName][attr] = eventHandlers[eventName][attr] || [];
+			eventHandlers[eventName][attr].push(callback);
+		} else {
+			throw 'callback must be a function';
+		}
+	}
+
+	function off(eventName, attr, callback) {
+		if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+			for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+				if(eventHandlers[eventName][attr][ii] === callback) {
+					eventHandlers[eventName][attr].splice(ii, 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	function trigger(eventName, attr, node, args) {
+		if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+			for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+				eventHandlers[eventName][attr][ii].apply(node, args);
+			}
+		}
+	}
+
 	return {
 		get: get,
 		getAll: getAll,
@@ -291,7 +326,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		sync: sync,
 		syncAll: syncAll,
 		saveState: saveState,
-		revert: revert
+		revert: revert,
+		on: on,
+		off: off,
+		trigger: trigger
 	};
 };
 
