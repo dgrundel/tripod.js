@@ -283,32 +283,54 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function on(eventName, attr, callback) {
-		if(typeof callback === 'function') {
+		if(typeof callback === 'function' && typeof eventName === 'string' && typeof attr === 'string') {
 			eventHandlers[eventName] = eventHandlers[eventName] || {};
 			eventHandlers[eventName][attr] = eventHandlers[eventName][attr] || [];
 			eventHandlers[eventName][attr].push(callback);
-		} else {
+
+		} else if(typeof callback !== 'function') {
 			throw 'callback must be a function';
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
 		}
 	}
 
 	function off(eventName, attr, callback) {
-		if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
-			for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
-				if(eventHandlers[eventName][attr][ii] === callback) {
-					eventHandlers[eventName][attr].splice(ii, 1);
-					return true;
+		if(typeof callback === 'function' && typeof eventName === 'string' && typeof attr === 'string') {
+			if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+				for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+					if(eventHandlers[eventName][attr][ii] === callback) {
+						eventHandlers[eventName][attr].splice(ii, 1);
+						return true;
+					}
 				}
 			}
+			
+		} else if(typeof callback !== 'function') {
+			throw 'callback must be a function';
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
 		}
+
 		return false;
 	}
 
 	function trigger(eventName, attr, node, args) {
-		if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
-			for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
-				eventHandlers[eventName][attr][ii].apply(node, args);
+		if(typeof eventName === 'string' && typeof attr === 'string') {
+			if(eventHandlers[eventName] && eventHandlers[eventName][attr] && eventHandlers[eventName][attr].length) {
+				for(var ii = 0, ehl = eventHandlers[eventName][attr].length; ii < ehl; ii++) {
+					eventHandlers[eventName][attr][ii].apply(node, args);
+				}
 			}
+
+		} else if(typeof eventName !== 'string') {
+			throw 'eventName must be a string';
+		} else {
+			throw 'attribute must be a string';
 		}
 	}
 
