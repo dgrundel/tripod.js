@@ -134,7 +134,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 
 			push(attr);
 
-			Tripod.util.resettableDelay(getNamespacedAttrName(attr) + 'set', function(){
+			Tripod.util.debounce(getNamespacedAttrName(attr) + 'set', function(){
 				trigger('set', attr, null, [value]);
 			});
 			
@@ -501,15 +501,15 @@ Tripod.util = {
 		}
 		return templateString;
 	},
-	resettableDelay: function(uniqueId, callback, timeoutDelay) {
-		Tripod.util.resettableDelay.timeoutIds = Tripod.util.resettableDelay.timeoutIds || {};
-		timeoutDelay = timeoutDelay || Tripod.util.resettableDelay.defaultTimeoutDelay || 250;
+	debounce: function(uniqueId, callback, timeoutDelay) {
+		Tripod.util.debounce.timeoutIds = Tripod.util.debounce.timeoutIds || {};
+		timeoutDelay = timeoutDelay || Tripod.util.debounce.defaultTimeoutDelay || 250;
 		
-		if(Tripod.util.resettableDelay.timeoutIds[uniqueId]) {
-			clearTimeout(Tripod.util.resettableDelay.timeoutIds[uniqueId]);
+		if(Tripod.util.debounce.timeoutIds[uniqueId]) {
+			clearTimeout(Tripod.util.debounce.timeoutIds[uniqueId]);
 		}
 
-		Tripod.util.resettableDelay.timeoutIds[uniqueId] = setTimeout(function(){
+		Tripod.util.debounce.timeoutIds[uniqueId] = setTimeout(function(){
 			callback();
 		}, timeoutDelay);
 	}
