@@ -135,7 +135,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 			push(attr);
 
 			Tripod.util.debounce(getNamespacedAttrName(attr) + 'set', function(){
-				trigger('set', attr, null, [value]);
+				trigger('set', attr, null, [attr, value]);
 			});
 			
 		} else if(attr && typeof attr === 'object') {
@@ -190,7 +190,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	function load(attr, parentNode) {
 		if(Tripod.util.isArray(attr)) { //if passed array, assume it is an array of attrs
 			for(var a = 0, al = attr.length; a < al; a++) {
-				load(attr[a]);
+				load(attr[a], parentNode);
 			}
 
 		} else if(attr && typeof attr === 'string') { //if we have a non-array argument, assume it is a single string attr
@@ -216,9 +216,11 @@ var Tripod = function(initialAttrs, namespace, persist) {
 				}
 			}
 
-			value = value || '';
-			attrs[attr] = value;
-			return value;
+			if(Tripod.util.isNotBlank(value)) {
+				attrs[attr] = value;
+			}
+			
+			return attrs[attr];
 		
 		} else {
 			throw 'attribute(s) must be an array or non-empty string.';
@@ -283,17 +285,24 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	function on(eventName, attr, callback) {
-		if(typeof callback === 'function' && typeof eventName === 'string' && typeof attr === 'string') {
-			eventHandlers[eventName] = eventHandlers[eventName] || {};
-			eventHandlers[eventName][attr] = eventHandlers[eventName][attr] || [];
-			eventHandlers[eventName][attr].push(callback);
+		if(typeof callback === 'function' && typeof eventName === 'string') {
+
+			if(typeof attr === 'string') {
+				eventHandlers[eventName] = eventHandlers[eventName] || {};
+				eventHandlers[eventName][attr] = eventHandlers[eventName][attr] || [];
+				eventHandlers[eventName][attr].push(callback);
+			} else if(Tripod.util.isArray(attr)) {
+				for(var ii = 0, al = attr.length; ii < al; ii++) {
+					on(eventName, attr[ii], callback);
+				}
+			} else {
+				throw 'attribute must be a string or array';
+			}
 
 		} else if(typeof callback !== 'function') {
 			throw 'callback must be a function';
-		} else if(typeof eventName !== 'string') {
-			throw 'eventName must be a string';
 		} else {
-			throw 'attribute must be a string';
+			throw 'eventName must be a string';
 		}
 	}
 
