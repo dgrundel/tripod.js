@@ -112,6 +112,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		public methods
 	*/
 
+	function getNamespace() {
+		return bindNamespace;
+	}
+
 	function get(attr) {
 		if(attr && typeof attr === 'string' && attrs.hasOwnProperty(attr)) {
 			return attrs[attr];
@@ -343,25 +347,24 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		}
 	}
 
-	return {
-		get: get,
-		getAll: getAll,
-		set: set,
-		setMany: setMany,
-		update: update,
-		updateMany: updateMany,
-		load: load,
-		loadAll: loadAll,
-		push: push,
-		pushAll: pushAll,
-		sync: sync,
-		syncAll: syncAll,
-		saveState: saveState,
-		revert: revert,
-		on: on,
-		off: off,
-		trigger: trigger
-	};
+	this.getNamespace = getNamespace;
+	this.get = get;
+	this.getAll = getAll;
+	this.set = set;
+	this.setMany = setMany;
+	this.update = update;
+	this.updateMany = updateMany;
+	this.load = load;
+	this.loadAll = loadAll;
+	this.push = push;
+	this.pushAll = pushAll;
+	this.sync = sync;
+	this.syncAll = syncAll;
+	this.saveState = saveState;
+	this.revert = revert;
+	this.on = on;
+	this.off = off;
+	this.trigger = trigger;
 };
 
 /*
@@ -386,10 +389,11 @@ Tripod.util = {
 	},
 	arrayMap: function(arr, callback) {
 		var len = arr.length;
+		var copy = new Array(len);
 		while(len--) {
-			arr[len] = callback(arr[len]);
+			copy[len] = callback(arr[len]);
 		}
-		return arr;
+		return copy;
 	},
 	trim: function(str) {
 		str = str.replace(/^\s\s*/, '');
