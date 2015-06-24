@@ -391,7 +391,7 @@ Tripod.util = {
 		var len = arr.length;
 		var copy = new Array(len);
 		while(len--) {
-			copy[len] = callback(arr[len]);
+			copy[len] = callback(arr[len], len);
 		}
 		return copy;
 	},
