@@ -116,6 +116,10 @@ var Tripod = function(initialAttrs, namespace, persist) {
 		return bindNamespace;
 	}
 
+	function setNamespace(namespace) {
+		bindNamespace = namespace;
+	}
+
 	function get(attr) {
 		if(attr && typeof attr === 'string' && attrs.hasOwnProperty(attr)) {
 			return attrs[attr];
@@ -348,6 +352,7 @@ var Tripod = function(initialAttrs, namespace, persist) {
 	}
 
 	this.getNamespace = getNamespace;
+	this.setNamespace = setNamespace;
 	this.get = get;
 	this.getAll = getAll;
 	this.set = set;
