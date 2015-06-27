@@ -394,11 +394,10 @@ Tripod.util = {
 	},
 	arrayMap: function(arr, callback) {
 		var len = arr.length;
-		var copy = new Array(len);
 		while(len--) {
-			copy[len] = callback(arr[len], len);
+			arr[len] = callback(arr[len], len);
 		}
-		return copy;
+		return arr;
 	},
 	trim: function(str) {
 		str = str.replace(/^\s\s*/, '');
